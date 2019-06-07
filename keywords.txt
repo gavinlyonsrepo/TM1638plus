@@ -1,0 +1,23 @@
+# -----------------------------------------
+# Syntax colouring for TM1638plus library
+# -----------------------------------------
+
+# Datatypes (such as objects)
+ TM1638plus	KEYWORD1
+
+#Methods / functions
+
+sendCommand	KEYWORD2
+reset	KEYWORD2
+brightness	KEYWORD2
+readButtons	KEYWORD2
+setLED	KEYWORD2
+displayText	KEYWORD2
+displayASCIIwDot	KEYWORD2
+displayASCII	KEYWORD2
+display7Seg	KEYWORD2
+displayHex	KEYWORD2
+
+# Constants
+
+
