@@ -2,9 +2,9 @@
 
 Overview
 --------------------------------------------
-* Name: TM1638pplus
+* Name: TM1638plus
 * Description: An Arduino library to display data on a 8-digit TM1638 seven segment module
-This module is the (KEY & LED) variant which has 8 LED's and 8 Push buttons.
+This module is for the (KEY & LED) variant which has 8 LED's and 8 Push buttons.
 * Author: Gavin Lyons.
 * Development platform: Arduino UNO
 
@@ -33,8 +33,12 @@ I don't possess the push button only module at this point so cannot test at this
 
 Two 4 digit 3461AS (common anode , RED , decimal point) are used in this module
 giving a total of 8 digits. A TM1638 controller chip drives the unit.
-The unit is marked (LED & KEY) 
-The library is contained in two files.
+The unit is marked (LED & KEY).
+
+The library memory footprint has been optimised and is just:
+Sketch uses 2454 bytes (7%) of program storage space. Maximum is 32256 bytes.
+Global variables use 54 bytes (2%) of dynamic memory. Maximum is 2048 bytes.
+
 
 3 Connections to Arduino: 
 
