@@ -1,12 +1,24 @@
+/*
+* Project Name: TM1638 
+* File: TM1638plus_TEST.ino
+* Description: demo file library for  TM1638 module(LED & KEY).
+* Carries out series of tests demonstrating arduino library TM1638plus.
+* Author: Gavin Lyons.
+* Created May 2019
+* URL: https://github.com/gavinlyonsrepo/TM1638plus
+*/
+
 #include <TM1638plus.h>
 
-// I/O pins on the Arduino connected to strobe, clock, data
+// GPIO I/O pins on the Arduino connected to strobe, clock, data, 
+//pick on any I/O you want.
 #define  STROBE_TM 4
-#define  CLOCK_TM 7
-#define  DIO_TM 8
+#define  CLOCK_TM 6
+#define  DIO_TM 7
 
-
+//Constructor object
 TM1638plus tm(STROBE_TM, CLOCK_TM , DIO_TM);
+
 
 void setup() {
    // Test 0 reset test

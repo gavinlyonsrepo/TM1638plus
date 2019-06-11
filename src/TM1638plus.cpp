@@ -1,9 +1,10 @@
 /*
 * Project Name: TM1638 
-* File: TM1638.cpp
-* Description: source file library for  TM1638 module(LED & KEY).
+* File: TM1638plus.cpp
+* Description: source file arduino  library for TM1638 module(LED & KEY).
 * Author: Gavin Lyons.
 * Created May 2019
+* URL: https://github.com/gavinlyonsrepo/TM1638plus
 */
 
 #include "TM1638plus.h"
@@ -48,7 +49,7 @@ void TM1638plus::setLED(uint8_t position, uint8_t value)
   digitalWrite(_STROBE_IO, HIGH);
 }
 
-void TM1638plus::displayText(char *text) {
+void TM1638plus::displayText(const char *text) {
   char c, pos;
 
   pos = 0;

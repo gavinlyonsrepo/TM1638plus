@@ -61,10 +61,13 @@ For more information see commented headers in header file.
 3. Print a Hexadecimal digit(0-15).
 4. Print a text string(dots are replaced and dot is turned on preceding digit), 
 "abc.def" becomes "abcdef" with c decimal point segment switched on.
-5. Read buttons status.
+5. Read buttons status. User may have to debounce buttons depending on application.
+See [URL LINK](https://github.com/gavinlyonsrepo/Arduino_Clock_3) for debounce example.
 6. Switch LEDS on and off.
 7. Reset and init module functions.
 8. Adjust brightness of module. Support 8 degree brightness adjustment.
+If user wishes to change the default brightness at start-up change.
+The DEFAULT_BRIGHTNESS define in header file. 
 
 
 ![ module ](https://github.com/gavinlyonsrepo/pic_16F18446_projects/blob/master/images/TM1638.jpg)

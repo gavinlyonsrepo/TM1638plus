@@ -1,9 +1,10 @@
 /*
 * Project Name: TM1638plus 
 * File: TM1638plus.h
-* Description: TM1638plus.h header file library for TM1638 module(LED & KEY).
+* Description: TM1638plus.h header file arduino library for TM1638 module(LED & KEY).
 * Author: Gavin Lyons.
 * Created May 2019
+* URL: https://github.com/gavinlyonsrepo/TM1638plus
 */
 
 
@@ -46,10 +47,15 @@ public:
 
     //Sets the brightness level on a scale of brightness = 0 to 7.
     //0 is not turned off, it's just the lowest brightness.
+    //If user wishes to change the default brightness at start-up change.
+     //The DEFAULT_BRIGHTNESS define in header file.
     void brightness(uint8_t brightness);
 
     //Read buttons returns a byte with value of buttons 1-8 b7b6b5b4b3b2b1b0
     // 1 pressed, zero not pressed. 
+    //User may have to debounce buttons depending on application.
+    //See [URL LINK](https://github.com/gavinlyonsrepo/Arduino_Clock_3) 
+    // for de-bonce example.
     uint8_t readButtons(void);
 
     // Set an LED, pass it LED position 0-7 and value 0 or 1
@@ -58,7 +64,7 @@ public:
     // Send Text to Seven segments, passed char array pointer
     // dots are removed from string and dot on preceding digit switched on
     // "abc.def" will be shown as "abcdef" with c decimal point turned on.
-    void displayText(char *text);
+    void displayText(const char *text);
 
     // Send ASCII value to seven segment, pass position 0-7 and ASCII value byte
     void displayASCII(uint8_t position, uint8_t ascii);
