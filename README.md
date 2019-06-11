@@ -70,6 +70,17 @@ If user wishes to change the default brightness at start-up change.
 The DEFAULT_BRIGHTNESS define in header file. 
 
 
+Installation
+------------------------------
+
+The library is included in the official Arduino library manger and the optimum way to install it 
+is using the library manager which can be opened by the *manage libraries* option in Arduino IDE. 
+Search "TM1638" in search bar of library manager to find it.
+
+See link below for instruction for this and for the other installation methods too.
+
+[Installing Additional Arduino Libraries guide](https://www.arduino.cc/en/Guide/Libraries)
+
 ![ module ](https://github.com/gavinlyonsrepo/pic_16F18446_projects/blob/master/images/TM1638.jpg)
 
 
