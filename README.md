@@ -20,8 +20,7 @@ Features
 ----------------------
 
 
-These TM1638 modules are commonly available. 
-Connections to Arduino: 
+These TM1638 modules are commonly available. Connections to Arduino: 
 
 1. GPIO = STB = Strobe
 2. GPIO  = CLK  = Clock
@@ -32,9 +31,9 @@ This library  supports two variants of the TM1638.
 1. TM1638  8 KEY & 8 LED , 8 LEDS and 8 Push Buttons (MODEL 1)
 2. TM1638 16 KEY , (QYF) 16 Push buttons (MODEL 2)
 
-There are two sets of files to support each due to the different way they are wired. 
+There are two sets of files to support each due to the different way they are wired and driven.
 
-** Model 1: TM1638 Module 8 Push buttons 8 LEDS (LED & KEY) **
+**Model 1: TM1638 Module 8 Push buttons 8 LEDS (LED & KEY)**
 
 ![ module ](https://github.com/gavinlyonsrepo/pic_16F18446_projects/blob/master/images/TM1638.jpg)
 
@@ -47,7 +46,7 @@ Two 4 digit 3461AS-1 (34 inch, 4 digit ,common Cathode,  decimal point, RED) are
 giving a total of 8 digits. A TM1638 controller chip drives the unit.
 The unit is marked (LED & KEY).
 
-The library memory footprint has been optimised and is just:
+The library memory footprint has been optimized and is just:
 Sketch uses 2454 bytes (7%) of program storage space. Maximum is 32256 bytes.
 Global variables use 54 bytes (2%) of dynamic memory. Maximum is 2048 bytes.
 
@@ -102,8 +101,7 @@ For more detailed information see commented headers in header file(.h).
 1. Print an Hexadecimal number with or without leading zeros
 2. Print an decimal number with or without leading zeros
 3. Manually set segments to create custom patterns.
-4. Print a text string(dots are replaced and dot is turned on preceding digit), 
-"abc.def" becomes "abcdef" with c decimal point segment switched on.
+4. Print a text string
 5. Read buttons status. User may have to debounce buttons depending on application.
 See [URL LINK](https://github.com/gavinlyonsrepo/Arduino_Clock_3) for debounce example(model1)
 6. Reset and init module functions.
