@@ -4,7 +4,8 @@ Overview
 --------------------------------------------
 * Name: TM1638plus
 * Description: An Arduino library to display data on a 8-digit TM1638 seven segment module
-This module is for the (KEY & LED) variant which has 8 LED's and 8 Push buttons.
+This module supports the (8 KEY & 8 LED) variant which has 8 LED's and 8 Push buttons,
+and the (16 KEY)(QFY) variant which has 16 pushbuttons.
 * Author: Gavin Lyons.
 * Development platform: Arduino UNO
 
@@ -19,19 +20,30 @@ Features
 ----------------------
 
 
-**TM1638 Module 8 Push buttons 8 LEDS (LED & KEY)**
+These TM1638 modules are commonly available. 
+Connections to Arduino: 
 
-These Tm1638 modules are commonly available. 
-They consist of an 8-digit seven segment display with decimal points,
+1. GPIO = STB = Strobe
+2. GPIO  = CLK  = Clock
+3. GPIO = DIO = Data input / output
+
+This library  supports two variants of the TM1638.
+
+1. TM1638  8 KEY & 8 LED , 8 LEDS and 8 Push Buttons (MODEL 1)
+2. TM1638 16 KEY , (QYF) 16 Push buttons (MODEL 2)
+
+There are two sets of files to support each due to the different way they are wired. 
+
+** Model 1: TM1638 Module 8 Push buttons 8 LEDS (LED & KEY) **
+
+![ module ](https://github.com/gavinlyonsrepo/pic_16F18446_projects/blob/master/images/TM1638.jpg)
+
+![ sch ](https://github.com/gavinlyonsrepo/pic_16F18446_projects/blob/master/images/TM1638_2.jpg)
+ 
+This variant consist of an 8-digit seven segment display with decimal points,
 8 Leds and 8 Push buttons.
-I have seen two variants, this library is for the one marked LED & KEY.
-It will not work with the push buttons only module without some modification,
-I don't possess the push button only module at this point so cannot test at this time.
 
-1. TM1638 LED & KEY , 8 LEDS and 8 Push Buttons
-2. TM1638 KEY , 16 Push buttons
-
-Two 4 digit 3461AS (common anode , RED , decimal point) are used in this module
+Two 4 digit 3461AS-1 (34 inch, 4 digit ,common Cathode,  decimal point, RED) are used in this module
 giving a total of 8 digits. A TM1638 controller chip drives the unit.
 The unit is marked (LED & KEY).
 
@@ -39,15 +51,7 @@ The library memory footprint has been optimised and is just:
 Sketch uses 2454 bytes (7%) of program storage space. Maximum is 32256 bytes.
 Global variables use 54 bytes (2%) of dynamic memory. Maximum is 2048 bytes.
 
-
-3 Connections to Arduino: 
-
-1. GPIO = STB = Strobe
-2. GPIO  = CLK  = Clock
-3. GPIO = DIO = Data input / output
-
-
-**Library Functions**
+**Model 1 Library Functions**
 
 The commented functions can be found in library header file TM1638plus.h.
 The library support ASCII ,text ,Hex and allows for setting individual segments,
@@ -68,20 +72,41 @@ See [URL LINK](https://github.com/gavinlyonsrepo/Arduino_Clock_3) for debounce e
 8. Adjust brightness of module. Support 8 degree brightness adjustment.
 If user wishes to change the default brightness at start-up change.
 The DEFAULT_BRIGHTNESS define in header file. 
+9. Manually set segments to create custom patterns.
+
+** ======================================================================== **
+
+** Model 2: TM1638 Module 16 Push buttons (16 KEY) (QYF) **
+
+![ module ](https://github.com/gavinlyonsrepo/TM1638plus/blob/master/extra/images/tm16381.jpg)
+
+![ sch ](https://github.com/gavinlyonsrepo/TM1638plus/blob/master/extra/images/tm16382.jpg)
 
 
-Installation
-------------------------------
+They consist of an 8-digit seven segment display with decimal points,
+and 16Push buttons.
 
-The library is included in the official Arduino library manger and the optimum way to install it 
-is using the library manager which can be opened by the *manage libraries* option in Arduino IDE. 
-Search "TM1638" in search bar of library manager to find it.
-
-See link below for instruction for this and for the other installation methods too.
-
-[Installing Additional Arduino Libraries guide](https://www.arduino.cc/en/Guide/Libraries)
-
-![ module ](https://github.com/gavinlyonsrepo/pic_16F18446_projects/blob/master/images/TM1638.jpg)
+Two 4 digit 3461BS-1 (34 inch, 4 digit ,common Anode,  decimal point, RED)are used in this module
+giving a total of 8 digits. A TM1638 controller chip drives the unit.
 
 
-![ sch ](https://github.com/gavinlyonsrepo/pic_16F18446_projects/blob/master/images/TM1638_2.jpg)
+**Model 2 Library Functions**
+
+The commented functions can be found in library header file TM1638plus.h.
+The library support Strings , decimal ,Hex and allows for setting individual segments,
+and the decimal point of segment.
+The TM1638plus_TEST_Model2.ino contains a set of tests demonstrating library functions.
+
+For more detailed information see commented headers in header file(.h).
+
+1. Print an Hexadecimal number with or without leading zeros
+2. Print an decimal number with or without leading zeros
+3. Manually set segments to create custom patterns.
+4. Print a text string(dots are replaced and dot is turned on preceding digit), 
+"abc.def" becomes "abcdef" with c decimal point segment switched on.
+5. Read buttons status. User may have to debounce buttons depending on application.
+See [URL LINK](https://github.com/gavinlyonsrepo/Arduino_Clock_3) for debounce example(model1)
+6. Reset and init module functions.
+7. Adjust brightness of module. Support 8 degree brightness adjustment.
+If user wishes to change the default brightness at start-up change.
+The DEFAULT_BRIGHTNESS define in header file. 
