@@ -31,7 +31,9 @@ This library  supports two variants of the TM1638.
 1. TM1638  8 KEY & 8 LED , 8 LEDS and 8 Push Buttons (MODEL 1)
 2. TM1638 16 KEY , (QYF) 16 Push buttons (MODEL 2)
 
-There are two sets of files to support each due to the different way they are wired and driven.
+There are two sets of  files(header source and example) to support each 
+due to the different way they are wired and driven.
+The files for Model 2 are marked Model2.
 
 **Model 1: TM1638 Module 8 Push buttons 8 LEDS (LED & KEY)**
 
@@ -52,10 +54,10 @@ Global variables use 54 bytes (2%) of dynamic memory. Maximum is 2048 bytes.
 
 **Model 1 Library Functions**
 
-The commented functions can be found in library header file TM1638plus.h.
+The commented functions can be found in library header file *TM1638plus.h*.
 The library support ASCII ,text ,Hex and allows for setting individual segments,
 and the decimal point of segment.
-The TM1638plus_TEST.ino contains a set of tests demonstrating library functions.
+The *TM1638plus_TEST.ino* contains a set of tests demonstrating library functions.
 
 For more information see commented headers in header file. 
 
@@ -73,9 +75,9 @@ If user wishes to change the default brightness at start-up change.
 The DEFAULT_BRIGHTNESS define in header file. 
 9. Manually set segments to create custom patterns.
 
-** ======================================================================== **
+**========================================================================**
 
-** Model 2: TM1638 Module 16 Push buttons (16 KEY) (QYF) **
+**Model 2: TM1638 Module 16 Push buttons (16 KEY) (QYF)**
 
 ![ module ](https://github.com/gavinlyonsrepo/TM1638plus/blob/master/extra/images/tm16381.jpg)
 
@@ -91,10 +93,10 @@ giving a total of 8 digits. A TM1638 controller chip drives the unit.
 
 **Model 2 Library Functions**
 
-The commented functions can be found in library header file TM1638plus.h.
+The commented functions can be found in library header file *TM1638plus_model2.h*.
 The library support Strings , decimal ,Hex and allows for setting individual segments,
 and the decimal point of segment.
-The TM1638plus_TEST_Model2.ino contains a set of tests demonstrating library functions.
+The *TM1638plus_TEST_Model2.ino* contains a set of tests demonstrating library functions.
 
 For more detailed information see commented headers in header file(.h).
 
