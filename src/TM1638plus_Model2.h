@@ -9,7 +9,7 @@
 
 
 #ifndef TM1638plus_Model2_h
-#define TM1638plus__Model2_h
+#define TM1638plus_Model2_h
 
 #if (ARDUINO >=100)
   #include "Arduino.h"
