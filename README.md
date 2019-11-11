@@ -43,7 +43,7 @@ The same ASCII font file is used by both sets of files.
 | Two | TM1638plus_Model2.h  | TM1638plus_Model2.cpp | TM1638plus_TEST_Model2.ino |
 
 
-** Model 1: TM1638 Module 8 Push buttons 8 LEDS (LED & KEY) **
+**Model 1: TM1638 Module 8 Push buttons 8 LEDS (LED & KEY)**
 
 ![ module ](https://github.com/gavinlyonsrepo/pic_16F18446_projects/blob/master/images/TM1638.jpg)
 
@@ -80,9 +80,9 @@ If user wishes to change the default brightness at start-up change.
 The DEFAULT_BRIGHTNESS define in header file. 
 9. Manually set segments to create custom patterns.
 
-** ======================================================================== **
+**========================================================================**
 
-** Model 2: TM1638 Module 16 Push buttons (16 KEY) (QYF) **
+**Model 2: TM1638 Module 16 Push buttons (16 KEY) (QYF)**
 
 ![ module ](https://github.com/gavinlyonsrepo/TM1638plus/blob/master/extra/images/tm16381.jpg)
 
@@ -104,7 +104,7 @@ If you test library and you see this issue, in order to fix this when you declar
 Object, set the fourth parameter "swap_nibbles" to True, The default is false.
 
 | Model | Object constructor |
-| ------ | ------ |  ------ |
+| ------ | ------ | 
 | Normal operation |     TM1638plus_Model2 tm(STROBE_TM, CLOCK_TM , DIO_TM, false) | 
 | Swapped display Fix | TM1638plus_Model2 tm(STROBE_TM, CLOCK_TM , DIO_TM, true)  | 
 
