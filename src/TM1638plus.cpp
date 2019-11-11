@@ -8,6 +8,7 @@
 */
 
 #include "TM1638plus.h"
+#include "TM1638plus_font.h"
 
 TM1638plus::TM1638plus(uint8_t strobe, uint8_t clock, uint8_t data) {
   _STROBE_IO = strobe;
@@ -108,15 +109,12 @@ void TM1638plus::displayHex(uint8_t position, uint8_t hex)
 }
 
 
-
-
 uint8_t TM1638plus::readButtons()
 {
   uint8_t buttons = 0;
   digitalWrite(_STROBE_IO, LOW);
   shiftOut(_DATA_IO, _CLOCK_IO, LSBFIRST, BUTTONS_MODE);
-  pinMode(_DATA_IO, INPUT);
-  
+  pinMode(_DATA_IO, INPUT);  
 
   for (uint8_t i = 0; i < 4; i++)
   {

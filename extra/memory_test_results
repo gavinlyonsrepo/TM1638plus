@@ -1,18 +1,19 @@
 V 1.0.1
 
-TM1638plus without progmem:
+TM1638plus Model 1 without progmem:
 
 Sketch uses 2390 bytes (7%) of program storage space. Maximum is 32256 bytes.
 Global variables use 156 bytes (7%) of dynamic memory, leaving 1892 bytes for local variables. Maximum is 2048 bytes.
 
-TM1638plus with progmem:
+TM1638plus Model 1 with progmem:
 
 Sketch uses 2454 bytes (7%) of program storage space. Maximum is 32256 bytes.
 Global variables use 54 bytes (2%) of dynamic memory, leaving 1994 bytes for local variables. Maximum is 2048 bytes.
 
-TM1638lite:
+V 1.2.0
 
-Sketch uses 3470 bytes (10%) of program storage space. Maximum is 32256 bytes.
-Global variables use 163 bytes (7%) of dynamic memory, leaving 1885 bytes for local variables. Maximum is 2048 bytes.
+TM1638plus Model 2 
 
+Sketch uses 4878 bytes (15%) of program storage space. Maximum is 30720 bytes.
+Global variables use 232 bytes (11%) of dynamic memory, leaving 1816 bytes for local variables.
 

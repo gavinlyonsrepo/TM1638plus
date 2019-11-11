@@ -8,11 +8,13 @@
 */
 
 #include "TM1638plus_Model2.h"
+#include "TM1638plus_font.h"
 
-TM1638plus_Model2::TM1638plus_Model2(uint8_t strobe, uint8_t clock, uint8_t data) {
+TM1638plus_Model2::TM1638plus_Model2(uint8_t strobe, uint8_t clock, uint8_t data,  bool swap_nibbles) {
   _STROBE_IO = strobe;
   _DATA_IO = data;
   _CLOCK_IO = clock;
+  _SWAP_NIBBLES = swap_nibbles;
   pinMode(_STROBE_IO, OUTPUT);
   pinMode(_DATA_IO, OUTPUT);
   pinMode(_CLOCK_IO, OUTPUT);
@@ -46,6 +48,14 @@ void TM1638plus_Model2::reset() {
 
 void TM1638plus_Model2::DisplaySegments(byte segment, byte digit)
 {
+   if (_SWAP_NIBBLES == true)
+   {
+   	  uint8_t upper , lower = 0;
+   	  lower = (digit) & 0x0F;  // select lower nibble
+   	  upper =  (digit >> 4) & 0X0F; //select upper nibble
+   	  digit = lower << 4 | upper;
+   }
+
   segment = (segment<<1);
   sendCommand(WRITE_LOC);
   digitalWrite(_STROBE_IO, LOW);
@@ -81,16 +91,18 @@ void TM1638plus_Model2::DisplayStr(const char* string, const word dots)
 {
   byte values[DISPLAY_SIZE];
   boolean done = false;
-
+  uint8_t Result  = 0; 
   memset(values, 0, DISPLAY_SIZE * sizeof(byte));
 
   for (uint8_t  i = 0; i < DISPLAY_SIZE; i++) 
   {
        if (!done && string[i] != '\0') {
-         if (dots >> 7-i & 1)  //if dots bit is set for that position apply the mask to turn on dot(0x80).
-            values[i] = (SevenSeg[string[i] - ASCII_OFFSET] | DOT_MASK_DEC);
+         if (dots >> 7-i & 1){  //if dots bit is set for that position apply the mask to turn on dot(0x80).
+            Result = pgm_read_byte(&SevenSeg[string[i] - ASCII_OFFSET]);
+            values[i] = (Result | DOT_MASK_DEC); //apply the Dot bitmask to value extracted from ASCII table
+        	}
           else 
-            values[i] = SevenSeg[string[i] - ASCII_OFFSET] ;
+            values[i] = pgm_read_byte(&SevenSeg[string[i] - ASCII_OFFSET]) ;
         }
       else {
         done = true;
