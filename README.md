@@ -103,10 +103,10 @@ See issue #3 on github called Swapped display :: "helloU2" becomes "loU2 hel".
 If you test library and you see this issue, in order to fix this when you declare the 
 Object, set the fourth parameter "swap_nibbles" to True, The default is false.
 
-| Model | Object constructor |
-| ------ | ------ | 
-| Normal operation |     TM1638plus_Model2 tm(STROBE_TM, CLOCK_TM , DIO_TM, false) | 
-| Swapped display Fix | TM1638plus_Model2 tm(STROBE_TM, CLOCK_TM , DIO_TM, true)  | 
+| PCB Model Label | Operation | Object constructor |
+| ------ | ------ | ------ | 
+| QYF-TM1638 | Normal operation |     TM1638plus_Model2 tm(STROBE_TM, CLOCK_TM , DIO_TM, false) | 
+| QYF-TM1638 -Ver 1.0 | Swapped display Fix | TM1638plus_Model2 tm(STROBE_TM, CLOCK_TM , DIO_TM, true)  | 
 
 NOTE B : ESP32 timing issue:
 See issue #2 on github. Some users have reported timing issues on ESP32, I have not tested nor do I possess at the  time of writing an ESP32. See issue comments for possible fix. The library is tested on UNO and a NANO.
