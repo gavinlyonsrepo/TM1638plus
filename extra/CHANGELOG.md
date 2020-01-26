@@ -7,13 +7,7 @@
 	* Much Improved memory footprint.
 	* Support for Decimal point, Segment select and Brightness control added.
 
-* Version 1.0.1 June 10 2019
-	* Minor update
-	* Compiler warnings of using non-constant strings in "displayText" methods
-	 fixed with by declaring consts. 
-	* Improvements to documentation and comments
-
-* Version 1.1.1 August 2019
+* Version 1.1.0 August 2019
 	* Added support for "model 2" Tm1638 module(the one with no LEDS and 16 push buttons )
 	* This model is marked QFY-TM1638.
 
@@ -22,3 +16,12 @@
 	with swapped displays on some modules(model 2) with different wiring, See Note A in readme
 	* Removed ASCII font to a separate file for efficiency purposes as it was duplicated in both header files.
 	* Memory footprint decrease for Model 2 library by using Progmem for the ASCII font file data as per Model 1. 
+
+* Version 1.3.0 Jan 2020
+	* Two new example files for Model2, demonstrating practical examples and scrolling text
+	* Example file for model 1 extended, demonstrating practical examples and scrolling text
+	* New function displayIntNum(model 1 only ) For displaying integer numbers
+	* New function  DisplayDecNumNibble,  allow two separate numbers to be sent to each nibble
+	* Model 2 ReadKey16() button function optimised.
+	* ASCII font reduced in size  { | } ~ characters removed. 
+ 

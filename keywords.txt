@@ -18,12 +18,14 @@ displayASCIIwDot	KEYWORD2
 displayASCII	KEYWORD2
 display7Seg	KEYWORD2
 displayHex	KEYWORD2
+displayIntNum	KEYWORD2
 ReadKey16	KEYWORD2
-DisplaySegments		KEYWORD2
+DisplaySegments	KEYWORD2
 DisplayHexNum	KEYWORD2
 DisplayDecNum	KEYWORD2
 DisplayStr	KEYWORD2
-DisplayValues	KEYWORD2
+ASCIItoSegment	KEYWORD2
+DisplayDecNumNibble	KEYWORD2
 
 # Constants
 

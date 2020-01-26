@@ -6,6 +6,12 @@
 * URL: https://github.com/gavinlyonsrepo/TM1638plus
 */
 
+// Note : Removed last 4 characters to reduce program size as of v 1.3.0 
+//  0x46, /* { */
+//  0x30, /* | */
+//  0x70, /* } */
+//  0x01, /* ~ */ 
+
 // map of ASCII values/table to 7-segment, offset to position 32. 
 const  PROGMEM unsigned char SevenSeg[] = {
   0x00, /* (space) */
@@ -99,8 +105,5 @@ const  PROGMEM unsigned char SevenSeg[] = {
   0x76, /* x */
   0x6E, /* y */
   0x5B, /* z */
-  0x46, /* { */
-  0x30, /* | */
-  0x70, /* } */
-  0x01, /* ~ */
 };
+

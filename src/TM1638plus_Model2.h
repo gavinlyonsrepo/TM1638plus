@@ -48,7 +48,7 @@ public:
     // Send data to the module
     void sendData(unsigned char data);
 
-    // Reset module 
+    // Reset / Clear module 
     void reset(void);
 
     //Sets the brightness level on a scale of brightness = 0 to 7.
@@ -58,9 +58,11 @@ public:
     void brightness(uint8_t brightness);
 
     //Read buttons returns a byte with value of buttons 1-16 (1 for S1 2 for S2 ... 16 for S16 )
+    // Returns zero if no button pressed.
     //User may have to deb-ounce buttons depending on application.
     //See [URL LINK](https://github.com/gavinlyonsrepo/Arduino_Clock_3) 
     //For de-bounce practical example(model 1)
+    //model 2 example here in ADC file TM1638plus_ADC_TEST_Model2.ino.
     unsigned char ReadKey16(void);
 
     // Send seven segment value module
@@ -73,8 +75,9 @@ public:
     
     // Display a Hexadecimal number ,takes a number and byte for decimal point display, leading zeros optional
     // converts to string. 
-    void DisplayHexNum(unsigned long number, byte dots, boolean leadingZeros = true);
-
+    //void DisplayHexNum(unsigned long number, byte dots, boolean leadingZeros = true);
+    void DisplayHexNum(uint16_t  numberUpper, uint16_t numberLower, byte dots, boolean leadingZeros = true);
+    
     // Display a decimal number , takes a number and byte for decimal point display,  leading zeros optional 
     // converts to string. 
     void DisplayDecNum(unsigned long number, byte dots, boolean leadingZeros = true);
@@ -93,7 +96,12 @@ public:
     // The bits are  mapping below abcdefg(dp) = 01234567 ! 
     // see for mapping of seven segment to digit https://en.wikipedia.org/wiki/Seven-segment_display
     void ASCIItoSegment(const byte values[]);
-
+	
+	//Divides the display into two nibbles and displays a Decimal number in each.
+	//takes in two numbers 0-9999 for each nibble ,  and byte for decimal point display,
+	//and leading zeros optional
+	void DisplayDecNumNibble(uint16_t numberUpper, uint16_t numberLower, byte dots, boolean leadingZeros = true);
+	
 private:
         uint8_t _STROBE_IO;
         uint8_t _DATA_IO;
