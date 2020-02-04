@@ -14,7 +14,24 @@ Table of contents
 ---------------------------
 
   * [Overview](#overview)
+  * [Installation](#installation)
   * [Features](#features)
+  * [Model One](#model-one)
+  * [Model Two](#model_two)
+  * [Pictures](#pictures)
+
+
+Installation
+------------------------------
+
+The library is included in the official Arduino library manger and the optimum way to install it 
+is using the library manager which can be opened by the *manage libraries* option in Arduino IDE. 
+Search "tm1638" in search bar of library manager to find it.
+
+See link below for instruction for this and for the other methods too.
+
+[Installing Additional Arduino Libraries guide](https://www.arduino.cc/en/Guide/Libraries)
+
 
 Features
 ----------------------
@@ -45,7 +62,10 @@ The same ASCII font file is used by both sets of files.
 | Two | TM1638plus_Model2.h  | TM1638plus_Model2.cpp | TM1638plus_TEST_Model2.ino TM1638plus_ADC_TEST_Model2.ino TM1638plus_SCROLL_TEST_Model2.ino |
 
 
-**Model 1: TM1638 Module 8 Push buttons 8 LEDS (LED & KEY)**
+Model One
+--------------------------------------
+
+TM1638 Module 8 Push buttons 8 LEDS (LED & KEY)
 
 ![ module ](https://github.com/gavinlyonsrepo/pic_16F18446_projects/blob/master/images/TM1638.jpg)
 
@@ -88,11 +108,10 @@ See [URL LINK](https://github.com/gavinlyonsrepo/Arduino_Clock_3)
 for a practical real world example of using this library,
 including a example of debouncing the key presses.
 
+Model Two
+-----------------------------------------
 
-**========================================================================**
-
-
-**Model 2: TM1638 Module 16 Push buttons (16 KEY) (QYF)**
+TM1638 Module 16 Push buttons (16 KEY) (QYF).
 
 ![ module ](https://github.com/gavinlyonsrepo/TM1638plus/blob/master/extra/images/tm16381.jpg)
 
@@ -110,7 +129,7 @@ giving a total of 8 digits. A TM1638 controller chip drives the unit.
 *NOTE A* : Swapped display Issue:
 For Some users using this library the nibbles in information display byte 
 where swapped around. This is because there are different modules on market with different wiring. 
-See issue #3 on github called Swapped display :: "helloU2" becomes "loU2 hel". 
+See issue #3 on github called Swapped display :: "12345678" becomes "56781234". 
 If you test library and you see this issue, in order to fix this when you declare the 
 Object, set the fourth parameter "swap_nibbles" to True, The default is false.
 
@@ -120,7 +139,7 @@ Object, set the fourth parameter "swap_nibbles" to True, The default is false.
 | QYF-TM1638 -Ver 1.0 | Swapped display Fix | TM1638plus_Model2 tm(STROBE_TM, CLOCK_TM , DIO_TM, true)  | 
 
 *NOTE B* : ESP32 timing issue:
-See issue #2 on github. Some users have reported timing issues on ESP32, I have not tested nor do I possess at the  time of writing an ESP32. See issue comments for possible fix. The library is tested on UNO and a NANO.
+See issue #2 on github. Some users have reported timing issues on ESP32, I have not tested nor do I possess at the time of writing an ESP32. See issue comments for possible fix. The library is tested on UNO and a NANO.
 
 **Model 2 Library Functions and example files**
 
