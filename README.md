@@ -3,8 +3,8 @@
 Overview
 --------------------------------------------
 * Name: TM1638plus
-* Description: An Arduino library to display data on a 8-digit TM1638 seven segment module
-This module supports the (8 KEY & 8 LED) variant which has 8 LED's and 8 Push buttons,
+* Description: An Arduino library to display data on a 8-digit TM1638 seven segment module.
+This library supports the (8 KEY & 8 LED) variant which has 8 LED's and 8 Push buttons,
 and the (16 KEY QFY) variant which has 16 pushbuttons.
 * Author: Gavin Lyons.
 * Development platform: Tested on Arduino UNO and NANO
@@ -17,9 +17,8 @@ Table of contents
   * [Installation](#installation)
   * [Features](#features)
   * [Model One](#model-one)
-  * [Model Two](#model_two)
-  * [Pictures](#pictures)
-
+  * [Model Two](#model-two)
+  * [Notes](#notes)
 
 Installation
 ------------------------------
@@ -124,22 +123,7 @@ and 16 Push buttons.
 Two 4 digit 3461BS-1 (34 inch, 4 digit ,common Anode,  decimal point, RED)are used in this module
 giving a total of 8 digits. A TM1638 controller chip drives the unit.
 
-**NOTES**
-
-*NOTE A* : Swapped display Issue:
-For Some users using this library the nibbles in information display byte 
-where swapped around. This is because there are different modules on market with different wiring. 
-See issue #3 on github called Swapped display :: "12345678" becomes "56781234". 
-If you test library and you see this issue, in order to fix this when you declare the 
-Object, set the fourth parameter "swap_nibbles" to True, The default is false.
-
-| PCB Model Label | Operation | Object constructor |
-| ------ | ------ | ------ | 
-| QYF-TM1638 | Normal operation |     TM1638plus_Model2 tm(STROBE_TM, CLOCK_TM , DIO_TM, false) | 
-| QYF-TM1638 -Ver 1.0 | Swapped display Fix | TM1638plus_Model2 tm(STROBE_TM, CLOCK_TM , DIO_TM, true)  | 
-
-*NOTE B* : ESP32 timing issue:
-See issue #2 on github. Some users have reported timing issues on ESP32, I have not tested nor do I possess at the time of writing an ESP32. See issue comments for possible fix. The library is tested on UNO and a NANO.
+If your display shows "56781234" for "12345678" see Notes section. Note A.
 
 **Model 2 Library Functions and example files**
 
@@ -165,3 +149,24 @@ The "DEFAULT_BRIGHTNESS" define in header file.
 11. Example file general contains a set of general function tests: TM1638plus_TEST_model2.ino 
 12. Example file ADC shows some practical data examples : TM1638plus_ADC_TEST_Model2.ino 
 13. Example file for one method of scrolling text: TM1638plus_SCROLL_TEST_Model2.ino  
+
+
+Notes
+--------------------------
+
+*NOTE A* : Swapped display Issue:
+For Some users using this library the nibbles in information display byte 
+where swapped around. This is because there are different modules on market with different wiring. 
+See issue #3 on github called Swapped display :: "12345678" becomes "56781234". 
+If you test library and you see this issue, in order to fix this when you declare the 
+Object, set the fourth parameter "swap_nibbles" to True, The default is false.
+
+| PCB Model Label | Operation | Object constructor |
+| ------ | ------ | ------ | 
+| QYF-TM1638 | Normal operation |     TM1638plus_Model2 tm(STROBE_TM, CLOCK_TM , DIO_TM, false) | 
+| QYF-TM1638 -Ver 1.0 | Swapped display Fix | TM1638plus_Model2 tm(STROBE_TM, CLOCK_TM , DIO_TM, true)  | 
+
+*NOTE B* : ESP32 timing issue:
+See issue #2 on github. Some users have reported timing issues on ESP32, 
+I have not tested nor do I possess at the time of writing an ESP32. See issue comments for possible fix. 
+The library is tested on UNO and a NANO.
