@@ -48,6 +48,7 @@ const long interval_button = 225;      // interval to read button
 
 void setup() {
   Serialinit();
+  tm.displayBegin();
 }
 
 //Function to setup serial called from setup FOR debug
@@ -56,7 +57,6 @@ void Serialinit()
   Serial.begin(9600);
   delay(100);
   Serial.println("--Comms UP--TM1638plus_ADC_TEST_Model2.ino--");
-  tm.reset();
 }
 
 

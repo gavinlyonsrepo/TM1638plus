@@ -40,6 +40,7 @@ String textScroll;
 
 void setup() {
   Serialinit();
+  tm.displayBegin();
 }
 
 
@@ -49,7 +50,6 @@ void Serialinit()
   Serial.begin(9600);
   delay(100);
   Serial.println("--Comms UP--TM1638plus_ADC_TEST_Model2.ino--");
-  tm.reset();
 }
 
 void loop() {

@@ -26,6 +26,7 @@ DisplayDecNum	KEYWORD2
 DisplayStr	KEYWORD2
 ASCIItoSegment	KEYWORD2
 DisplayDecNumNibble	KEYWORD2
+displayBegin	KEYWORD2
 
 # Constants
 

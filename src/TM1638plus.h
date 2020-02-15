@@ -40,6 +40,10 @@ public:
 	// Init the module
 	TM1638plus(uint8_t strobe, uint8_t clock, uint8_t data);
 	// Methods
+	
+	 // Begin method , sets pinmodes , Call in setup
+	void displayBegin(void);
+	
 	// Send a command to module
 	void sendCommand(uint8_t value);
 

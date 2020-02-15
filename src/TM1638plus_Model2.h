@@ -41,7 +41,10 @@ public:
     TM1638plus_Model2(uint8_t strobe, uint8_t clock, uint8_t data, bool swap_nibbles= false);
     
     // Methods
-
+    
+    // Begin method , sets pinmodes , Call in setup
+    void displayBegin(void);
+    
     // Send a command to module
     void sendCommand(uint8_t value);
 

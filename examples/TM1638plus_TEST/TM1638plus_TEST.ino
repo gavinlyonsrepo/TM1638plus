@@ -44,6 +44,9 @@ uint8_t  testcount = 1;
 void setup()
 {
   Serialinit();
+  tm.displayBegin();
+  delay(myTestDelay1);
+  
   //Test 0 reset
   Test0();
 }
@@ -207,13 +210,27 @@ void Test10() {
   }
 }
 
-//Test 11 buttons and LED test, press SX to turn on LEDX, where x is 1-8.
+//Test 11 buttons and LED test, press switch number S-X to turn on LED-X, where x is 1-8.
+//The HEx value of switch is also sent to Serial port.
 void Test11() {
   while (1) // Loop here forever
   {
     tm.displayText("buttons ");
-    uint8_t buttons = tm.readButtons(); // returns a byte with values of button s8s7s6s5s4s3s2s1
+    uint8_t buttons = tm.readButtons();
+      /* buttons contains a byte with values of button s8s7s6s5s4s3s2s1
+       HEX  :  Switch no : Binary
+       0x01 : S1 Pressed  0000 0001 
+       0x02 : S2 Pressed  0000 0010 
+       0x04 : S3 Pressed  0000 0100 
+       0x08 : S4 Pressed  0000 1000 
+       0x10 : S5 Pressed  0001 0000 
+       0x20 : S6 Pressed  0010 0000 
+       0x40 : S7 Pressed  0100 0000 
+       0x80 : S8 Pressed  1000 0000  
+      */
+    Serial.println(buttons, HEX);
     doLEDs(buttons);
+    delay(250);
   }
 }
 
@@ -231,5 +248,4 @@ void Serialinit()
   Serial.begin(9600);
   delay(100);
   Serial.println("--Comms UP--TM1638plus_TEST_Model1.ino--");
-  tm.reset();
 }

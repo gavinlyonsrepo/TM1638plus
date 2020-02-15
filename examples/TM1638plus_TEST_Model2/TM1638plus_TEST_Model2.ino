@@ -41,7 +41,7 @@
 #define  STROBE_TM 4
 #define  CLOCK_TM 6
 #define  DIO_TM 7
-bool swap_nibbles = true; //Optional , Default is false if left out, see note in readme at URL
+bool swap_nibbles = false; //Optional , Default is false if left out, see note in readme at URL
 
 #define  myTestDelay 5000
 
@@ -54,7 +54,9 @@ TM1638plus_Model2 tm(STROBE_TM, CLOCK_TM , DIO_TM, swap_nibbles);
 
 void setup() {
   Serialinit();
-
+  tm.displayBegin(); 
+  delay(myTestDelay);
+  
   // Test 0 reset test
   tm.reset();
  

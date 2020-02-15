@@ -7,9 +7,9 @@ Overview
 This library supports the (8 KEY & 8 LED) variant which has 8 LED's and 8 Push buttons,
 and the (16 KEY QFY) variant which has 16 pushbuttons.
 * Author: Gavin Lyons.
-* Development platform: Tested on Arduino UNO and NANO
-
-
+* Development platform: Tested on Arduino UNO,NANO and a Nodemcu ESP8266 ESP-12E module.
+* History: see CHANGELOG.md in extra folder
+ 
 Table of contents
 ---------------------------
 
@@ -19,6 +19,7 @@ Table of contents
   * [Model One](#model-one)
   * [Model Two](#model-two)
   * [Notes](#notes)
+  * [Memory](#memory)
 
 Installation
 ------------------------------
@@ -35,13 +36,12 @@ See link below for instruction for this and for the other methods too.
 Features
 ----------------------
 
-These TM1638 modules are commonly and widely available. 
-
 Connections to Arduino: 
 
 1. GPIO = STB = Strobe
 2. GPIO  = CLK  = Clock
 3. GPIO = DIO = Data input / output
+4. GND
 
 This library supports two variants of the TM1638, which for purposes of this documentation, 
 will be refered to as Model 1 and Model 2 henceforth. Keys = Push buttons.
@@ -55,10 +55,10 @@ There are two sets of files to support each model. I kept them separate as the m
 Model 1 address by digit, while Model 2 address by segment. So the code is quite different for both.
 The same ASCII font file is used by both sets of files.
 
-| Model | Header | Code file | Example file | 
+| Model | Header | Code file | Example files | 
 | ------ | ------ |  ------ | ------ |
-| One | TM1638plus.h       | TM1638plus.cpp | TM1638plus_TEST.ino |
-| Two | TM1638plus_Model2.h  | TM1638plus_Model2.cpp | TM1638plus_TEST_Model2.ino TM1638plus_ADC_TEST_Model2.ino TM1638plus_SCROLL_TEST_Model2.ino |
+| 1 | TM1638plus.h       | TM1638plus.cpp | TM1638plus_BASIC_TEST.ino TM1638plus_TEST.ino |
+| 2 | TM1638plus_Model2.h  | TM1638plus_Model2.cpp | TM1638plus_BASIC_TEST_Model2 TM1638plus_TEST_Model2.ino TM1638plus_ADC_TEST_Model2.ino TM1638plus_SCROLL_TEST_Model2.ino |
 
 
 Model One
@@ -101,7 +101,7 @@ debouncing left out to minimise library size. see url below for debounce example
 If user wishes to change the default brightness at start-up change.
 The DEFAULT_BRIGHTNESS define in header file. 
 11. Manually set segments to create custom patterns.
-12. Example file: TM1638plus_TEST.ino 
+
 
 See [URL LINK](https://github.com/gavinlyonsrepo/Arduino_Clock_3) 
 for a practical real world example of using this library,
@@ -123,7 +123,7 @@ and 16 Push buttons.
 Two 4 digit 3461BS-1 (34 inch, 4 digit ,common Anode,  decimal point, RED)are used in this module
 giving a total of 8 digits. A TM1638 controller chip drives the unit.
 
-If your display shows "56781234" for "12345678" see Notes section. Note A.
+NB :  If your display shows "56781234" for "12345678" see Notes section. Note A.
 
 **Model 2 Library Functions and example files**
 
@@ -144,17 +144,16 @@ See TM1638plus_ADC_TEST_Model2.ino for debounce button example.
 8. Adjust brightness of module. Support 8 degree brightness adjustment.
 If user wishes to change the default brightness at start-up change.
 The "DEFAULT_BRIGHTNESS" define in header file. 
-9. Print raw ASCII data.
+9. Print raw ASCII data without reference to font file.
 10. Print two Decimal number(0-9999) in each nibble.
 11. Example file general contains a set of general function tests: TM1638plus_TEST_model2.ino 
 12. Example file ADC shows some practical data examples : TM1638plus_ADC_TEST_Model2.ino 
 13. Example file for one method of scrolling text: TM1638plus_SCROLL_TEST_Model2.ino  
 
-
 Notes
 --------------------------
 
-*NOTE A* : Swapped display Issue:
+*NOTE A* : Swapped display Issue: Model 2 only
 For Some users using this library the nibbles in information display byte 
 where swapped around. This is because there are different modules on market with different wiring. 
 See issue #3 on github called Swapped display :: "12345678" becomes "56781234". 
@@ -166,7 +165,16 @@ Object, set the fourth parameter "swap_nibbles" to True, The default is false.
 | QYF-TM1638 | Normal operation |     TM1638plus_Model2 tm(STROBE_TM, CLOCK_TM , DIO_TM, false) | 
 | QYF-TM1638 -Ver 1.0 | Swapped display Fix | TM1638plus_Model2 tm(STROBE_TM, CLOCK_TM , DIO_TM, true)  | 
 
-*NOTE B* : ESP32 timing issue:
-See issue #2 on github. Some users have reported timing issues on ESP32, 
-I have not tested nor do I possess at the time of writing an ESP32. See issue comments for possible fix. 
-The library is tested on UNO and a NANO.
+
+Memory
+-------------------------------
+
+1. Model 1 memory usage, basic hello world sketch.
+
+Sketch uses 1488 bytes (4%) of program storage space. 
+Global variables use 22 bytes (1%) of dynamic memory.
+
+2. Model 2 memory usage, basic hello world sketch.
+
+Sketch uses 1536 bytes (5%) of program storage space. 
+Global variables use 23 bytes (1%) of dynamic memory.

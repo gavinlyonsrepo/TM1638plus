@@ -22,6 +22,15 @@ TM1638plus::TM1638plus(uint8_t strobe, uint8_t clock, uint8_t data) {
   reset();
 }
 
+void TM1638plus::displayBegin() {
+  pinMode(_STROBE_IO , OUTPUT);
+  pinMode(_DATA_IO, OUTPUT);
+  pinMode(_CLOCK_IO , OUTPUT);
+  sendCommand(ACTIVATE_TM);
+  brightness(DEFAULT_BRIGHTNESS);
+  reset();
+}
+
 void TM1638plus::sendCommand(uint8_t value)
 {
   digitalWrite(_STROBE_IO, LOW);
@@ -50,7 +59,7 @@ void TM1638plus::setLED(uint8_t position, uint8_t value)
   digitalWrite(_STROBE_IO, HIGH);
 }
 
-void TM1638plus::displayIntNum(unsigned long number, boolean leadingZeros = true)
+void TM1638plus::displayIntNum(unsigned long number, boolean leadingZeros)
 {
   char values[DISPLAY_SIZE + 1];
   snprintf(values, DISPLAY_SIZE + 1, leadingZeros ? "%08ld" : "%ld", number); 
@@ -72,7 +81,7 @@ void TM1638plus::displayText(const char *text) {
   char c, pos;
 
   pos = 0;
-  while (c = (*text++)) {
+  while ((c = (*text++)) ) {
     if (*text == '.') {
       displayASCIIwDot(pos++, c);
 
@@ -105,7 +114,7 @@ void TM1638plus::displayASCII(uint8_t position, uint8_t ascii) {
 void TM1638plus::displayHex(uint8_t position, uint8_t hex) 
 {
     uint8_t offset = 0;
-    if ((hex >= 0) && (hex <= 9))
+    if (hex <= 9)
     {
         display7Seg(position, pgm_read_byte(&SevenSeg[hex + HEX_OFFSET]));
         // 16 is offset in reduced ASCII table for 0 

@@ -25,3 +25,11 @@
 	* Model 2 ReadKey16() button function optimised.
 	* ASCII font reduced in size  { | } ~ characters removed. 
  
+* Version 1.4.0 Feb 2020
+	* "beginDisplay" method added. This will break backward compatibility, This had to be done as 
+	the pinmodes functions had to be removed from  the class constructor  and there was no way around this. 
+	The update for 1.4 to files for users is simple, simply add "beginDisplay" function call to  "setup" as
+	per example files.  
+	* Two new example files added.
+	* Tested on Nodemcu ESP-12E ESP2866 , it works.
+	

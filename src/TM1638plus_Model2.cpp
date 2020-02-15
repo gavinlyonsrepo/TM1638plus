@@ -15,6 +15,10 @@ TM1638plus_Model2::TM1638plus_Model2(uint8_t strobe, uint8_t clock, uint8_t data
   _DATA_IO = data;
   _CLOCK_IO = clock;
   _SWAP_NIBBLES = swap_nibbles;
+}
+
+void TM1638plus_Model2::displayBegin(void)
+{
   pinMode(_STROBE_IO, OUTPUT);
   pinMode(_DATA_IO, OUTPUT);
   pinMode(_CLOCK_IO, OUTPUT);
@@ -110,7 +114,7 @@ void TM1638plus_Model2::DisplayStr(const char* string, const word dots)
   for (uint8_t  i = 0; i < DISPLAY_SIZE; i++) 
   {
 	   if (!done && string[i] != '\0') {
-		 if (dots >> 7-i & 1){  //if dots bit is set for that position apply the mask to turn on dot(0x80).
+		 if (dots >> (7-i) & 1){  //if dots bit is set for that position apply the mask to turn on dot(0x80).
 			Result = pgm_read_byte(&SevenSeg[string[i] - ASCII_OFFSET]);
 			values[i] = (Result | DOT_MASK_DEC); //apply the Dot bitmask to value extracted from ASCII table
 			}
