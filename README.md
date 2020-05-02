@@ -3,13 +3,15 @@
 Overview
 --------------------------------------------
 * Name: TM1638plus
-* Description: An Arduino library to display data on a 8-digit TM1638 seven segment module.
+* Description: 
+An Arduino library to display data on a 8-digit TM1638 seven segment module.
 This library supports the (8 KEY & 8 LED) variant which has 8 LED's and 8 Push buttons,
 and the (16 KEY QFY) variant which has 16 pushbuttons.
-* Author: Gavin Lyons.
+* Main Author: Gavin Lyons.
 * Development platform: Tested on Arduino UNO,NANO and a Nodemcu ESP8266 ESP-12E module.
 * History: see CHANGELOG.md in extra folder
- 
+* Contributors: [gabormay](https://github.com/gabormay)  
+
 Table of contents
 ---------------------------
 
@@ -164,6 +166,20 @@ Object, set the fourth parameter "swap_nibbles" to True, The default is false.
 | ------ | ------ | ------ | 
 | QYF-TM1638 | Normal operation |     TM1638plus_Model2 tm(STROBE_TM, CLOCK_TM , DIO_TM, false) | 
 | QYF-TM1638 -Ver 1.0 | Swapped display Fix | TM1638plus_Model2 tm(STROBE_TM, CLOCK_TM , DIO_TM, true)  | 
+
+
+*NOTE B* :  high frequency micro-controllers.
+This library uses "bit banging" on the SPI Bus and may not work fully on 
+micro-controllers running at a very high frequency, without some adjustments to timing.
+See issue 1 & 2 in github issues section for ESP32 untested possible fix.
+The ESP32 and Teensy results have been sent to me, I don't have them at time of writing.
+
+| IC |  frequency | Working? |
+| ------ | ------ | ------ | 
+| ESP 32  |   240 MHz  | Issues with buttons function Model 1 |
+| ESP-12E ESP8266 | 80 and 160 MHZ  | The buttons functions works, once not polled continuously |
+| Teensy 4.0| 150Mhz | Working, model 1 | 
+| Teensy 4.0| 396Mhz | buttons not working , display issues , model 1  | 
 
 
 Memory

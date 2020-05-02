@@ -33,3 +33,8 @@
 	* Two new example files added.
 	* Tested on Nodemcu ESP-12E ESP2866 , it works.
 	
+* Version 1.5.0 May 2020
+	* Minor update to bring in pull request 7 to deal with github issues 6 and 7.
+	* Display overflow check and dealing with multiple dots. 
+	* Changes are for Model 1 only and "displayText" function only.
+	* Pull request by [gabormay](https://github.com/gabormay)

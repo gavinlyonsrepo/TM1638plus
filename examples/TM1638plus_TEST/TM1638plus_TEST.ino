@@ -15,8 +15,10 @@
   TEST 7 Integer Decimal number
   TEST 8 Text String + Float
   TEST 9 Text String + decimal number
-  TEST 10 Scrolling text
-  TEST 11 Buttons + LEDS
+  TEST 10 Multiple dots
+  TEST 11 Display Overflow
+  TEST 12 Scrolling text
+  TEST 13 Buttons + LEDS
 
   Author: Gavin Lyons.
   Created May 2019
@@ -64,8 +66,10 @@ void loop()
     case 7: Test7(); break; // Integer Decimal number
     case 8: Test8(); break; // Text String + Float hack
     case 9: Test9(); break; // Text String + decimal number
-    case 10: Test10(); break; // Scrolling text
-    case 11: Test11(); break; // Buttons + LEDS
+    case 10: Test10(); break; // Multiple Decimal points
+    case 11: Test11(); break; // Display Overflow
+    case 12: Test12(); break; // Scrolling text
+    case 13: Test13(); break; // Buttons + LEDS
   }
   testcount++;
 }
@@ -195,8 +199,26 @@ void Test9() {
   tm.reset();
 }
 
-//TEST 10 scrolling text, just one possible method using string object.
-void Test10() {
+void Test10()
+{
+  //TEST 10 Multiple dots test
+  tm.displayText("Hello...");
+  delay(myTestDelay);
+  tm.displayText("...---..."); //SOS in morse
+  delay(myTestDelay);
+}
+
+void Test11()
+{
+  //TEST11 user overflow
+  tm.displayText("1234567890abc"); //should display just 12345678
+  delay(myTestDelay);
+  tm.reset();
+}
+
+
+void Test12() {
+  //TEST 12 scrolling text, just one possible method using string object.
   String textScroll = "123456789AbCdEF" ;
   char charbuf[9];
   while (textScroll.length() > 0)
@@ -210,9 +232,9 @@ void Test10() {
   }
 }
 
-//Test 11 buttons and LED test, press switch number S-X to turn on LED-X, where x is 1-8.
-//The HEx value of switch is also sent to Serial port.
-void Test11() {
+void Test13() {
+  //Test 13 buttons and LED test, press switch number S-X to turn on LED-X, where x is 1-8.
+  //The HEx value of switch is also sent to Serial port.
   while (1) // Loop here forever
   {
     tm.displayText("buttons ");
