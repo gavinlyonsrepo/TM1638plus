@@ -81,8 +81,8 @@ void TM1638plus::displayText(const char *text) {
   char c, pos;
 
   pos = 0;
-  while ((c = (*text++)) ) {
-    if (*text == '.') {
+  while ((c = (*text++)) && pos < DISPLAY_SIZE ) {
+    if (*text == '.' && c != '.') {
       displayASCIIwDot(pos++, c);
 
       text++;
