@@ -14,12 +14,7 @@ TM1638plus::TM1638plus(uint8_t strobe, uint8_t clock, uint8_t data) {
   _STROBE_IO = strobe;
   _DATA_IO = data;
   _CLOCK_IO = clock;
-  pinMode(strobe, OUTPUT);
-  pinMode(clock, OUTPUT);
-  pinMode(data, OUTPUT);
-  sendCommand(ACTIVATE_TM);
-  brightness(DEFAULT_BRIGHTNESS);
-  reset();
+  displayBegin();
 }
 
 void TM1638plus::displayBegin() {
