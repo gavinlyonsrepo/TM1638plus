@@ -170,6 +170,7 @@ Object, set the fourth parameter "swap_nibbles" to True, The default is false.
 
 
 *NOTE B* :  High frequency micro-controllers.
+
 This library uses Software SPI or "bit banging" and may not work fully on 
 micro-controllers running at a very high frequency, without some adjustments to timing.
 See issue 1 & 2 in github issues section for ESP32 untested possible fix.
@@ -184,7 +185,8 @@ The ESP32 and Teensy results have been sent to me, I don't have these MCU's them
 | Teensy 4.0| 150Mhz | Working | no Data |
 | Teensy 4.0| 396Mhz | buttons not working , display issues | no Data |
 
-*NOTE B* :  MicroChip PIC XC8 forks.
+*NOTE C* :  MicroChip PIC XC8 forks.
+
 I have forked this library to the PIC for the XC8 compiler the forks can be found at [Link](https://github.com/gavinlyonsrepo/pic_16F18446_projects)
 
 Memory
