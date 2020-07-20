@@ -8,7 +8,7 @@ An Arduino library to display data on a 8-digit TM1638 seven segment module.
 This library supports the (8 KEY & 8 LED) variant which has 8 LED's and 8 Push buttons,
 and the (16 KEY QFY) variant which has 16 pushbuttons.
 * Main Author: Gavin Lyons.
-* Development platform: Tested on Arduino UNO,NANO and a Nodemcu ESP8266 ESP-12E module.
+* Development platform: See Note B in notes section below.
 * History: see CHANGELOG.md in extra folder
 * Contributors: [gabormay](https://github.com/gabormay)  
 
@@ -156,6 +156,7 @@ Notes
 --------------------------
 
 *NOTE A* : Swapped display Issue: Model 2 only
+
 For Some users using this library the nibbles in information display byte 
 where swapped around. This is because there are different modules on market with different wiring. 
 See issue #3 on github called Swapped display :: "12345678" becomes "56781234". 
@@ -164,23 +165,27 @@ Object, set the fourth parameter "swap_nibbles" to True, The default is false.
 
 | PCB Model Label | Operation | Object constructor |
 | ------ | ------ | ------ | 
-| QYF-TM1638 | Normal operation |     TM1638plus_Model2 tm(STROBE_TM, CLOCK_TM , DIO_TM, false) | 
+| QYF-TM1638 | default operation | TM1638plus_Model2 tm(STROBE_TM, CLOCK_TM , DIO_TM, false) | 
 | QYF-TM1638 -Ver 1.0 | Swapped display Fix | TM1638plus_Model2 tm(STROBE_TM, CLOCK_TM , DIO_TM, true)  | 
 
 
-*NOTE B* :  high frequency micro-controllers.
-This library uses "bit banging" on the SPI Bus and may not work fully on 
+*NOTE B* :  High frequency micro-controllers.
+This library uses Software SPI or "bit banging" and may not work fully on 
 micro-controllers running at a very high frequency, without some adjustments to timing.
 See issue 1 & 2 in github issues section for ESP32 untested possible fix.
-The ESP32 and Teensy results have been sent to me, I don't have them at time of writing.
+The ESP32 and Teensy results have been sent to me, I don't have these MCU's them at time of writing.
 
-| IC |  frequency | Working? |
-| ------ | ------ | ------ | 
-| ESP 32  |   240 MHz  | Issues with buttons function Model 1 |
-| ESP-12E ESP8266 | 80 and 160 MHZ  | The buttons functions works, once not polled continuously |
-| Teensy 4.0| 150Mhz | Working, model 1 | 
-| Teensy 4.0| 396Mhz | buttons not working , display issues , model 1  | 
+| IC |  frequency | Model 1 | Model 2 |
+| ------ | ------ | ------ | ------ | 
+| Arduino UNO  |  32 MHz  | Working | Working |
+| Arduino Nano  | 32 MHz  | Working| Working |
+| ESP 32  |   240 MHz  | Issues with buttons function | no Data |
+| ESP-12E ESP8266 | 80 and 160 MHZ  | Working | Working |
+| Teensy 4.0| 150Mhz | Working | no Data |
+| Teensy 4.0| 396Mhz | buttons not working , display issues | no Data |
 
+*NOTE B* :  MicroChip PIC XC8 forks.
+I have forked this library to the PIC for the XC8 compiler the forks can be found at [Link](https://github.com/gavinlyonsrepo/pic_16F18446_projects)
 
 Memory
 -------------------------------
