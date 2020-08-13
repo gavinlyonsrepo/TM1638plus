@@ -63,7 +63,7 @@ will be named Model 1 ,Model 2 and Model 3. Keys = Push buttons.
 | 2 | TM1638 KEYS, QYF  | 0 | 16 |
 | 3 | TM1638 V1.3 or LKM1638  | 8 bi color,  red and green  | 8 |
 
-There are two sets of files to support model 1 & 2 . I kept them separate as the models are wired quite different Model 1 address by digit, while Model 2 address by segment. So the code is quite different for both for many functions. Also helps with hardware  testing modularity and testing.
+There are two sets of files to support model 1 & 2 . I kept them separate as the models are wired quite different Model 1 address by digit, while Model 2 address by segment. So the code is quite different for both for many functions. Also helps with hardware  testing and modularity .
 The same ASCII font file is used by both sets of files.
 Model 3 uses same code base as Model 1, just different example file and different use of setLED functions.
 
@@ -196,7 +196,7 @@ SetLED: The difference is when you call the setLED function you pass the followi
 
 SetLEDS: When you pass call the setLEDs method you can pass a word pattern where upper byte is turns on LEDS green and lower byte is red leds. Model one ignores lower byte always set to 0x00. 
 
-1. Model 3 setLEDS(sord) = 0xGGRR 
+1. Model 3 setLEDs(word) = 0xGGRR 
 3. Model 1 setLEDs(word) = 0xRR00
 
 For more detailed information on functions see commented headers in header file(.h).
@@ -229,9 +229,9 @@ The  Teensy results have been sent to me, I don't have these MCU's them at time 
 also these results where pre v1.6 so buttons issue should be fixed. In theory changing the shiftout routine's the same way as shiftin changed in v1.6 should fix any display issues here. 
 
 | IC |  frequency | Status | 
-| ------ | ------ | ------ | ------ | 
+| ------ | ------ | ------ | 
 | Arduino UNO  |  32 MHz  | Working | 
-| Arduino Nano  | 32 MHz  | Working
+| Arduino Nano  | 32 MHz  | Working |
 | ESP8266 | 160Mhz | Working |
 | ESP 32  |   240 MHz  | Working | 
 | Teensy 4.0| 150Mhz | Working model 1,  no Data rest of models |
