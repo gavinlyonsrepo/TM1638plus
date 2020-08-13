@@ -1,7 +1,7 @@
 /*
   Project Name: TM1638
   File: TM1638plus_TEST.ino
-  Description: demo file library for  TM1638 module(LED & KEY).
+  Description: demo file library for  TM1638 module(8 bicolour green and red LEDs & 8 pushbuttons). Called Model 3 in this library.  This model is labelled LKM1638 or tm1638 v1.3
   Carries out series of tests demonstrating arduino library TM1638plus.
 
   TESTS
@@ -18,8 +18,8 @@
   TEST 10 Multiple dots
   TEST 11 Display Overflow
   TEST 12 Scrolling text
-  TEST 13 setLED and setLEDs method
-  TEST 14 Buttons + LEDS
+  TEST 13 Green + red LEDS, setLED and setLEDs functions.
+  TEST 14 Buttons to serial monitor
 
   Author: Gavin Lyons.
   Created May 2019
@@ -33,9 +33,13 @@
 #define  STROBE_TM 4
 #define  CLOCK_TM 6
 #define  DIO_TM 7
+
+#define TM_1638_RED_LED 0x02
+#define TM_1638_GREEN_LED 0x01
+#define TM_1638_OFF_LED 0x00
 bool high_freq = false; //default false,, If using a high freq CPU > ~100 MHZ set to true. 
 
-//Constructor object (GPIO STB , GPIO CLOCK , GPIO DIO, use high freq MCU)
+//Constructor object (GPIO STB , GPIO CLOCK , GPIO DIO, use high freq MCU default false)
 TM1638plus tm(STROBE_TM, CLOCK_TM , DIO_TM, high_freq);
 
 
@@ -50,7 +54,7 @@ void setup()
   Serialinit();
   tm.displayBegin();
   delay(myTestDelay1);
-  
+
   //Test 0 reset
   Test0();
 }
@@ -71,8 +75,8 @@ void loop()
     case 10: Test10(); break; // Multiple Decimal points
     case 11: Test11(); break; // Display Overflow
     case 12: Test12(); break; // Scrolling text
-    case 13: Test13(); break; // setLED and setLEDs
-    case 14: Test14(); break; // Buttons + LEDS
+    case 13: Test13(); break; // Bi colour LEDS, setLED and setLEDS function.
+    case 14: Test14(); break; // Buttons to serial monitor
   }
   testcount++;
 }
@@ -168,7 +172,7 @@ void Test7() {
   delay(myTestDelay);
   tm.reset();
   // TEST 7b tm.DisplayDecNumNIbble
-  tm.DisplayDecNumNibble(1234, 5678, false); // "12345678"
+  tm.DisplayDecNumNibble(1488, 5678, false); // "14885678"
   delay(myTestDelay);
   tm.DisplayDecNumNibble(123, 678, true); // "01230678"
   delay(myTestDelay);
@@ -226,7 +230,7 @@ void Test12() {
   char charbuf[9];
   while (textScroll.length() > 0)
   {
-    
+
     textScroll.toCharArray(charbuf, 9);// convert the string object to character array
     tm.displayText(charbuf);  // display the character buffer
     textScroll.remove(0, 1);  // decrement the string
@@ -235,23 +239,36 @@ void Test12() {
   }
 }
 
+
 void Test13()
 {
   //Test 13 LED display
   uint8_t LEDposition = 0;
 
-  // Test 13A Turn on redleds with setLED
+  // Test 13A Turn on green leds with setLED
   for (LEDposition = 0; LEDposition < 8; LEDposition++) {
-    tm.setLED(LEDposition, 1);
+    tm.setLED(LEDposition, TM_1638_GREEN_LED);
     delay(500);
-    tm.setLED(LEDposition, 0);
+    tm.setLED(LEDposition, TM_1638_OFF_LED);
   }
 
-  // TEST 13b test setLEDs function (0xLEDXX) (L0-L7,XX)
-  // For model 1 just use upper byte , lower byte is is used by model3 for bi-color leds leave at 0x00. 
-  tm.setLEDs(0xFF00); //all red
+  // Test 13b turn on red LEDs with setLED
+  for (LEDposition = 0; LEDposition < 8; LEDposition++) {
+    tm.setLED(LEDposition, TM_1638_RED_LED);
+    delay(500);
+    tm.setLED(LEDposition, TM_1638_OFF_LED);
+  }
+
+  // TEST 13c test setLEDs function (0xgreenred) (L0-L7, L0-L7)
+  tm.setLEDs(0xE007); //L0-L7 RRRXXGGG 
   delay(3000);
-  tm.setLEDs(0xF000); // L0-L7 XXXXLLLL
+  tm.setLEDs(0xF00F); // L0-L7 RRRRGGGG
+  delay(3000);
+  tm.setLEDs(0xFE01); // L0-L7 RGGGGGGG
+  delay(3000);
+  tm.setLEDs(0x00FF); //all red
+  delay(3000);
+  tm.setLEDs(0xFF00); //all green
   delay(3000);
   tm.setLEDs(0x0000); //all off
   delay(3000);
@@ -259,37 +276,32 @@ void Test13()
 }
 
 void Test14() {
-  //Test 14 buttons and LED test, press switch number S-X to turn on LED-X, where x is 1-8.
-  //The HEx value of switch is also sent to Serial port.
+  //Test 14 buttons a press switch number S-X where x is 1-8.
+  //The HEx value of switch is also sent to Serial port  and 7seg
   tm.displayText("buttons ");
+  delay(2000);
+  tm.displayText("        ");
   while (1) // Loop here forever
   {
     uint8_t buttons = tm.readButtons();
-      /* buttons contains a byte with values of button s8s7s6s5s4s3s2s1
-       HEX  :  Switch no : Binary
-       0x01 : S1 Pressed  0000 0001 
-       0x02 : S2 Pressed  0000 0010 
-       0x04 : S3 Pressed  0000 0100 
-       0x08 : S4 Pressed  0000 1000 
-       0x10 : S5 Pressed  0001 0000 
-       0x20 : S6 Pressed  0010 0000 
-       0x40 : S7 Pressed  0100 0000 
-       0x80 : S8 Pressed  1000 0000  
-      */
+    /* buttons contains a byte with values of button s8s7s6s5s4s3s2s1
+      HEX  :  Switch no : Binary
+      0x01 : S1 Pressed  0000 0001
+      0x02 : S2 Pressed  0000 0010
+      0x04 : S3 Pressed  0000 0100
+      0x08 : S4 Pressed  0000 1000
+      0x10 : S5 Pressed  0001 0000
+      0x20 : S6 Pressed  0010 0000
+      0x40 : S7 Pressed  0100 0000
+      0x80 : S8 Pressed  1000 0000
+    */
     Serial.println(buttons, HEX);
-    doLEDs(buttons);
-     tm.displayIntNum(buttons, true); 
-    delay(250);
+    tm.displayIntNum(buttons, true);
+    delay(500);
   }
 }
 
-// scans the individual bits of value sets a LED based on which button pressed
-void doLEDs(uint8_t value) {
-  for (uint8_t LEDposition = 0; LEDposition < 8; LEDposition++) {
-    tm.setLED(LEDposition, value & 1);
-    value = value >> 1;
-  }
-}
+
 
 //Function to setup serial called from setup FOR debug
 void Serialinit()

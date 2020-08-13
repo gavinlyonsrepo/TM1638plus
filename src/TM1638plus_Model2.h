@@ -34,11 +34,15 @@ class TM1638plus_Model2  {
 
 public:
     // Constructor Init the module
-    // strobe = GPIO connected to strobe line of module
-    // clock = GPIO connected to clock line of module
-    // data = GPIO connected to data line of module
-    // reverse_nibbles = boolean default false, if true swaps nibbles on display byte
-    TM1638plus_Model2(uint8_t strobe, uint8_t clock, uint8_t data, bool swap_nibbles= false);
+    // parameters 
+    // 1. strobe = GPIO connected to strobe line of module
+    // 2. clock = GPIO connected to clock line of module
+    // 3. data = GPIO connected to data line of module
+    // 4. swap_nibbles = boolean default false, if true swaps nibbles on display byte
+    // 5. high_freq Changes the value of parameter _HIGH_FREQ which is default false
+    // This is used when running high freq MCU CPU (~>100Mhz) because of issues with button function.
+    // Pass true when running high freq MCU CPU (~>100Mhz).
+    TM1638plus_Model2(uint8_t strobe, uint8_t clock, uint8_t data, bool swap_nibbles= false,bool high_freq = false);
     
     // Methods
     
@@ -99,17 +103,24 @@ public:
     // The bits are  mapping below abcdefg(dp) = 01234567 ! 
     // see for mapping of seven segment to digit https://en.wikipedia.org/wiki/Seven-segment_display
     void ASCIItoSegment(const byte values[]);
-	
-	//Divides the display into two nibbles and displays a Decimal number in each.
-	//takes in two numbers 0-9999 for each nibble ,  and byte for decimal point display,
-	//and leading zeros optional
-	void DisplayDecNumNibble(uint16_t numberUpper, uint16_t numberLower, byte dots, boolean leadingZeros = true);
-	
+    
+    //Divides the display into two nibbles and displays a Decimal number in each.
+    //takes in two numbers 0-9999 for each nibble ,  and byte for decimal point display,
+    //and leading zeros optional
+    void DisplayDecNumNibble(uint16_t numberUpper, uint16_t numberLower, byte dots, boolean leadingZeros = true);
+    
+    
 private:
         uint8_t _STROBE_IO;
         uint8_t _DATA_IO;
         uint8_t _CLOCK_IO;
-        bool _SWAP_NIBBLES;       
+        bool _SWAP_NIBBLES;     
+        
+        //  Used instead of arduino function "shiftin" when _HIGH_FREQ is set to true
+        uint8_t  HighFreqshiftin(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder) ;
+        
+        //This is used when running high freq CPU because of issues with button function.
+        bool _HIGH_FREQ = false;  
 };
  
 #endif

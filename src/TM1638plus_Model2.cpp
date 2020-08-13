@@ -10,11 +10,12 @@
 #include "TM1638plus_Model2.h"
 #include "TM1638plus_font.h"
 
-TM1638plus_Model2::TM1638plus_Model2(uint8_t strobe, uint8_t clock, uint8_t data,  bool swap_nibbles) {
+TM1638plus_Model2::TM1638plus_Model2(uint8_t strobe, uint8_t clock, uint8_t data,  bool swap_nibbles, bool high_freq) {
   _STROBE_IO = strobe;
   _DATA_IO = data;
   _CLOCK_IO = clock;
   _SWAP_NIBBLES = swap_nibbles;
+  _HIGH_FREQ = high_freq;
 }
 
 void TM1638plus_Model2::displayBegin(void)
@@ -45,7 +46,7 @@ void TM1638plus_Model2::reset() {
   sendData(SEG_ADR);   // set starting address to 0
   for (uint8_t position = 0; position < 16; position++)
   {
-	sendData(0x00); //clear all segments
+    sendData(0x00); //clear all segments
   }
    digitalWrite(_STROBE_IO, HIGH);
 }
@@ -54,10 +55,10 @@ void TM1638plus_Model2::DisplaySegments(byte segment, byte digit)
 {
    if (_SWAP_NIBBLES == true)
    {
-   	  uint8_t upper , lower = 0;
-   	  lower = (digit) & 0x0F;  // select lower nibble
-   	  upper =  (digit >> 4) & 0X0F; //select upper nibble
-   	  digit = lower << 4 | upper;
+      uint8_t upper , lower = 0;
+      lower = (digit) & 0x0F;  // select lower nibble
+      upper =  (digit >> 4) & 0X0F; //select upper nibble
+      digit = lower << 4 | upper;
    }
 
   segment = (segment<<1);
@@ -70,11 +71,11 @@ void TM1638plus_Model2::DisplaySegments(byte segment, byte digit)
 
 void TM1638plus_Model2::brightness(uint8_t brightness)
 {
-	uint8_t  value = 0;
-	value = BRIGHT_ADR + (BRIGHT_MASK & brightness);
-	digitalWrite(_STROBE_IO, LOW); 
-	shiftOut(_DATA_IO, _CLOCK_IO, LSBFIRST, value);
-	digitalWrite(_STROBE_IO, HIGH); 
+    uint8_t  value = 0;
+    value = BRIGHT_ADR + (BRIGHT_MASK & brightness);
+    digitalWrite(_STROBE_IO, LOW); 
+    shiftOut(_DATA_IO, _CLOCK_IO, LSBFIRST, value);
+    digitalWrite(_STROBE_IO, HIGH); 
 }
 
 void TM1638plus_Model2::DisplayHexNum(uint16_t  numberUpper, uint16_t numberLower, byte dots, boolean leadingZeros)
@@ -113,19 +114,19 @@ void TM1638plus_Model2::DisplayStr(const char* string, const word dots)
 
   for (uint8_t  i = 0; i < DISPLAY_SIZE; i++) 
   {
-	   if (!done && string[i] != '\0') {
-		 if (dots >> (7-i) & 1){  //if dots bit is set for that position apply the mask to turn on dot(0x80).
-			Result = pgm_read_byte(&SevenSeg[string[i] - ASCII_OFFSET]);
-			values[i] = (Result | DOT_MASK_DEC); //apply the Dot bitmask to value extracted from ASCII table
-			}
-		  else 
-			values[i] = pgm_read_byte(&SevenSeg[string[i] - ASCII_OFFSET]) ;
-		}
-	  else {
-		done = true;
-		values[i] = (((dots >> (7 - i)) & 1) << 7);
-		}
-	  
+       if (!done && string[i] != '\0') {
+         if (dots >> (7-i) & 1){  //if dots bit is set for that position apply the mask to turn on dot(0x80).
+            Result = pgm_read_byte(&SevenSeg[string[i] - ASCII_OFFSET]);
+            values[i] = (Result | DOT_MASK_DEC); //apply the Dot bitmask to value extracted from ASCII table
+            }
+          else 
+            values[i] = pgm_read_byte(&SevenSeg[string[i] - ASCII_OFFSET]) ;
+        }
+      else {
+        done = true;
+        values[i] = (((dots >> (7 - i)) & 1) << 7);
+        }
+      
   }
  ASCIItoSegment(values);
 }
@@ -135,7 +136,7 @@ void TM1638plus_Model2::ASCIItoSegment(const byte values[])
   for (uint8_t  segment = 0; segment < DISPLAY_SIZE; segment++) {
   uint8_t  SegmentValue = 0;
   for (uint8_t  j = 0; j < DISPLAY_SIZE; j++) {
-	SegmentValue |= ((values[j] >> segment) & 1) << (DISPLAY_SIZE - j - 1);
+    SegmentValue |= ((values[j] >> segment) & 1) << (DISPLAY_SIZE - j - 1);
   }
   DisplaySegments(segment , SegmentValue);
   }
@@ -149,11 +150,16 @@ unsigned char TM1638plus_Model2::ReadKey16()
   pinMode(_DATA_IO, INPUT);
   for (i = 0; i < 4; i++)
   {
-	 c[i] = shiftIn(_DATA_IO, _CLOCK_IO, LSBFIRST);
-	 if (c[i] == 0x04) key_value = 1 + (2*i); //00000100 4 0x04
-	 if (c[i] == 0x40) key_value = 2 + (2*i); //01000000 64 0x40
-	 if (c[i] == 0x02) key_value = 9 + (2*i); //00000010 2 0x02
-	 if (c[i] == 0x20) key_value = 10 + (2*i);  //00100000 32 0x20
+     
+      if  (_HIGH_FREQ == false)
+        c[i] = shiftIn(_DATA_IO, _CLOCK_IO, LSBFIRST);
+     else
+        c[i] = HighFreqshiftin(_DATA_IO, _CLOCK_IO, LSBFIRST);
+     
+     if (c[i] == 0x04) key_value = 1 + (2*i); //00000100 4 0x04
+     if (c[i] == 0x40) key_value = 2 + (2*i); //01000000 64 0x40
+     if (c[i] == 0x02) key_value = 9 + (2*i); //00000010 2 0x02
+     if (c[i] == 0x20) key_value = 10 + (2*i);  //00100000 32 0x20
   }
   pinMode(_DATA_IO, OUTPUT);
   digitalWrite(_STROBE_IO, HIGH); 
@@ -161,4 +167,23 @@ unsigned char TM1638plus_Model2::ReadKey16()
   // Data matrix for read key_value. 
   // c3 0110 0110  c2 0110 0110  c1 0110 0110  c0 0110 0110 :bytes read 
   //    8,16 7,15     6,14 5,13     4,12 3,11     2,10  1,9 :button value
+}
+
+uint8_t  TM1638plus_Model2::HighFreqshiftin(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder) 
+{
+    uint8_t value = 0;
+    uint8_t i = 0;
+
+    for(i = 0; i < 8; ++i) {
+        if(bitOrder == LSBFIRST)
+            value |= digitalRead(dataPin) << i;
+        else
+            value |= digitalRead(dataPin) << (7 - i);
+            
+        digitalWrite(clockPin, HIGH);
+        delayMicroseconds(1);
+        digitalWrite(clockPin, LOW);
+        delayMicroseconds(1);
+    }
+    return value;
 }

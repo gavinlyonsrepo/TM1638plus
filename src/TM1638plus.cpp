@@ -10,11 +10,11 @@
 #include "TM1638plus.h"
 #include "TM1638plus_font.h"
 
-TM1638plus::TM1638plus(uint8_t strobe, uint8_t clock, uint8_t data) {
+TM1638plus::TM1638plus(uint8_t strobe, uint8_t clock, uint8_t data, bool highfreq) {
   _STROBE_IO = strobe;
   _DATA_IO = data;
   _CLOCK_IO = clock;
-  displayBegin();
+   _HIGH_FREQ = highfreq; 
 }
 
 void TM1638plus::displayBegin() {
@@ -25,6 +25,7 @@ void TM1638plus::displayBegin() {
   brightness(DEFAULT_BRIGHTNESS);
   reset();
 }
+
 
 void TM1638plus::sendCommand(uint8_t value)
 {
@@ -52,6 +53,23 @@ void TM1638plus::setLED(uint8_t position, uint8_t value)
   shiftOut(_DATA_IO, _CLOCK_IO, LSBFIRST, LEDS_ADR + (position << 1));
   shiftOut(_DATA_IO, _CLOCK_IO, LSBFIRST, value);
   digitalWrite(_STROBE_IO, HIGH);
+}
+
+void TM1638plus::setLEDs(word ledvalues)
+{
+  for (uint8_t LEDposition = 0;  LEDposition < 8; LEDposition++) {
+    byte color = 0;
+
+    if ((ledvalues & (1 << LEDposition)) != 0) {
+      color |= TM1638_RED_LED; //scan lower byte, set Red if one
+    } 
+
+    if ((ledvalues & (1 << (LEDposition + 8))) != 0) {
+      color |= TM1638_GREEN_LED; //scan upper byte, set green if one
+    }
+
+    setLED(LEDposition, color);
+  }
 }
 
 void TM1638plus::displayIntNum(unsigned long number, boolean leadingZeros)
@@ -134,13 +152,20 @@ void TM1638plus::displayHex(uint8_t position, uint8_t hex)
 uint8_t TM1638plus::readButtons()
 {
   uint8_t buttons = 0;
+  uint8_t v =0;
+  
   digitalWrite(_STROBE_IO, LOW);
   shiftOut(_DATA_IO, _CLOCK_IO, LSBFIRST, BUTTONS_MODE);
   pinMode(_DATA_IO, INPUT);  
 
   for (uint8_t i = 0; i < 4; i++)
   {
-    uint8_t v = shiftIn(_DATA_IO, _CLOCK_IO, LSBFIRST) << i;
+    
+    if  (_HIGH_FREQ == false)
+        v = shiftIn(_DATA_IO, _CLOCK_IO, LSBFIRST) << i;
+    else
+        v = HighFreqshiftin(_DATA_IO, _CLOCK_IO, LSBFIRST) << i;
+ 
     buttons |= v;
   }
 
@@ -157,4 +182,24 @@ void TM1638plus::brightness(uint8_t brightness)
     digitalWrite(_STROBE_IO, LOW); 
     shiftOut(_DATA_IO, _CLOCK_IO, LSBFIRST, value);
      digitalWrite(_STROBE_IO, HIGH); 
+}
+
+
+uint8_t  TM1638plus::HighFreqshiftin(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder) 
+{
+    uint8_t value = 0;
+    uint8_t i = 0;
+
+    for(i = 0; i < 8; ++i) {
+        if(bitOrder == LSBFIRST)
+            value |= digitalRead(dataPin) << i;
+        else
+            value |= digitalRead(dataPin) << (7 - i);
+            
+        digitalWrite(clockPin, HIGH);
+        delayMicroseconds(1);
+        digitalWrite(clockPin, LOW);
+        delayMicroseconds(1);
+    }
+    return value;
 }

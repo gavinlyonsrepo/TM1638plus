@@ -15,9 +15,10 @@
 #define  STROBE_TM 4
 #define  CLOCK_TM 6
 #define  DIO_TM 7
-
-//Constructor object
-TM1638plus tm(STROBE_TM, CLOCK_TM , DIO_TM);
+bool high_freq = false; //default false, If using a high freq CPU > ~100 MHZ set to true. 
+ 
+//Constructor object (GPIO STB , GPIO CLOCK , GPIO DIO, use high freq MCU)
+TM1638plus tm(STROBE_TM, CLOCK_TM , DIO_TM, high_freq);
 
 void setup()
 {

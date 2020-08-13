@@ -6,13 +6,13 @@
 
   Tests
 
-  0 = Test 0 reset test
+  0 = Test 0 reset test  
   
-  1A = Test 1A decimal numbers
+1A = Test 1A decimal numbers
   1B = Test 1B  decimal numbers with the DisplayDecNumNibble function
-
+  
   2 = Test 2 Hexadecimal number
-
+ 
   3 Test 3 manually set segments abcdefg(dp) = 01234567
   3A = Display 1
   3B = Display 00000005
@@ -36,30 +36,53 @@
 
 #include <TM1638plus_Model2.h>
 
-// GPIO I/O pins on the Arduino connected to strobe, clock, data,
-// pick on any I/O pin you want.
-#define  STROBE_TM 4
-#define  CLOCK_TM 6
-#define  DIO_TM 7
-bool swap_nibbles = false; //Optional , Default is false if left out, see note in readme at URL
-
 #define  myTestDelay 5000
+uint8_t  testcount = 0;
 
-// Constructor object Init the module
-// strobe = GPIO connected to strobe line of module
-// clock = GPIO connected to clock line of module
-// data = GPIO connected to data line of module
-// swap_nibbles = boolean default false, if true swaps nibbles on display byte
-TM1638plus_Model2 tm(STROBE_TM, CLOCK_TM , DIO_TM, swap_nibbles);
+// GPIO I/O pins on the Arduino connected to strobe, clock, data, pick on any I/O pin you want.
+#define  STROBE_TM 4  // strobe = GPIO connected to strobe line of module
+#define  CLOCK_TM 6  // clock = GPIO connected to clock line of module
+#define  DIO_TM 7 // data = GPIO connected to data line of module
+bool swap_nibbles = false; //Default is false if left out, see note in readme at URL
+bool high_freq = false; //default false,, If using a high freq CPU > ~100 MHZ set to true. 
+
+// Constructor object
+TM1638plus_Model2 tm(STROBE_TM, CLOCK_TM , DIO_TM, swap_nibbles, high_freq);
 
 void setup() {
   Serialinit();
-  tm.displayBegin(); 
+  tm.displayBegin(); // Init the module
   delay(myTestDelay);
-  
+
   // Test 0 reset test
   tm.reset();
- 
+}
+
+void loop() {
+  testcount++;
+  
+    switch (testcount)
+  {
+    case 1: Test1(); break; // Test 1 decimal numbers
+    case 2: Test2(); break; // Test 2 Hexadecimal number
+    case 3: Test3(); break; // Test 3a 3b & 3C using DisplaySegments method
+    case 4: Test4(); break; // Test 4 strings
+    case 5: Test5(); break; //  Test 5 ASCIItoSegment method 
+    case 6: Test6(); break; //  Test 6  Brightness and reset
+    case 7: Test7(); break;  //  Test 7 Buttons
+  }
+}
+
+//Function to setup serial called from setup
+void Serialinit()
+{
+  Serial.begin(9600);
+  delay(100);
+  Serial.println("-------------Comms UP------------");
+}
+
+void Test1(void)
+{
   // Test 1 decimal numbers
   tm.DisplayDecNum(5, 1 << 6); // 00.000005
   delay(myTestDelay);
@@ -74,7 +97,10 @@ void setup() {
   // Test 1b  decimal numbers with the DisplayDecNumNibble function divides display into two nibbles.
   tm.DisplayDecNumNibble(1234 , 78, 1<<4 , true); // "1234.0078"
   delay(myTestDelay);
-  
+}
+
+void Test2(void)
+{
   // Test 2 Hexadecimal number
   tm.DisplayHexNum(0x0000, 0x456E, 0x00, true); // 0000456E
   delay(myTestDelay);
@@ -82,7 +108,10 @@ void setup() {
   delay(myTestDelay);
   tm.DisplayHexNum(0x0000, 0x00FF, 1 << 4); // 0000.00FF
   delay(myTestDelay);
+}
 
+void Test3(void)
+{
   // Test 3 manually set segments abcdefg(dp) = 01234567
   // display a one in position one "       1"
   tm.DisplaySegments(0, 0x00); //a
@@ -120,6 +149,10 @@ void setup() {
   }
   delay(myTestDelay);
 
+}
+
+void Test4(void)
+{
   // Test 4 strings
   tm.DisplayStr("helloYOU", 1); // "helloYOU."
   delay(myTestDelay);
@@ -131,7 +164,10 @@ void setup() {
   delay(myTestDelay);
   tm.DisplayStr("hello", 0);  // "hello   "
   delay(myTestDelay);
+}
 
+void Test5(void)
+{
   // Test 5 ASCII to segments takes an array of bytes and displays them
   // without ref to the ASCII font table direct data to digits to displays 3F 3F 3F 6D 3F 3F 3F 6D = 00050005
   // gfedcba = 3F for zero https://en.wikipedia.org/wiki/Seven-segment_display
@@ -141,6 +177,10 @@ void setup() {
   tm.ASCIItoSegment(values);
   
   delay(myTestDelay);
+}
+
+void Test6(void)
+{
   // Test 6  Brightness and reset
   for (uint8_t brightness = 0; brightness < 8; brightness++)
   {
@@ -149,21 +189,16 @@ void setup() {
     delay(1000);
   }
   tm.reset();
-
 }
 
-void loop() {
-  // Test 7 buttons, no debounce see notes at URL for exmaple to debounce.
-  // returns 0-16 , 0 for nothing pressed.
-  unsigned char buttons = tm.ReadKey16();
-  Serial.println(buttons);
-  delay(250);
-}
-
-//Function to setup serial called from setup
-void Serialinit()
+void Test7(void)
 {
-  Serial.begin(9600);
-  delay(100);
-  Serial.println("-------------Comms UP------------");
+  while(1)
+  {
+      // Test 7 , buttons, no debounce see notes at URL for example to debounce.
+      // returns 0-16 , 0 for nothing pressed.
+      unsigned char buttons = tm.ReadKey16();
+      Serial.println(buttons);
+      delay(250);
+    }
 }

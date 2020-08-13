@@ -5,12 +5,16 @@ Overview
 * Name: TM1638plus
 * Description: 
 An Arduino library to display data on a 8-digit TM1638 seven segment module.
-This library supports the (8 KEY & 8 LED) variant which has 8 LED's and 8 Push buttons,
-and the (16 KEY QFY) variant which has 16 pushbuttons.
+This library supports 3 different models, pictured above from left to right.
+
+1. The (8 KEY & 8 LED) variant which has 8 LED's and 8 Push buttons.
+2. The (LKM1638) variant which has 8 bi-colour LED's and 8 Push buttons.
+3. The (16 KEY) variant which has 16 pushbuttons.
+
 * Main Author: Gavin Lyons.
-* Development platform: See Note B in notes section below.
+* Development platform: See Issue B in issue section below.
 * History: see CHANGELOG.md in extra folder
-* Contributors: [gabormay](https://github.com/gabormay)  
+* Contributors: [gabormay](https://github.com/gabormay)  [centic9](https://github.com/centic9)
 
 Table of contents
 ---------------------------
@@ -20,9 +24,11 @@ Table of contents
   * [Features](#features)
   * [Model One](#model-one)
   * [Model Two](#model-two)
-  * [Notes](#notes)
+  * [Model Three](#model-three)
+  * [Issues](#issues)
   * [Memory](#memory)
-
+  * [See Also](#see-also)
+  
 Installation
 ------------------------------
 
@@ -38,30 +44,34 @@ See link below for instruction for this and for the other methods too.
 Features
 ----------------------
 
-Connections to Arduino: 
+Connections to MCU: 
 
 1. GPIO = STB = Strobe
 2. GPIO  = CLK  = Clock
 3. GPIO = DIO = Data input / output
 4. GND
+5. VCC 5V.
 
-This library supports two variants of the TM1638, which for purposes of this documentation, 
-will be refered to as Model 1 and Model 2 henceforth. Keys = Push buttons.
+This device is 5V if using 3.3V MCU, level shift.
+
+This library supports three variants of the TM1638, which for purposes of this documentation, 
+will be named Model 1 ,Model 2 and Model 3. Keys = Push buttons.
 
 | Model No | Module Name | LEDS | KEYS | 
 | ------ | ------ |  ------ | ------ |
-| One | TM1638 LED & KEY | 8 | 8 |
-| Two | TM1638 KEYS QYF  | 0 | 16 |
+| 1 | TM1638 LED & KEY | 8 red only | 8 |
+| 2 | TM1638 KEYS, QYF  | 0 | 16 |
+| 3 | TM1638 V1.3 or LKM1638  | 8 bi color,  red and green  | 8 |
 
-There are two sets of files to support each model. I kept them separate as the models are wired quite different
-Model 1 address by digit, while Model 2 address by segment. So the code is quite different for both.
+There are two sets of files to support model 1 & 2 . I kept them separate as the models are wired quite different Model 1 address by digit, while Model 2 address by segment. So the code is quite different for both for many functions. Also helps with hardware  testing modularity and testing.
 The same ASCII font file is used by both sets of files.
+Model 3 uses same code base as Model 1, just different example file and different use of setLED functions.
 
 | Model | Header | Code file | Example files | 
 | ------ | ------ |  ------ | ------ |
 | 1 | TM1638plus.h       | TM1638plus.cpp | TM1638plus_BASIC_TEST.ino TM1638plus_TEST.ino |
+| 3 |  Same as  model 1     |  Same as  model 1 | TM1638plus_TEST_Model3.ino |
 | 2 | TM1638plus_Model2.h  | TM1638plus_Model2.cpp | TM1638plus_BASIC_TEST_Model2 TM1638plus_TEST_Model2.ino TM1638plus_ADC_TEST_Model2.ino TM1638plus_SCROLL_TEST_Model2.ino |
-
 
 Model One
 --------------------------------------
@@ -75,7 +85,7 @@ TM1638 Module 8 Push buttons 8 LEDS (LED & KEY)
 This variant consist of an 8-digit seven segment display with decimal points,
 8 Leds and 8 Push buttons.
 
-Two 4 digit 3461AS-1 (34 inch, 4 digit ,common Cathode,  decimal point, RED) are used in this module
+Two 4 digit 3461AS-1 (.34 inch, 4 digit ,common Cathode,  decimal point, RED) are used in this module
 giving a total of 8 digits. A TM1638 controller chip drives the unit.
 The unit is marked (LED & KEY).
 
@@ -96,18 +106,17 @@ For more information see the commented headers in header file.
 6. Print a text string(dots are replaced and dot is turned on preceding digit), 
 "abc.def" becomes "abcdef" with c decimal point segment switched on.
 7. Read buttons status. User may have to debounce buttons depending on application.
-debouncing left out to minimise library size. see url below for debounce example.
-8. Switch the 8 LEDS on and off.
-9. Reset and init module functions.
-10. Adjust brightness of module. Support 8 degree brightness adjustment.
-If user wishes to change the default brightness at start-up change.
-The DEFAULT_BRIGHTNESS define in header file. 
-11. Manually set segments to create custom patterns.
-
-
+debouncing left out to minimise library size. 
 See [URL LINK](https://github.com/gavinlyonsrepo/Arduino_Clock_3) 
 for a practical real world example of using this library,
-including a example of debouncing the key presses.
+including a example of debouncing the key presses. It is also possible to read multiple key presses.
+8. Reset and init module functions.
+9. Adjust brightness of module. Support 8 degree brightness adjustment.
+If user wishes to change the default brightness at start-up change.
+The DEFAULT_BRIGHTNESS define in header file. 
+10. Manually set segments to create custom patterns.
+11. Switch the 8 LEDS on and off both a set one LED and set all method.
+
 
 Model Two
 -----------------------------------------
@@ -122,10 +131,10 @@ TM1638 Module 16 Push buttons (16 KEY) (QYF).
 They consist of an 8-digit seven segment display with decimal points,
 and 16 Push buttons.
 
-Two 4 digit 3461BS-1 (34 inch, 4 digit ,common Anode,  decimal point, RED)are used in this module
+Two 4 digit 3461BS-1 (.34 inch, 4 digit ,common Anode,  decimal point, RED)are used in this module
 giving a total of 8 digits. A TM1638 controller chip drives the unit.
 
-NB :  If your display shows "56781234" for "12345678" see Notes section. Note A.
+NB :  If your display shows "56781234" for "12345678" see Issues section. issue A.
 
 **Model 2 Library Functions and example files**
 
@@ -141,7 +150,7 @@ For more detailed information on functions see commented headers in header file(
 4. Print two 4 digit decimal to each nibble with or without leading zeros.
 5. Print a text string, dot function supported. 
 6. Read buttons status. User may want/have to debounce buttons depending on application.
-See TM1638plus_ADC_TEST_Model2.ino for debounce button example.
+See TM1638plus_ADC_TEST_Model2.ino for debounce button example. 
 7. Reset and init module functions.
 8. Adjust brightness of module. Support 8 degree brightness adjustment.
 If user wishes to change the default brightness at start-up change.
@@ -152,52 +161,101 @@ The "DEFAULT_BRIGHTNESS" define in header file.
 12. Example file ADC shows some practical data examples : TM1638plus_ADC_TEST_Model2.ino 
 13. Example file for one method of scrolling text: TM1638plus_SCROLL_TEST_Model2.ino  
 
-Notes
+Model Three
+-----------------------------------------
+
+The PCB on these modules can be  marked, 
+This library was tested on version 1.3 below. 
+
+1. LKM1638 v1.1
+2. LKM1638 v1.2
+3. TM1638 V1.3 
+
+
+This module is a variant of Model 1. The differences are the LEDs are bigger and bi-color
+both red and green, The seven segment display is larger and extra connectors are added for Daisy chaining. 
+
+Two 4 digit KYX-5461AS-7.3 (.54 inch, 4 digit ,common cathode,  decimal point, RED)are used in this module
+giving a total of 8 digits. 
+
+![ module ](https://github.com/gavinlyonsrepo/TM1638plus/blob/master/extra/images/tm16384.jpg)
+
+**Model 3 Library Functions and example files**
+
+The code is largely the same as model 1 and there is one unique model 3 example file. 
+setLED and setLEDs functions behaviour is only difference in code base between 1 and 3.
+
+SetLED: The difference is when you call the setLED function you pass the following to get LEDs to change colour.
+
+| Model | setLED Value | result | 
+|    ----   |    ----   |    ----   |
+|    1 & 3  |    0   |    LED off   |
+|    3   |    1   |    Led green  |
+|    3   |    2   |    LED red   |
+|    1   |    1   |    LED on   |
+
+SetLEDS: When you pass call the setLEDs method you can pass a word pattern where upper byte is turns on LEDS green and lower byte is red leds. Model one ignores lower byte always set to 0x00. 
+
+1. Model 3 setLEDS(sord) = 0xGGRR 
+3. Model 1 setLEDs(word) = 0xRR00
+
+For more detailed information on functions see commented headers in header file(.h).
+
+Issues
 --------------------------
 
-*NOTE A* : Swapped display Issue: Model 2 only
+*Issue A* : Swapped display Issue: Model 2 only
 
 For Some users using this library the nibbles in information display byte 
-where swapped around. This is because there are different modules on market with different wiring. 
-See issue #3 on github called Swapped display :: "12345678" becomes "56781234". 
+where swapped around. This is because there are different versions of modules on market with different wiring.  See issue #3 on github called Swapped display :: "12345678" becomes "56781234". 
 If you test library and you see this issue, in order to fix this when you declare the 
 Object, set the fourth parameter "swap_nibbles" to True, The default is false.
 
-| PCB Model Label | Operation | Object constructor |
+| PCB Model noted Label | Operation | Object constructor 4th parameter |
 | ------ | ------ | ------ | 
-| QYF-TM1638 | default operation | TM1638plus_Model2 tm(STROBE_TM, CLOCK_TM , DIO_TM, false) | 
-| QYF-TM1638 -Ver 1.0 | Swapped display Fix | TM1638plus_Model2 tm(STROBE_TM, CLOCK_TM , DIO_TM, true)  | 
+| QYF-TM1638 | default operation | false | 
+| QYF-TM1638 -Ver 1.0 | Swapped display Fix |  true  | 
 
 
-*NOTE B* :  High frequency micro-controllers.
+*ISSUE B* :  High frequency micro-controllers.
 
-This library uses Software SPI or "bit banging" and may not work fully on 
+This library uses a software SPI-like protocol and may not work fully on 
 micro-controllers running at a very high frequency, without some adjustments to timing.
-See issue 1 & 2 in github issues section for ESP32 untested possible fix.
-The ESP32 and Teensy results have been sent to me, I don't have these MCU's them at time of writing.
+Its a SPI-like interface with a single bidirectional data wire DIO.
+The TM1638 is basically a slow SPI device (< 500kHz) in DIO mode. The clock uses the equivalent of SPI mode 3 (normally high, clocks data on the rising edge). The problem is that the native Arduino shiftIn()/shiftOut() wire functions are simply too fast for this device (technically the clock signalling for the TM1638 is inverted but as it triggers on a rising edge still it is tolerant of that).
+To make this work with fast devices, the shift clocking is slowed with a small delay (on the order of a microsecond).  As of version 1.6 a new parameter (_HIGH_FREQ) has been introduced to constructor it is false by default. Set to true for high frequency MCU ~> 100Mhz.  This will fix the issue of HF MCU not reading buttons correctly(ESP-Xs).  The High_Freq parameter causes a custom shift-in function to be used.
 
-| IC |  frequency | Model 1 | Model 2 |
+The  Teensy results have been sent to me, I don't have these MCU's them at time of writing.
+also these results where pre v1.6 so buttons issue should be fixed. In theory changing the shiftout routine's the same way as shiftin changed in v1.6 should fix any display issues here. 
+
+| IC |  frequency | Status | 
 | ------ | ------ | ------ | ------ | 
-| Arduino UNO  |  32 MHz  | Working | Working |
-| Arduino Nano  | 32 MHz  | Working| Working |
-| ESP 32  |   240 MHz  | Issues with buttons function | no Data |
-| ESP-12E ESP8266 | 80 and 160 MHZ  | Working | Working |
-| Teensy 4.0| 150Mhz | Working | no Data |
-| Teensy 4.0| 396Mhz | buttons not working , display issues | no Data |
+| Arduino UNO  |  32 MHz  | Working | 
+| Arduino Nano  | 32 MHz  | Working
+| ESP8266 | 160Mhz | Working |
+| ESP 32  |   240 MHz  | Working | 
+| Teensy 4.0| 150Mhz | Working model 1,  no Data rest of models |
+| Teensy 4.0| 396Mhz | buttons not working , display issues on model1 ,  no Data rest of models |
 
-*NOTE C* :  MicroChip PIC XC8 forks.
-
-I have forked this library to the PIC for the XC8 compiler the forks can be found at [Link](https://github.com/gavinlyonsrepo/pic_16F18446_projects)
 
 Memory
 -------------------------------
 
-1. Model 1 memory usage, basic hello world sketch.
+Version 1.4.
+
+1. Model 1 memory usage NANO, basic hello world sketch.
 
 Sketch uses 1488 bytes (4%) of program storage space. 
 Global variables use 22 bytes (1%) of dynamic memory.
 
-2. Model 2 memory usage, basic hello world sketch.
+2. Model 2 memory usage NANO, basic hello world sketch.
 
 Sketch uses 1536 bytes (5%) of program storage space. 
 Global variables use 23 bytes (1%) of dynamic memory.
+
+
+See Also
+-------------------
+MicroChip PIC XC8 forks.
+
+I have forked this library to the PIC for the XC8 compiler the forks can be found at [Link](https://github.com/gavinlyonsrepo/pic_16F18446_projects)

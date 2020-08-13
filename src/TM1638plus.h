@@ -33,16 +33,27 @@
 #define HEX_OFFSET   16 // Ascii table offset to reach number position
 #define DOT_MASK_DEC    128 // 0x80 Mask to  switch on decimal point in seven seg.   
 
+#define TM1638_RED_LED 0x02
+#define TM1638_GREEN_LED 0x01
+#define TM1638_OFF_LED 0x00
+
 class TM1638plus  {
 
 public:
 	// Constructor 
-	// Init the module
-	TM1638plus(uint8_t strobe, uint8_t clock, uint8_t data);
+	//Parameters 
+	// 1. strobe = GPIO STB pin
+	// 2. clock = GPIO CLK  pin
+	// 3. data = GPIO DIO pin
+	// 4. higfreq Changes the value of parameter _HIGH_FREQ which is default false
+	// This is used when running high freq MCU CPU (~>100Mhz) because of issues with button function.
+	// Pass true when running high freq MCU CPU (~>100Mhz).
+	TM1638plus(uint8_t strobe, uint8_t clock, uint8_t data, bool highfreq = false);
+	
 	// Methods
 	
 	 // Begin method , sets pinmodes , Call in setup
-	void displayBegin(void);
+	void displayBegin();
 	
 	// Send a command to module
 	void sendCommand(uint8_t value);
@@ -93,11 +104,25 @@ public:
 	//and leading zeros optional
 	void DisplayDecNumNibble(uint16_t numberUpper, uint16_t numberLower, boolean leadingZeros = true);
 	
+	  // Set the LEDs. passed a word. 
+	  // For model 3 the word contains:
+	  //MSB byte for the green LEDs, LSB for the red LEDs (0xgreenred) 
+	  //ie. 0xE007   1110 0000 0000 0111   results in L8-L0  GGGXXRRR where L8 is RHS
+	  // for model 1 the word contains :
+	  // MSB for LED LSB n/a (0xledsXX)
+	  //i.e 0xF100  1111 0001 L8-L0 RRRRXXXR L8 is RHS
+    void setLEDs(word led);
+    
 private:
 		uint8_t _STROBE_IO;
 		uint8_t _DATA_IO;
 		uint8_t _CLOCK_IO;
-
+		
+		//  Used instead of arduino function "shiftin" when _HIGH_FREQ is set to true
+		uint8_t  HighFreqshiftin(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder) ;
+		
+		//This is used when running high freq CPU because of issues with button function.
+		bool _HIGH_FREQ = false;
 };
 
 #endif

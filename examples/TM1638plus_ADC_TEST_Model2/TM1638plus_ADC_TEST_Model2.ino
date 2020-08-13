@@ -13,6 +13,7 @@
   Also demo buttons as button presses is used to switch between 
   testmodes 
   
+  Board tested: UNO NANO
   Author: Gavin Lyons.
   Created Jan 2020
   URL: https://github.com/gavinlyonsrepo/TM1638plus
@@ -26,13 +27,16 @@
 #define  CLOCK_TM 6
 #define  DIO_TM 7
 bool swap_nibbles = false; //Optional , Default is false if left out, see note in readme at URL
+bool high_freq = false; //default false, If using a high freq CPU > ~100 MHZ set to true. 
 
 // Constructor object Init the module
 // strobe = GPIO connected to strobe line of module
 // clock = GPIO connected to clock line of module
 // data = GPIO connected to data line of module
 // swap_nibbles = boolean default false, if true swaps nibbles on display byte
-TM1638plus_Model2 tm(STROBE_TM, CLOCK_TM , DIO_TM, swap_nibbles);
+// high_freq = boolean default false,, If using a high freq CPU > ~100 MHZ set to true. 
+
+TM1638plus_Model2 tm(STROBE_TM, CLOCK_TM , DIO_TM, swap_nibbles, high_freq);
 
 //Control Vars &  defines.
 #define POT0 A0
@@ -49,6 +53,7 @@ const long interval_button = 225;      // interval to read button
 void setup() {
   Serialinit();
   tm.displayBegin();
+
 }
 
 //Function to setup serial called from setup FOR debug
