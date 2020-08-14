@@ -7,12 +7,13 @@ Overview
 An Arduino library to display data on a 8-digit TM1638 seven segment module.
 This library supports 3 different models, pictured above from left to right.
 
-1. The (8 KEY & 8 LED) variant which has 8 LED's and 8 Push buttons.
-2. The (LKM1638) variant which has 8 bi-colour LED's and 8 Push buttons.
-3. The (16 KEY) variant which has 16 pushbuttons.
+1. Model 1, The (8 KEY & 8 LED) variant which has 8 LED's and 8 Push buttons.
+2. Model 2, The (QYF 16 KEY) variant which has 16 pushbuttons.
+3. Model 3, The (LKM1638) variant which has 8 bi-colour LED's and 8 Push buttons.
+
 
 * Main Author: Gavin Lyons.
-* Development platform: See Issue B in issue section below.
+* Development platforms: See Issue B in issue section below for list.
 * History: see CHANGELOG.md in extra folder
 * Contributors: [gabormay](https://github.com/gabormay)  [centic9](https://github.com/centic9)
 
@@ -55,16 +56,16 @@ Connections to MCU:
 This device is 5V if using 3.3V MCU, level shift.
 
 This library supports three variants of the TM1638, which for purposes of this documentation, 
-will be named Model 1 ,Model 2 and Model 3. Keys = Push buttons.
+will be named Model 1 ,Model 2 and Model 3.  
 
-| Model No | Module Name | LEDS | KEYS | 
+| Model No | Module Name | LEDS | Push buttons | 
 | ------ | ------ |  ------ | ------ |
 | 1 | TM1638 LED & KEY | 8 red only | 8 |
 | 2 | TM1638 KEYS, QYF  | 0 | 16 |
 | 3 | TM1638 V1.3 or LKM1638  | 8 bi color,  red and green  | 8 |
 
-There are two sets of files to support model 1 & 2 . I kept them separate as the models are wired quite different Model 1 address by digit, while Model 2 address by segment. So the code is quite different for both for many functions. Also helps with hardware  testing and modularity .
-The same ASCII font file is used by both sets of files.
+There are two sets of files to support model 1 & 2 . I kept them separate as the models are wired quite different Model 1 address by digit, while Model 2 address by segment. So the code is quite different  for many functions. Also helps with hardware  testing and modularity.
+The same ASCII font file is used all models.
 Model 3 uses same code base as Model 1, just different example file and different use of setLED functions.
 
 | Model | Header | Code file | Example files | 
@@ -112,10 +113,10 @@ for a practical real world example of using this library,
 including a example of debouncing the key presses. It is also possible to read multiple key presses.
 8. Reset and init module functions.
 9. Adjust brightness of module. Support 8 degree brightness adjustment.
-If user wishes to change the default brightness at start-up change.
+If user wishes to change the default brightness at start-up change,
 The DEFAULT_BRIGHTNESS define in header file. 
 10. Manually set segments to create custom patterns.
-11. Switch the 8 LEDS on and off both a set one LED and set all method.
+11. Switch the 8 LEDS on and off, both a set one LED and set all LEDS methods available.
 
 
 Model Two
@@ -147,30 +148,29 @@ For more detailed information on functions see commented headers in header file(
 1. Print a Hexadecimal number with or without leading zeros
 2. Print a decimal number with or without leading zeros
 3. Manually set segments to create custom patterns.
-4. Print two 4 digit decimal to each nibble with or without leading zeros.
+4. Print two 4 digit decimal number(0-9999) to each nibble with or without leading zeros.
 5. Print a text string, dot function supported. 
-6. Read buttons status. User may want/have to debounce buttons depending on application.
+6. Read buttons status. User may want to debounce buttons depending on application.
 See TM1638plus_ADC_TEST_Model2.ino for debounce button example. 
 7. Reset and init module functions.
 8. Adjust brightness of module. Support 8 degree brightness adjustment.
-If user wishes to change the default brightness at start-up change.
+If user wishes to change the default brightness at start-up change,
 The "DEFAULT_BRIGHTNESS" define in header file. 
 9. Print raw ASCII data without reference to font file.
-10. Print two Decimal number(0-9999) in each nibble.
-11. Example file general contains a set of general function tests: TM1638plus_TEST_model2.ino 
-12. Example file ADC shows some practical data examples : TM1638plus_ADC_TEST_Model2.ino 
-13. Example file for one method of scrolling text: TM1638plus_SCROLL_TEST_Model2.ino  
+10. Example file general contains a set of general function tests: TM1638plus_TEST_model2.ino 
+11. Example file ADC shows some practical data examples : TM1638plus_ADC_TEST_Model2.ino 
+12. Example file for one method of scrolling text: TM1638plus_SCROLL_TEST_Model2.ino  
 
 Model Three
 -----------------------------------------
 
-The PCB on these modules can be  marked, 
-This library was tested on version 1.3 below. 
+There are different PCB's  of these modules on market, 
+This library was tested on version 1.3 below. I think this software will work for all of them 
+and the differences in PCB are related to connectors, layout and component placement. 
 
 1. LKM1638 v1.1
 2. LKM1638 v1.2
 3. TM1638 V1.3 
-
 
 This module is a variant of Model 1. The differences are the LEDs are bigger and bi-color
 both red and green, The seven segment display is larger and extra connectors are added for Daisy chaining. 
@@ -183,7 +183,7 @@ giving a total of 8 digits.
 **Model 3 Library Functions and example files**
 
 The code is largely the same as model 1 and there is one unique model 3 example file. 
-setLED and setLEDs functions behaviour is only difference in code base between 1 and 3.
+setLED and setLEDs functions behaviour is the only difference in code base between 1 and 3.
 
 SetLED: The difference is when you call the setLED function you pass the following to get LEDs to change colour.
 
@@ -194,9 +194,9 @@ SetLED: The difference is when you call the setLED function you pass the followi
 |    3   |    2   |    LED red   |
 |    1   |    1   |    LED on   |
 
-SetLEDS: When you pass call the setLEDs method you can pass a word pattern where upper byte is turns on LEDS green and lower byte is red leds. Model one ignores lower byte always set to 0x00. 
+SetLEDs: When you pass call the setLEDs function you can pass a word pattern where upper byte is turns LEDs green and lower byte turns LEDs red. Model one ignores lower byte always set to 0x00. 
 
-1. Model 3 setLEDs(word) = 0xGGRR 
+1. Model 3 setLEDs(word) = 0xGGRR
 3. Model 1 setLEDs(word) = 0xRR00
 
 For more detailed information on functions see commented headers in header file(.h).
@@ -223,17 +223,17 @@ This library uses a software SPI-like protocol and may not work fully on
 micro-controllers running at a very high frequency, without some adjustments to timing.
 Its a SPI-like interface with a single bidirectional data wire DIO.
 The TM1638 is basically a slow SPI device (< 500kHz) in DIO mode. The clock uses the equivalent of SPI mode 3 (normally high, clocks data on the rising edge). The problem is that the native Arduino shiftIn()/shiftOut() wire functions are simply too fast for this device (technically the clock signalling for the TM1638 is inverted but as it triggers on a rising edge still it is tolerant of that).
-To make this work with fast devices, the shift clocking is slowed with a small delay (on the order of a microsecond).  As of version 1.6 a new parameter (_HIGH_FREQ) has been introduced to constructor it is false by default. Set to true for high frequency MCU ~> 100Mhz.  This will fix the issue of HF MCU not reading buttons correctly(ESP-Xs).  The High_Freq parameter causes a custom shift-in function to be used.
+To make this work with fast devices, the shift clocking is slowed with a small delay (on the order of a microsecond).  As of version 1.6 a new parameter *(_HIGH_FREQ)* has been introduced to constructor it is false by default. Set to true for high frequency MCU ~> 100Mhz.  This will fix the issue of HF MCU not reading buttons correctly(ESP-Xs).  The High_Freq parameter causes a custom shift-in function to be used.
 
 The  Teensy results have been sent to me, I don't have these MCU's them at time of writing.
-also these results where pre v1.6 so buttons issue should be fixed. In theory changing the shiftout routine's the same way as shiftin changed in v1.6 should fix any display issues here. 
+also this Teensy data results where pre v1.6 so buttons issue should be fixed. In theory changing the shiftout routine's the same way as shiftin changed in v1.6 should fix any display issues here. 
 
 | IC |  frequency | Status | 
 | ------ | ------ | ------ | 
 | Arduino UNO  |  32 MHz  | Working | 
 | Arduino Nano  | 32 MHz  | Working |
 | ESP8266 | 160Mhz | Working |
-| ESP 32  |   240 MHz  | Working | 
+| ESP 32  |   240 MHz  | Working, with high_freq set to  true | 
 | Teensy 4.0| 150Mhz | Working model 1,  no Data rest of models |
 | Teensy 4.0| 396Mhz | buttons not working , display issues on model1 ,  no Data rest of models |
 
