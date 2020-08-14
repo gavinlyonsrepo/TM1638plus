@@ -230,8 +230,8 @@ also this Teensy data results where pre v1.6 so buttons issue should be fixed. I
 
 | IC |  frequency | Status | 
 | ------ | ------ | ------ | 
-| Arduino UNO  |  32 MHz  | Working | 
-| Arduino Nano  | 32 MHz  | Working |
+| Arduino UNO  |  16 MHz  | Working | 
+| Arduino Nano  | 16 MHz  | Working |
 | ESP8266 | 160Mhz | Working |
 | ESP 32  |   240 MHz  | Working, with high_freq set to  true | 
 | Teensy 4.0| 150Mhz | Working model 1,  no Data rest of models |
