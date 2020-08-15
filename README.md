@@ -13,7 +13,7 @@ This library supports 3 different models, pictured above from left to right.
 
 
 * Main Author: Gavin Lyons.
-* Development platforms: See Issue B in issue section below for list.
+* Development platforms: See Issue B in issue section below for list of MCU's tested.
 * History: see CHANGELOG.md in extra folder
 * Contributors: [gabormay](https://github.com/gabormay)  [centic9](https://github.com/centic9)
 
@@ -232,6 +232,7 @@ also this Teensy data results where pre v1.6 so buttons issue should be fixed. I
 | ------ | ------ | ------ | 
 | Arduino UNO  |  16 MHz  | Working | 
 | Arduino Nano  | 16 MHz  | Working |
+| STM32 "blue pill" STM32F103C8T6 | 72Mhz | Working |
 | ESP8266 | 160Mhz | Working |
 | ESP 32  |   240 MHz  | Working, with high_freq set to  true | 
 | Teensy 4.0| 150Mhz | Working model 1,  no Data rest of models |
