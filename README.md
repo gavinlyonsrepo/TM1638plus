@@ -13,7 +13,18 @@ This library supports 3 different models, pictured above from left to right.
 
 
 * Main Author: Gavin Lyons.
-* Development platforms: See Issue B in issue section below for list of MCU's tested.
+
+* Tested on Development platforms: 
+
+1. Arduino UNO & NANO .
+2. ATtiny85 .
+3. ESP32.
+4. STM32 STM32F103C8T6 "the blue pill".
+5. ESP8266.
+6. Teensy 4.0.
+
+See Issue B in issue section below for potential problems with high  frequency  MCU's.
+
 * History: see CHANGELOG.md in extra folder
 * Contributors: [gabormay](https://github.com/gabormay)  [centic9](https://github.com/centic9)
 
@@ -230,6 +241,7 @@ also this Teensy data results where pre v1.6 so buttons issue should be fixed. I
 
 | IC |  frequency | Status | 
 | ------ | ------ | ------ | 
+| ATtiny85 | 1Mhz internal | Working | 
 | Arduino UNO  |  16 MHz  | Working | 
 | Arduino Nano  | 16 MHz  | Working |
 | STM32 "blue pill" STM32F103C8T6 | 72Mhz | Working |
