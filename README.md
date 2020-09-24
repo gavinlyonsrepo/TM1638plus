@@ -85,6 +85,9 @@ Model 3 uses same code base as Model 1, just different example file and differen
 | 3 |  Same as  model 1     |  Same as  model 1 | TM1638plus_TEST_Model3.ino |
 | 2 | TM1638plus_Model2.h  | TM1638plus_Model2.cpp | TM1638plus_BASIC_TEST_Model2 TM1638plus_TEST_Model2.ino TM1638plus_ADC_TEST_Model2.ino TM1638plus_SCROLL_TEST_Model2.ino |
 
+It is possible to drive multiple modules and share the DIO and CLK lines see issue number 10
+at github for example code.
+
 Model One
 --------------------------------------
 

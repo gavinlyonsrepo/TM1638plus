@@ -1,9 +1,17 @@
 /*
-TM1638 with MQTT on an ESP8266 (Wemos)
-sending buttons to topic
-receiving message to display
-I used model 2 with 16 buttons for this example.
+  Project Name: TM1638plus
+  File: TM1638plus_MQTT_TEST_Model2.ino
+  Author: wunder baum 
+  Description: Example file contributed by [wunderbaum](https://github.com/wunderbaum) on github 
+  TM1638 with MQTT on an ESP8266 (Wemos)
+  sending buttons to topic
+  receiving message to display 
+  model 2 with 16 buttons used for this example.
+
+  Created: Sep 2020
+  URL: https://github.com/gavinlyonsrepo/TM1638plus
 */
+
 
 // https://github.com/gavinlyonsrepo/TM1638plus
 #include <TM1638plus_Model2.h>
