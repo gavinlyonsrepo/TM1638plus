@@ -1,15 +1,15 @@
 /*
 * Project Name: TM1638plus 
 * File: TM1638plus.h
-* Description: TM1638plus.h header file arduino library for TM1638 module(LED & KEY).
+* Description: TM1638plus.h header file arduino library for TM1638 module(LED & KEY). Model 1 & Model 3
 * Author: Gavin Lyons.
 * Created May 2019
 * URL: https://github.com/gavinlyonsrepo/TM1638plus
 */
 
 
-#ifndef TM1638plus_h
-#define TM1638plus_h
+#ifndef TM1638PLUS_H
+#define TM1638PLUS_H
 
 #if (ARDUINO >=100)
   #include "Arduino.h"
@@ -17,25 +17,7 @@
   #include "WProgram.h"
 #endif
 
-
-#define ACTIVATE_TM 0x8F // Start up
-#define BUTTONS_MODE 0x42 // Buttons mode
-#define WRITE_LOC 0x44 // Write to a location
-#define WRITE_INC 0x40 // Incremental write
-#define SEG_ADR 0XC0  // leftmost segment Address C0 C2 C4 C6 C8 CA CC CE
-#define LEDS_ADR 0xC1  // Leftmost LED address C1 C3 C5 C7 C9 CB CD CF
-#define BRIGHT_ADR 0x88 // Brightness address
-#define BRIGHT_MASK 0x07 // Brightness mask 
-#define DEFAULT_BRIGHTNESS 0x02 //can be 0x00 to 0x07 
-#define DISPLAY_SIZE 8 //size of display
-
-#define ASCII_OFFSET 32 // Ascii table offset to jump over first missing 32 chars
-#define HEX_OFFSET   16 // Ascii table offset to reach number position
-#define DOT_MASK_DEC    128 // 0x80 Mask to  switch on decimal point in seven seg.   
-
-#define TM1638_RED_LED 0x02
-#define TM1638_GREEN_LED 0x01
-#define TM1638_OFF_LED 0x00
+#include "TM1638plus_common.h"
 
 class TM1638plus  {
 
@@ -52,15 +34,10 @@ public:
 	
 	// Methods
 	
-	 // Begin method , sets pinmodes , Call in setup
-	void displayBegin();
+	void displayBegin();	 // Begin method , sets pinmodes , Call in setup
 	
-	// Send a command to module
-	void sendCommand(uint8_t value);
-
-	// Reset module 
-	void reset(void);
-
+	void reset(void);  // Reset / Clear module 
+	
 	//Sets the brightness level on a scale of brightness = 0 to 7.
 	//0 is not turned off, it's just the lowest brightness.
 	//If user wishes to change the default brightness at start-up change.
@@ -73,9 +50,6 @@ public:
 	//See [URL LINK](https://github.com/gavinlyonsrepo/Arduino_Clock_3) 
 	// for de-bonce example.
 	uint8_t readButtons(void);
-
-	// Set an LED, pass it LED position 0-7 and value 0 or 1
-	void setLED(uint8_t position, uint8_t value);
 
 	// Send Text to Seven segments, passed char array pointer
 	// dots are removed from string and dot on preceding digit switched on
@@ -104,25 +78,27 @@ public:
 	//and leading zeros optional
 	void DisplayDecNumNibble(uint16_t numberUpper, uint16_t numberLower, boolean leadingZeros = true);
 	
-	  // Set the LEDs. passed a word. 
-	  // For model 3 the word contains:
-	  //MSB byte for the green LEDs, LSB for the red LEDs (0xgreenred) 
-	  //ie. 0xE007   1110 0000 0000 0111   results in L8-L0  GGGXXRRR where L8 is RHS
-	  // for model 1 the word contains :
-	  // MSB for LED LSB n/a (0xledsXX)
-	  //i.e 0xF100  1111 0001 L8-L0 RRRRXXXR L8 is RHS
-    void setLEDs(word led);
+	  // Set the LEDs. passed one  16bit integer.
+	  // MODEL 3:
+	  //MSB byte for the green LEDs, LS byte for the red LEDs (0xgreenred) 
+	  //ie. 0xE007   1110 0000 0000 0111   results in L8-L0  GGGX XRRR, NOTE L8 is RHS on display
+	  // MODEL 1:
+	  // MSB byte 1 for  red LED , LSB byte n/a set to 0x00 (0xleds, 0xXX)
+	  //i.e 0xF100  1111 0000 L8-L0 RRRRXXX0 NOTE  L8 is RHS on display
+    void setLEDs(uint16_t greenred);
     
+    // Set an LED, pass it LED position 0-7 and value 0 or 1 , L1-L8
+	void setLED(uint8_t position, uint8_t value);
+	
 private:
 		uint8_t _STROBE_IO;
 		uint8_t _DATA_IO;
 		uint8_t _CLOCK_IO;
-		
-		//  Used instead of arduino function "shiftin" when _HIGH_FREQ is set to true
-		uint8_t  HighFreqshiftin(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder) ;
-		
-		//This is used when running high freq CPU because of issues with button function.
+		 void sendCommand(uint8_t value);
+        void sendData(uint8_t  data);
+		//This is used when running high freq CPU 
 		bool _HIGH_FREQ = false;
+		TM1638plus_common  TM_common;
 };
 
 #endif

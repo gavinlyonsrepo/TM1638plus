@@ -8,14 +8,13 @@ TM1638plus_Model2	KEYWORD1
 
 # Methods / functions
 displayBegin	KEYWORD2
-sendCommand	KEYWORD2
 reset	KEYWORD2
 brightness	KEYWORD2
 DisplayDecNumNibble	KEYWORD2
 
 readButtons	KEYWORD2
 setLED	KEYWORD2
-setLEDs	KEYWORD2
+setLEDs KEYWORD2
 displayText	KEYWORD2
 displayASCIIwDot	KEYWORD2
 displayASCII	KEYWORD2
@@ -29,7 +28,7 @@ DisplayDecNum	KEYWORD2
 DisplayStr	KEYWORD2
 ASCIItoSegment	KEYWORD2
 ReadKey16	KEYWORD2
-sendData	KEYWORD2
+ReadKey16Two	KEYWORD2
 
 # Constants
 

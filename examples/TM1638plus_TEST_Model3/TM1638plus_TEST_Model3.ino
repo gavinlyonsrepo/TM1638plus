@@ -1,7 +1,8 @@
 /*
   Project Name: TM1638
   File: TM1638plus_TEST.ino
-  Description: demo file library for  TM1638 module(8 bicolour green and red LEDs & 8 pushbuttons). Called Model 3 in this library.  This model is labelled LKM1638 or tm1638 v1.3
+  Description: demo file library for  TM1638 module(8 bicolour green and red LEDs & 8 pushbuttons). 
+  Called Model 3 in this library.  This model is labelled LKM1638 or tm1638 v1.3
   Carries out series of tests demonstrating arduino library TM1638plus.
 
   TESTS
@@ -34,9 +35,6 @@
 #define  CLOCK_TM 6
 #define  DIO_TM 7
 
-#define TM_1638_RED_LED 0x02
-#define TM_1638_GREEN_LED 0x01
-#define TM_1638_OFF_LED 0x00
 bool high_freq = false; //default false,, If using a high freq CPU > ~100 MHZ set to true. 
 
 //Constructor object (GPIO STB , GPIO CLOCK , GPIO DIO, use high freq MCU default false)
@@ -103,12 +101,12 @@ void Test1() {
 }
 
 void Test2() {
-  //Test 2 ASCII display 2.348
+  //Test 2 ASCII display 2.342
 
   tm.displayASCIIwDot(0, '2');
   tm.displayASCII(1, '3');
   tm.displayASCII(2, '4');
-  tm.displayASCII(3, '8');
+  tm.displayASCII(3, '2');
   delay(myTestDelay);
   tm.reset();
 }
@@ -152,37 +150,37 @@ void Test5() {
 
 void Test6() {
   // Test6  TEXT + ASCII combo
-  // ADC=.2.548
+  // ADC=.2.541
   char text1[] = "ADC=.";
   tm.displayText(text1);
   tm.displayASCIIwDot(4, '2');
   tm.displayASCII(5, '5');
   tm.displayASCII(6, '4');
-  tm.displayASCII(7, '8');
+  tm.displayASCII(7, '1');
   delay(myTestDelay);
   tm.reset();
 }
 
 void Test7() {
   // TEST 7a Integer
-  tm.displayIntNum(45, false); // "45      "
+  tm.displayIntNum(72, false); // "72      "
   delay(myTestDelay);
   // TEST 7b Integer
-  tm.displayIntNum(12345, true); // "00012345"
+  tm.displayIntNum(92345, true); // "00092345"
   delay(myTestDelay);
   tm.reset();
   // TEST 7b tm.DisplayDecNumNIbble
   tm.DisplayDecNumNibble(1488, 5678, false); // "14885678"
   delay(myTestDelay);
-  tm.DisplayDecNumNibble(123, 678, true); // "01230678"
+  tm.DisplayDecNumNibble(123, 998, true); // "01230998"
   delay(myTestDelay);
 }
 
 void Test8() {
   // TEST 8  TEXT STRING + integer SSSSIIII
   char workStr[11];
-  uint16_t  data = 234;
-  sprintf(workStr, "ADC=.%04d", data); // "ADC=.0234"
+  uint16_t  data = 294;
+  sprintf(workStr, "ADC=.%04d", data); // "ADC=.0294"
   tm.displayText(workStr);
   delay(myTestDelay);
 }
@@ -225,18 +223,29 @@ void Test11()
 
 
 void Test12() {
-  //TEST 12 scrolling text, just one possible method using string object.
-  String textScroll = "123456789AbCdEF" ;
-  char charbuf[9];
-  while (textScroll.length() > 0)
-  {
+  //TEST 12 scrolling text, just one possible method 
+    char textScroll[17] = " Hello world 123";
+  unsigned long previousMillis_display = 0;  // will store last time display was updated
+  const long interval_display = 1000;            //   interval at which to update display (milliseconds)
 
-    textScroll.toCharArray(charbuf, 9);// convert the string object to character array
-    tm.displayText(charbuf);  // display the character buffer
-    textScroll.remove(0, 1);  // decrement the string
-    delay(500);
-    tm.displayText("        "); // Clear display after each increment
+  while(1)
+  {
+  tm.displayText(textScroll);
+  unsigned long currentMillis = millis();
+  if (currentMillis - previousMillis_display >= interval_display)
+  {
+    previousMillis_display = currentMillis;
+    if (strlen(textScroll) > 0)
+    {
+      memmove(textScroll, textScroll+1, strlen(textScroll));
+      tm.displayText("        "); //Clear display or last character will drag across screen
+    }else
+    {
+      return;
+    }
+   }
   }
+
 }
 
 
@@ -247,28 +256,37 @@ void Test13()
 
   // Test 13A Turn on green leds with setLED
   for (LEDposition = 0; LEDposition < 8; LEDposition++) {
-    tm.setLED(LEDposition, TM_1638_GREEN_LED);
+    tm.setLED(LEDposition, TM_GREEN_LED);
     delay(500);
-    tm.setLED(LEDposition, TM_1638_OFF_LED);
+    tm.setLED(LEDposition, TM_OFF_LED);
   }
 
   // Test 13b turn on red LEDs with setLED
   for (LEDposition = 0; LEDposition < 8; LEDposition++) {
-    tm.setLED(LEDposition, TM_1638_RED_LED);
+    tm.setLED(LEDposition, TM_RED_LED);
     delay(500);
-    tm.setLED(LEDposition, TM_1638_OFF_LED);
+    tm.setLED(LEDposition, TM_OFF_LED);
   }
 
-  // TEST 13c test setLEDs function (0xgreenred) (L0-L7, L0-L7)
-  tm.setLEDs(0xE007); //L0-L7 RRRXXGGG 
+  // TEST 13c 
+  // test setLEDs function (0xgreenred) (0xGGRR) (LED8-LED1, LED8-LED1)
+  // Upper byte switch LED green colour ON, lower byte = switch LED red colour ON
+  // NB Note on the unit, LED8 is onthe right hand side so result is mirrored.
+  // Example:
+  // E0 = green on 07 = red on 
+  // E0  = 1110 0000 , 07 = 0000 0111 = 11100111 = GGGXXRRR = LED8-LED1
+  // Shows on display as  LED1-LED8 turns on RRRXXGGG as LED 8 is on right hand side.
+   
+  tm.setLEDs(0xE007); //L1-L8 turns on RRRXXGGG on display
   delay(3000);
-  tm.setLEDs(0xF00F); // L0-L7 RRRRGGGG
+  
+  tm.setLEDs(0xF00F); // L1-L8 turns on RRRRGGGG on display
   delay(3000);
-  tm.setLEDs(0xFE01); // L0-L7 RGGGGGGG
+  tm.setLEDs(0xFE01); // L1-L8 turns on RGGGGGGG on display
   delay(3000);
-  tm.setLEDs(0x00FF); //all red
+  tm.setLEDs(0x00FF); //all red   RRRRRRR
   delay(3000);
-  tm.setLEDs(0xFF00); //all green
+  tm.setLEDs(0xFF00); //all green GGGGGGG
   delay(3000);
   tm.setLEDs(0x0000); //all off
   delay(3000);

@@ -1,6 +1,6 @@
 /*
   Project Name: TM1638
-  File: TM1638plus_ADC_TEST_Model2.ino
+  File: TM1638plus_ADC_Model2.ino
   Description: demo file library for model 2 TM1638 module(16 KEY 16 pushbuttons).
   
   Carries out tests demonstrating arduino library TM1638plus displaying ADC data.

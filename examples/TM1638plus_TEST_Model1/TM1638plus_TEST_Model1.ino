@@ -1,10 +1,10 @@
 /*
   Project Name: TM1638
-  File: TM1638plus_TEST.ino
-  Description: demo file library for  TM1638 module(LED & KEY).
+  File: TM1638plus_TEST_Model1.ino
+  Description: demo file library for  TM1638 module(LED & KEY). Model 1
   Carries out series of tests demonstrating arduino library TM1638plus.
 
-  TESTS
+  TESTS:
   TEST 0 Reset
   TEST 1 Brightness
   TEST 2 ASCII display
@@ -30,9 +30,9 @@
 
 // GPIO I/O pins on the Arduino connected to strobe, clock, data,
 //pick on any I/O you want.
-#define  STROBE_TM 4
-#define  CLOCK_TM 6
-#define  DIO_TM 7
+#define  STROBE_TM 4 // strobe = GPIO connected to strobe line of module
+#define  CLOCK_TM 6  // clock = GPIO connected to clock line of module
+#define  DIO_TM 7 // data = GPIO connected to data line of module
 bool high_freq = false; //default false,, If using a high freq CPU > ~100 MHZ set to true. 
 
 //Constructor object (GPIO STB , GPIO CLOCK , GPIO DIO, use high freq MCU)
@@ -42,7 +42,7 @@ TM1638plus tm(STROBE_TM, CLOCK_TM , DIO_TM, high_freq);
 // Some vars and defines for the tests.
 #define myTestDelay  5000
 #define myTestDelay1 1000
-uint8_t  testcount = 1;
+uint8_t  testcount = 0;
 
 
 void setup()
@@ -61,7 +61,7 @@ void loop()
   {
     case 1: Test1(); break; // Brightness
     case 2: Test2(); break; // ASCII display
-    case 3: Test3(); break; // TEST 3 Set a single segment
+    case 3: Test3(); break; // Set a single segment
     case 4: Test4(); break; // Hex digits
     case 5: Test5(); break; // Text String with Decimal point
     case 6: Test6(); break; // TEXT + ASCII combo
@@ -99,12 +99,12 @@ void Test1() {
 }
 
 void Test2() {
-  //Test 2 ASCII display 2.348
+  //Test 2 ASCII , display 2.341
 
   tm.displayASCIIwDot(0, '2');
   tm.displayASCII(1, '3');
   tm.displayASCII(2, '4');
-  tm.displayASCII(3, '8');
+  tm.displayASCII(3, '1');
   delay(myTestDelay);
   tm.reset();
 }
@@ -112,7 +112,7 @@ void Test2() {
 void Test3() {
   //TEST 3 single segment (pos, (dp)gfedcba)
   //In this case  segment g (middle dash) of digit position 7
-  tm.display7Seg(7, 0b01000000);
+  tm.display7Seg(7, 0b01000000); // Displays "       -"
   delay(myTestDelay);
 }
 
@@ -125,8 +125,8 @@ void Test4() {
   tm.displayHex(4, 5);
   tm.displayHex(5, 6);
   tm.displayHex(6, 7);
-  tm.displayHex(7, 8);
-  delay(myTestDelay);
+  tm.displayHex(7, 8);  
+  delay(myTestDelay); // display 12345678
 
   tm.displayHex(0, 8);
   tm.displayHex(1, 9);
@@ -136,7 +136,7 @@ void Test4() {
   tm.displayHex(5, 13);
   tm.displayHex(6, 14);
   tm.displayHex(7, 15);
-  delay(myTestDelay);
+  delay(myTestDelay); // display 89ABCDEF
 }
 
 void Test5() {
@@ -148,11 +148,11 @@ void Test5() {
 
 void Test6() {
   // Test6  TEXT + ASCII combo
-  // ADC=.2.548
+  // ADC=.2.948
   char text1[] = "ADC=.";
   tm.displayText(text1);
   tm.displayASCIIwDot(4, '2');
-  tm.displayASCII(5, '5');
+  tm.displayASCII(5, '9');
   tm.displayASCII(6, '4');
   tm.displayASCII(7, '8');
   delay(myTestDelay);
@@ -164,13 +164,13 @@ void Test7() {
   tm.displayIntNum(45, false); // "45      "
   delay(myTestDelay);
   // TEST 7b Integer
-  tm.displayIntNum(12345, true); // "00012345"
+  tm.displayIntNum(99991, true); // "00099991"
   delay(myTestDelay);
   tm.reset();
   // TEST 7b tm.DisplayDecNumNIbble
   tm.DisplayDecNumNibble(1234, 5678, false); // "12345678"
   delay(myTestDelay);
-  tm.DisplayDecNumNibble(123, 678, true); // "01230678"
+  tm.DisplayDecNumNibble(123, 662, true); // "01230662"
   delay(myTestDelay);
 }
 
@@ -221,17 +221,28 @@ void Test11()
 
 
 void Test12() {
-  //TEST 12 scrolling text, just one possible method using string object.
-  String textScroll = "123456789AbCdEF" ;
-  char charbuf[9];
-  while (textScroll.length() > 0)
+  //TEST 12 scrolling text, just one possible method.
+  char textScroll[17] = " Hello world 123";
+  unsigned long previousMillis_display = 0;  // will store last time display was updated
+  const long interval_display = 1000;            //   interval at which to update display (milliseconds)
+
+  while(1)
   {
-    
-    textScroll.toCharArray(charbuf, 9);// convert the string object to character array
-    tm.displayText(charbuf);  // display the character buffer
-    textScroll.remove(0, 1);  // decrement the string
-    delay(500);
-    tm.displayText("        "); // Clear display after each increment
+  tm.displayText(textScroll);
+  unsigned long currentMillis = millis();
+  
+  if (currentMillis - previousMillis_display >= interval_display)
+  {
+    previousMillis_display = currentMillis;
+    if (strlen(textScroll) > 0)
+    {
+      memmove(textScroll, textScroll+1, strlen(textScroll));
+      tm.displayText("        "); //Clear display or last character will drag across screen
+    }else
+    {
+      return;
+    }
+   }
   }
 }
 
@@ -240,20 +251,23 @@ void Test13()
   //Test 13 LED display
   uint8_t LEDposition = 0;
 
-  // Test 13A Turn on redleds with setLED
+  // Test 13A Turn on redleds one by one, left to right, with setLED where 0 is L1 and 7 is L8 (L8 RHS of display)
   for (LEDposition = 0; LEDposition < 8; LEDposition++) {
     tm.setLED(LEDposition, 1);
     delay(500);
     tm.setLED(LEDposition, 0);
   }
 
-  // TEST 13b test setLEDs function (0xLEDXX) (L0-L7,XX)
-  // For model 1 just use upper byte , lower byte is is used by model3 for bi-color leds leave at 0x00. 
-  tm.setLEDs(0xFF00); //all red
+  // TEST 13b test setLEDs function (0xLEDXX) ( L8-L1 , XX )
+  // NOTE passed L8-L1 and on display L8 is on right hand side. i.e. 0x01 turns on L1. LXXX XXXX
+  // For model 1 just use upper byte , lower byte is is used by model3 for bi-color leds leave at 0x00 for model 1.
+  tm.setLEDs(0xFF00); //  all LEDs on 
   delay(3000);
-  tm.setLEDs(0xF000); // L0-L7 XXXXLLLL
+   tm.setLEDs(0x0100); // Displays as LXXX XXXX (L1-L8) , NOTE on display L8 is on right hand side.
   delay(3000);
-  tm.setLEDs(0x0000); //all off
+  tm.setLEDs(0xF000); //  Displays as XXXX LLLL (L1-L8) , NOTE on display L8 is on right hand side.
+  delay(3000);
+  tm.setLEDs(0x0000); // all off
   delay(3000);
 
 }

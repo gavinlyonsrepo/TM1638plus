@@ -8,8 +8,8 @@
 */
 
 
-#ifndef TM1638plus_Model2_h
-#define TM1638plus_Model2_h
+#ifndef TM1638PLUS_MODEL2_H
+#define TM1638PLUS_MODEL2_H
 
 #if (ARDUINO >=100)
   #include "Arduino.h"
@@ -17,18 +17,8 @@
   #include "WProgram.h"
 #endif
 
-#define ACTIVATE_TM 0x8F // Start up
-#define BUTTONS_MODE 0x42 // Buttons mode
-#define WRITE_LOC 0x44 // Write to a location
-#define WRITE_INC 0x40 // Incremental write
-#define SEG_ADR 0xC0  // leftmost segment Address C0 C2 C4 C6 C8 CA CC CE
-#define BRIGHT_ADR 0x88 // Brightness address
-#define BRIGHT_MASK 0x07 // Brightness mask 
-#define DEFAULT_BRIGHTNESS 0x02 //can be 0x00 to 0x07 
-
-#define DISPLAY_SIZE 8 //size of display
-#define ASCII_OFFSET 32 // Ascii table offset to jump over first missing 32 chars   
-#define DOT_MASK_DEC 128 // 0x80 Mask to  switch on decimal point in seven seg.  
+#include "TM1638plus_common.h"
+ 
 
 class TM1638plus_Model2  {
 
@@ -48,30 +38,35 @@ public:
     
     // Begin method , sets pinmodes , Call in setup
     void displayBegin(void);
-    
-    // Send a command to module
-    void sendCommand(uint8_t value);
 
-    // Send data to the module
-    void sendData(unsigned char data);
+    void reset(void);      // Reset / Clear module 
 
-    // Reset / Clear module 
-    void reset(void);
-
-    //Sets the brightness level on a scale of brightness = 0 to 7.
-    //0 is not turned off, it's just the lowest brightness.
-    //If user wishes to change the default brightness at start-up change.
-     //The DEFAULT_BRIGHTNESS define in header file.
+    // Sets the brightness level on a scale of brightness = 0 to 7.
+    // 0 is not turned off, it's just the lowest brightness.
+    // If user wishes to change the default brightness at start-up change.
+    // The DEFAULT_BRIGHTNESS define in header file.
     void brightness(uint8_t brightness);
 
-    //Read buttons returns a byte with value of buttons 1-16 (1 for S1 2 for S2 ... 16 for S16 )
-    // Returns zero if no button pressed.
-    //User may have to deb-ounce buttons depending on application.
-    //See [URL LINK](https://github.com/gavinlyonsrepo/Arduino_Clock_3) 
-    //For de-bounce practical example(model 1)
-    //model 2 example here in ADC file TM1638plus_ADC_TEST_Model2.ino.
-    unsigned char ReadKey16(void);
+    // Function Desc:Read push buttons function 
+    // User may have to deb-ounce buttons depending on application.
+    // See [URL LINK](https://github.com/gavinlyonsrepo/Arduino_Clock_3) 
+    // For de-bounce practical example(model 1)
+    // model 2 example here in ADC file TM1638plus_ADC_TEST_Model2.ino.
+    // Note there are two different read button functions See Also ReadKeyTwo
+    // Returns: zero if no button pressed.  
+    // Returns: a byte with decimal value of buttons 1-16 (1 for S1 2 for S2 ... 16 for S16 ).
+   uint8_t ReadKey16(void);
 
+    // Function Desc: Reads the push  buttons:  alternate function to ReadKeys16
+    // Can detect multiple key presses , See notes section in readme regarding
+    // Problems with seven segment display when pressing certain keys in combination
+    // Returns: A 16 bit integer where each bit correpsond to a switch
+    // Eg:
+    // S1 = 0x0001
+    // S16 = 0x8000
+    // S16 + S1 together = 0x8001
+    uint16_t ReadKey16Two(void);
+    
     // Send seven segment value module
     // pass segment  0-7, byte of data corresponding to segments abcdefg(dp) 01234567.
     // a is 0 , dp is 7 , segmentValue is which segments are off or on for each digit. d7d6d5d54d3d2d1 
@@ -111,16 +106,16 @@ public:
     
     
 private:
+       
+        void sendCommand(uint8_t value);
+        void sendData(uint8_t  data);
         uint8_t _STROBE_IO;
         uint8_t _DATA_IO;
         uint8_t _CLOCK_IO;
-        bool _SWAP_NIBBLES;     
-        
-        //  Used instead of arduino function "shiftin" when _HIGH_FREQ is set to true
-        uint8_t  HighFreqshiftin(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder) ;
-        
+        bool _SWAP_NIBBLES= false;     
         //This is used when running high freq CPU because of issues with button function.
         bool _HIGH_FREQ = false;  
+        TM1638plus_common  TM_common;
 };
  
 #endif

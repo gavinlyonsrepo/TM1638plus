@@ -26,10 +26,7 @@
 	* ASCII font reduced in size  { | } ~ characters removed. 
  
 * Version 1.4.0 Feb 2020
-	* "beginDisplay" method added. This will break backward compatibility, This had to be done as 
-	the pinmodes functions had to be removed from  the class constructor  and there was no way around this. 
-	The update for 1.4 to files for users is simple, simply add "beginDisplay" function call to  "setup" as
-	per example files.  
+	* "beginDisplay" method added.
 	* Two new example files added.
 	* Tested on Nodemcu ESP-12E ESP2866 , it works.
 	
@@ -37,12 +34,18 @@
 	* Minor update to bring in pull request 7 to deal with github issues 6 and 7.
 	* Display overflow check and dealing with multiple dots. 
 	* Changes are for Model 1 only and "displayText" function only.
-	* Pull request by [gabormay](https://github.com/gabormay) 
+	* Pull request 1 by [gabormay](https://github.com/gabormay) 
 
 * Version  1.6.0 August 2020
-	* Pull request by [centic9](https://github.com/centic9) Model 1 constructor duplicate code removed.
+	* Pull request  2 by [centic9](https://github.com/centic9) Model 1 constructor duplicate code removed.
 	* Closed  Issue 1 and 2 on github by adding support for high frequency MCU, such as ESP32
 	The constructor of all models has a new parameter if set to true the code uses a custom  "shiftin" function
 	* Closed Issue 8 on github, LKM1638 bi-colour LED module support added (named Model 3 for purposes of library )
 	* New function setLEDs added to turn on all LEDs at once, for model 1 and 3.
+	
+* Version 1.7.0 October 2020
+	* Added ReadKey16Two function to model  2  to detect multiple key presses see issue 12 on github.
+	* TM1638_common files created for common code and settings between the different models
+	* Example file added by [wunderbaum](https://github.com/wunderbaum) see  pull request 3.
+	* Optimisations  to example files. 
 	
