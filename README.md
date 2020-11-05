@@ -12,7 +12,6 @@ Table of contents
   * [Notes](#notes)
   * [Memory](#memory)
   * [Pic Ports](#pic-port)
-  
 
 Overview
 --------------------------------------------
@@ -218,8 +217,17 @@ This library uses a software SPI-like protocol and may not work fully on
 micro-controllers running at a very high frequency, without some adjustments to timing.
 Its a SPI-like interface with a single bidirectional data wire DIO.
 The TM1638 is basically a slow SPI device (< 500kHz) in DIO mode. The clock uses the equivalent of SPI mode 3 (normally high, clocks data on the rising edge). The problem is that the native Arduino shiftIn()/shiftOut() wire functions are simply too fast for this device (technically the clock signalling for the TM1638 is inverted but as it triggers on a rising edge still it is tolerant of that).
-To make this work with fast devices, the shift clocking is slowed with a small delay (on the order of a microsecond).  As of version 1.6 a new parameter *(_HIGH_FREQ)* has been introduced to constructor it is false by default. Set to true for high frequency MCU ~> 100Mhz.  This will fix the issue of HF MCU not reading buttons correctly(ESP-Xs).  The High_Freq parameter causes a custom shift-in function to be used.
-The  Teensy results have been sent to me, I don't have these MCU's them at time of writing. 
+To make this work with fast devices, the shift clocking is slowed with a small delay (on the order of a microsecond).  
+
+HighFreqshiftin  function:
+ 
+As of version 1.6 a new parameter *(_HIGH_FREQ)* has been introduced to constructor it is false by default. Set to true for high frequency MCU ~> 100Mhz.  This should fix the issue of HF MCU not reading buttons correctly(ESP-Xs). The High_Freq parameter causes a custom shift-in function to be used.
+The delay in this function is fixed at 1.
+If the user is still having issues with high frequency MCU. 
+It may be necessary in some cases to increase delay to 2 or more according to some feedback received by email. This delay will be user adjusted in future version at the initialise stage. 
+Also in the ,function, It might help to move the digitalWrite(clockPin, HIGH) and its associated delay to the top of the for loop it is in, this is where it is in the "official" arduino shiftin function source code.
+
+The  Teensy results have been sent in by email, I don't have these MCU's them at time of writing. 
 
 | IC |  frequency | Status | 
 | ------ | ------ | ------ | 

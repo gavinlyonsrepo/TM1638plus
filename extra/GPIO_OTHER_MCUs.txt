@@ -1,0 +1,13 @@
+ESP-32S Board 2.4GHz ESP-WROOM-32
+
+#define  STROBE_TM 21 // strobe = GPIO connected to strobe line of module
+#define  CLOCK_TM 22  // clock = GPIO connected to clock line of module
+#define  DIO_TM 23 // data = GPIO connected to data line of module
+
+ESP8266 ESP12-E CH340 NodeMcu V3 Lua WIF
+
+Not Documented
+
+STM32 blue pill STM32F103C8T6 ARM STM32
+
+Not Documented
