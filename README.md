@@ -249,7 +249,7 @@ STB line for each device. see issue number 10 at github for example code.
 
 Model 1 and Model 3 CAN detect multiple buttons pressed.
 
-Model 3 has two different functions:
+Model 2 has two different functions:
 
 1. ReadKey16 returns a byte with decimal value 1-16 this function cannot 
 detect multiple buttons pressed.
@@ -284,3 +284,6 @@ MicroChip PIC XC8 port.
 
 Stm32cubeIDE STM32F303k8T6  C++
 [Link](https://github.com/gavinlyonsrepo/STM32_projects) 
+
+Raspberry Pi C++ 
+[Link](https://github.com/gavinlyonsrepo/TM1638plus_RPI)
