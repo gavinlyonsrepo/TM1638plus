@@ -35,6 +35,9 @@
 #define TM_GREEN_LED 0x01 // Model 3
 #define TM_OFF_LED 0x00
 
+#define TM_HFIN_DELAY   1 // uS Delay used by shiftIn function for High-freq MCU  
+#define TM_HFOUT_DELAY  1 // uS Delay used by shiftOut function for High-freq MCU   
+
 // font , map of ASCII values/table to 7-segment, offset to position 32. 
 const  PROGMEM unsigned char SevenSeg[] = {
   0x00, /* (space) */

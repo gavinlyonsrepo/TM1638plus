@@ -21,15 +21,17 @@ uint8_t  TM1638plus_common::HighFreqshiftin(uint8_t dataPin, uint8_t clockPin, u
     uint8_t i = 0;
 
     for(i = 0; i < 8; ++i) {
+        
+        digitalWrite(clockPin, HIGH);
+        delayMicroseconds(TM_HFIN_DELAY);
+        
         if(bitOrder == LSBFIRST)
             value |= digitalRead(dataPin) << i;
         else
             value |= digitalRead(dataPin) << (7 - i);
             
-        digitalWrite(clockPin, HIGH);
-        delayMicroseconds(1);
         digitalWrite(clockPin, LOW);
-        delayMicroseconds(1);
+        delayMicroseconds(TM_HFIN_DELAY);
     }
     return value;
 }
@@ -45,8 +47,8 @@ void TM1638plus_common::HighFreqshiftOut(uint8_t dataPin, uint8_t clockPin, uint
             digitalWrite(dataPin, !!(val & (1 << (7 - i))));
             
         digitalWrite(clockPin, HIGH);
-        delayMicroseconds(1);
+        delayMicroseconds(TM_HFOUT_DELAY);
         digitalWrite(clockPin, LOW);
-        delayMicroseconds(1);
+        delayMicroseconds(TM_HFOUT_DELAY);
     }
 }

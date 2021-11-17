@@ -49,3 +49,6 @@
 	* Example file added by [wunderbaum](https://github.com/wunderbaum) see  pull request 3.
 	* Optimisations  to example files. 
 	
+* Version 1.8.0 November 2021 
+	* Minor update 
+	* Some users (two) have reported the high frequency shiftIn  function does not work fully with some micro-controller boards at high frequency(ESP32 240Mhz) and the fix is minor adjustment to sequence in said function. Never saw the issue in my testing. The change makes  the function sequence similar to the official Arduino shiftIn function structure in the Arduino Core (wiring.shift.c) ,  See issue 16 on github for full details.
