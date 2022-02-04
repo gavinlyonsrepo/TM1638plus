@@ -84,7 +84,7 @@ void TM1638plus::setLEDs(uint16_t ledvalues)
 void TM1638plus::displayIntNum(unsigned long number, boolean leadingZeros)
 {
   char values[TM_DISPLAY_SIZE + 1];
-  snprintf(values, TM_DISPLAY_SIZE + 1, leadingZeros ? "%08ld" : "%ld", number); 
+  snprintf(values, TM_DISPLAY_SIZE + 1, leadingZeros ? "%08ld" : "%8ld", number); 
   displayText(values);
 }
 
@@ -93,8 +93,8 @@ void TM1638plus::DisplayDecNumNibble(uint16_t  numberUpper, uint16_t numberLower
 {
   char valuesUpper[TM_DISPLAY_SIZE + 1];
   char valuesLower[TM_DISPLAY_SIZE/2 + 1];
-  snprintf(valuesUpper, TM_DISPLAY_SIZE/2 + 1, leadingZeros ? "%04d" : "%d", numberUpper);
-  snprintf(valuesLower, TM_DISPLAY_SIZE/2 + 1, leadingZeros ? "%04d" : "%d", numberLower); 
+  snprintf(valuesUpper, TM_DISPLAY_SIZE/2 + 1, leadingZeros ? "%04d" : "%4d", numberUpper);
+  snprintf(valuesLower, TM_DISPLAY_SIZE/2 + 1, leadingZeros ? "%04d" : "%4d", numberLower); 
   strcat(valuesUpper ,valuesLower);
   displayText(valuesUpper);
 }
