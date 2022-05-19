@@ -135,6 +135,7 @@ void TM1638plus::displayASCII(uint8_t position, uint8_t ascii) {
 void TM1638plus::displayHex(uint8_t position, uint8_t hex) 
 {
     uint8_t offset = 0;
+    hex = hex % 16;
     if (hex <= 9)
     {
         display7Seg(position, pgm_read_byte(&SevenSeg[hex + TM_HEX_OFFSET]));
