@@ -281,3 +281,6 @@ Stm32cubeIDE STM32F303k8T6  C++
 
 Raspberry Pi C++ 
 [Link](https://github.com/gavinlyonsrepo/TM1638plus_RPI)
+
+RPi-PICO_RP2040 SDK C++ 
+[Link](https://github.com/gavinlyonsrepo/TM1638plus_PICO)
