@@ -39,6 +39,8 @@ This library supports 3 different models, pictured above from left to right.
 * History: see CHANGELOG.md in extra folder
 * Contributors: [gabormay](https://github.com/gabormay)  [centic9](https://github.com/centic9) [wunderbaum](https://github.com/wunderbaum)
 
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/paypalme/whitelight976)
+
 
 Installation
 ------------------------------
