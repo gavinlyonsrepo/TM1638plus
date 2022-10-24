@@ -75,14 +75,22 @@ public:
     // to set all segment "g" off (0x06,0X00)
     void DisplaySegments(uint8_t segment, uint8_t segmentValue);
     
-    // Display a Hexadecimal number ,takes a number and byte for decimal point display, leading zeros optional
-    // converts to string. 
-    //void DisplayHexNum(unsigned long number, byte dots, boolean leadingZeros = true);
-    void DisplayHexNum(uint16_t  numberUpper, uint16_t numberLower, byte dots, boolean leadingZeros = true);
+    // Display a Hexadecimal number ,
+     // Param 1 :: upper nibble integer 2^16 
+    // Param 2 :: lower nibble integer 2^16 
+    // Param 3 :: byte dots turn on decimal points
+    // Param 4 :: bool leading zeros , true on , false off
+    // Param 5 :: enum text alignment , left or right alignment
+    // converts to string internally
+    void DisplayHexNum(uint16_t  numberUpper, uint16_t numberLower, byte dots, boolean leadingZeros = true, AlignTextType_e = TMAlignTextLeft);
     
-    // Display a decimal number , takes a number and byte for decimal point display,  leading zeros optional 
-    // converts to string. 
-    void DisplayDecNum(unsigned long number, byte dots, boolean leadingZeros = true);
+    // Display a decimal number ,
+    // Param 1 :: 2^32 unsigned long
+    // Param 2 :: byte for decimal point display switch's on decimal point for those positions
+    // Param 3 :: leading zeros , true on , false off
+    // Param 4 :: enum text alignment ,  left or right
+    // converts to string internally
+    void DisplayDecNum(unsigned long number, byte dots, boolean leadingZeros = true, AlignTextType_e = TMAlignTextLeft);
 
     // Display a string , takes a string and byte for decimal point display
     // Takes in string , converts it to ASCII using the font and masks for the decimal point
@@ -100,9 +108,12 @@ public:
     void ASCIItoSegment(const byte values[]);
     
     //Divides the display into two nibbles and displays a Decimal number in each.
-    //takes in two numbers 0-9999 for each nibble ,  and byte for decimal point display,
-    //and leading zeros optional
-    void DisplayDecNumNibble(uint16_t numberUpper, uint16_t numberLower, byte dots, boolean leadingZeros = true);
+    // Param 1 :: upper nibble integer 2^16 
+    // Param 2 :: lower nibble integer 2^16 
+    // Param 3 :: byte dots turn on decimal points
+    // Param 4 :: bool leading zeros , true on , false off
+    // Param 5 :: enum text alignment , left or right alignment
+    void DisplayDecNumNibble(uint16_t numberUpper, uint16_t numberLower, byte dots, boolean leadingZeros = true, AlignTextType_e = TMAlignTextLeft);
     
     
 private:

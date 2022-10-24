@@ -78,29 +78,65 @@ void TM1638plus_Model2::brightness(uint8_t brightness)
     sendCommand(value);
 }
 
-void TM1638plus_Model2::DisplayHexNum(uint16_t  numberUpper, uint16_t numberLower, byte dots, boolean leadingZeros)
+void TM1638plus_Model2::DisplayHexNum(uint16_t  numberUpper, uint16_t numberLower, byte dots, boolean leadingZeros, AlignTextType_e  TextAlignment )
 {
   char valuesUpper[TM_DISPLAY_SIZE + 1];
   char valuesLower[TM_DISPLAY_SIZE/2 + 1];
-  snprintf(valuesUpper, TM_DISPLAY_SIZE/2 + 1, leadingZeros ? "%04X" : "%X", numberUpper);
-  snprintf(valuesLower, TM_DISPLAY_SIZE/2 + 1, leadingZeros ? "%04X" : "%X", numberLower); 
+  char TextDisplay[5] = "%";
+  char TextLeft[4] = "-4X";
+  char TextRight[3] = "4X";
+  
+     if (TextAlignment == TMAlignTextLeft)
+    {
+        strcat(TextDisplay ,TextLeft);  // %-4X
+    }else if ( TextAlignment = TMAlignTextRight)
+    {
+        strcat(TextDisplay ,TextRight); // %4X
+    }  
+    
+  snprintf(valuesUpper, TM_DISPLAY_SIZE/2 + 1, leadingZeros ? "%04X" : TextDisplay, numberUpper);
+  snprintf(valuesLower, TM_DISPLAY_SIZE/2 + 1, leadingZeros ? "%04X" : TextDisplay, numberLower); 
   strcat(valuesUpper ,valuesLower);
   DisplayStr(valuesUpper, dots);
 }
 
-void TM1638plus_Model2::DisplayDecNum(unsigned long number, byte dots, boolean leadingZeros)
+void TM1638plus_Model2::DisplayDecNum(unsigned long number, byte dots, boolean leadingZeros, AlignTextType_e TextAlignment)
 {
   char values[TM_DISPLAY_SIZE + 1];
-  snprintf(values, TM_DISPLAY_SIZE + 1, leadingZeros ? "%08ld" : "%ld", number); 
+  char TextDisplay[5] = "%";
+  char TextLeft[3] = "ld";
+  char TextRight[4] = "8ld";
+  
+    if (TextAlignment == TMAlignTextLeft)
+    {
+        strcat(TextDisplay ,TextLeft);  // %ld
+    }else if ( TextAlignment = TMAlignTextRight)
+    {
+        strcat(TextDisplay ,TextRight); // %8ld
+    }
+    
+  snprintf(values, TM_DISPLAY_SIZE + 1, leadingZeros ? "%08ld" : TextDisplay, number); 
   DisplayStr(values, dots);
 }
 
-void TM1638plus_Model2::DisplayDecNumNibble(uint16_t  numberUpper, uint16_t numberLower, byte dots, boolean leadingZeros)
+void TM1638plus_Model2::DisplayDecNumNibble(uint16_t  numberUpper, uint16_t numberLower, byte dots, boolean leadingZeros, AlignTextType_e  TextAlignment )
 {
   char valuesUpper[TM_DISPLAY_SIZE + 1];
   char valuesLower[TM_DISPLAY_SIZE/2 + 1];
-  snprintf(valuesUpper, TM_DISPLAY_SIZE/2 + 1, leadingZeros ? "%04d" : "%d", numberUpper);
-  snprintf(valuesLower, TM_DISPLAY_SIZE/2 + 1, leadingZeros ? "%04d" : "%d", numberLower); 
+  char TextDisplay[5] = "%";
+  char TextLeft[4] = "-4d";
+  char TextRight[3] = "4d";
+  
+     if (TextAlignment == TMAlignTextLeft)
+    {
+        strcat(TextDisplay ,TextLeft);  // %-4d
+    }else if ( TextAlignment = TMAlignTextRight)
+    {
+        strcat(TextDisplay ,TextRight); // %4d
+    }  
+    
+  snprintf(valuesUpper, TM_DISPLAY_SIZE/2 + 1, leadingZeros ? "%04d" : TextDisplay, numberUpper);
+  snprintf(valuesLower, TM_DISPLAY_SIZE/2 + 1, leadingZeros ? "%04d" : TextDisplay, numberLower); 
   strcat(valuesUpper ,valuesLower);
   DisplayStr(valuesUpper, dots);
 }

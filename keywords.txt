@@ -31,5 +31,6 @@ ReadKey16	KEYWORD2
 ReadKey16Two	KEYWORD2
 
 # Constants
-
+TMAlignTextRight	LITERAL1
+TMAlignTextLeft	LITERAL1
 

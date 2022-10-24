@@ -81,22 +81,47 @@ void TM1638plus::setLEDs(uint16_t ledvalues)
 }
 
 
-void TM1638plus::displayIntNum(unsigned long number, boolean leadingZeros)
+void TM1638plus::displayIntNum(unsigned long number, boolean leadingZeros, AlignTextType_e TextAlignment)
 {
   char values[TM_DISPLAY_SIZE + 1];
-  snprintf(values, TM_DISPLAY_SIZE + 1, leadingZeros ? "%08ld" : "%ld", number); 
+  char TextDisplay[5] = "%";
+  char TextLeft[3] = "ld";
+  char TextRight[4] = "8ld";
+  
+  if (TextAlignment == TMAlignTextLeft)
+    {
+        strcat(TextDisplay ,TextLeft);  // %ld
+    }else if ( TextAlignment = TMAlignTextRight)
+    {
+        strcat(TextDisplay ,TextRight); // %8ld
+    }
+    
+  snprintf(values, TM_DISPLAY_SIZE + 1, leadingZeros ? "%08ld" : TextDisplay, number); 
   displayText(values);
 }
 
 
-void TM1638plus::DisplayDecNumNibble(uint16_t  numberUpper, uint16_t numberLower, boolean leadingZeros)
+void TM1638plus::DisplayDecNumNibble(uint16_t  numberUpper, uint16_t numberLower, boolean leadingZeros, AlignTextType_e TextAlignment )
 {
-  char valuesUpper[TM_DISPLAY_SIZE + 1];
-  char valuesLower[TM_DISPLAY_SIZE/2 + 1];
-  snprintf(valuesUpper, TM_DISPLAY_SIZE/2 + 1, leadingZeros ? "%04d" : "%d", numberUpper);
-  snprintf(valuesLower, TM_DISPLAY_SIZE/2 + 1, leadingZeros ? "%04d" : "%d", numberLower); 
-  strcat(valuesUpper ,valuesLower);
-  displayText(valuesUpper);
+    char valuesUpper[TM_DISPLAY_SIZE + 1];
+    char valuesLower[TM_DISPLAY_SIZE/2 + 1];
+    char TextDisplay[5] = "%";
+    char TextLeft[4] = "-4d";
+    char TextRight[3] = "4d";
+   
+     if (TextAlignment == TMAlignTextLeft)
+    {
+        strcat(TextDisplay ,TextLeft);  // %-4d
+    }else if ( TextAlignment = TMAlignTextRight)
+    {
+        strcat(TextDisplay ,TextRight); // %4d
+    }
+    
+    snprintf(valuesUpper, TM_DISPLAY_SIZE/2 + 1, leadingZeros ? "%04d" : TextDisplay, numberUpper);
+    snprintf(valuesLower, TM_DISPLAY_SIZE/2 + 1, leadingZeros ? "%04d" : TextDisplay, numberLower); 
+
+   strcat(valuesUpper ,valuesLower);
+   displayText(valuesUpper);
 }
 
 void TM1638plus::displayText(const char *text) {

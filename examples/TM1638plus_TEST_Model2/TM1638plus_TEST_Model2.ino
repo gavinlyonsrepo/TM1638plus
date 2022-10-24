@@ -72,35 +72,63 @@ void Serialinit()
 {
   Serial.begin(9600);
   delay( myTestDelay);
-  Serial.println("-- TM1638 M2 test : Comms UP --");
+  Serial.println("-- TM1638 Model2 test : Comms UP --");
 }
 
 void Test1(void)
 {
   // Test 1 decimal numbers
-  tm.DisplayDecNum(250, 1 << 2, true); // 000002.50
+  // 1a-1e test tm.DisplayDecNum method
+  // 1a Left aligned leading zeros
+  tm.DisplayDecNum(250, 1 << 2, true, TMAlignTextLeft); // 000002.50
   delay(myTestDelay);
-  tm.DisplayDecNum(99991111, 1 << 4, true); // 9999.1111
+  // 1b left aligned NO leading zeros
+  tm.DisplayDecNum(991111, 1 << 4, false, TMAlignTextLeft); // "9911.11  "
   delay(myTestDelay);
-  tm.DisplayDecNum(2888, 0 , true);  // 00002888
+
+   // 1c right aligned leading zeros
+  tm.DisplayDecNum(2813, 0 , true, TMAlignTextRight);  // 00002813
   delay(myTestDelay);
-  tm.DisplayDecNum(331285, 1 <<4 ,false); // "3312.85   "
+
+  // 1d right aligned NO leading zeros
+  tm.DisplayDecNum(331285, 1 << 5 ,false, TMAlignTextRight); // "  3.31285"
   delay(myTestDelay);
-  tm.DisplayDecNum(-33, 0 , false); // "-33        "
+
+  // 1e negative number
+  tm.DisplayDecNum(-33, 0 , false, TMAlignTextRight); // "     -33"
   delay(myTestDelay);
-  // Test 1b  decimal numbers with the DisplayDecNumNibble function divides display into two nibbles.
-  tm.DisplayDecNumNibble(2134 , 78, 1<<4 , true); // "2134.0078"
+
+  //1f-1i test tm.DisplayDecNumNibble
+  // decimal numbers with the DisplayDecNumNibble function divides display into two nibbles.
+
+  // 1f Left aligned leading zeros, 
+  tm.DisplayDecNumNibble(21 , 178, 0, true, TMAlignTextLeft); // "00210178"
+  delay(myTestDelay);
+  // 1g Left aligned, NO leading zeros
+  tm.DisplayDecNumNibble(21 , 78, 1<<3 , false, TMAlignTextLeft); // "21  7.8  "
+  delay(myTestDelay);
+  // 1h right aligned leading zeros
+  tm.DisplayDecNumNibble(977 , 34, 1<<4 , true, TMAlignTextRight); // "0977.0034"
+  delay(myTestDelay);
+  // 1i right aligned, NO leading  zeros
+  tm.DisplayDecNumNibble(14 , 729, 1<<5 , false, TMAlignTextRight); // "  1.4 729"
   delay(myTestDelay);
 }
 
 void Test2(void)
 {
   // Test 2 Hexadecimal number
-  tm.DisplayHexNum(0x0000, 0x456E, 0x00, true); // 0000456E
+  // 2a leading zeros left alignment
+  tm.DisplayHexNum(0xF, 0x456E, 0x00, true, TMAlignTextLeft); // 000F456E
   delay(myTestDelay);
-  tm.DisplayHexNum(0xABCD, 0xEF23, 0x00, true); // ABCDEF23
+  // 2b NO leading zeros left alignment
+  tm.DisplayHexNum(0xCD, 0xF23, 0x00, false, TMAlignTextLeft); // "CD F23 "
   delay(myTestDelay);
-  tm.DisplayHexNum(0x0000, 0x00FF, 1 << 4); // 0000.00FF
+  // 2c leading zeros right alignment
+  tm.DisplayHexNum(0x45, 0xFF, 1 << 4, true, TMAlignTextRight); // 0045.00FF
+  delay(myTestDelay);
+  // 2d NO leading zeros right alignment
+  tm.DisplayHexNum(0xFAE, 0xFF, 0x00, false, TMAlignTextRight); // " FAE  FF"
   delay(myTestDelay);
 }
 
@@ -186,7 +214,7 @@ void Test6(void)
   tm.reset();
 }
 
-// Just one possible method to scroll text there are many others.
+// Just one possible method to scroll text.
 void Test7(void)
 {
   char textScroll[17] = " Hello world 123";
@@ -221,7 +249,7 @@ void Test8(void)
       // returns 0-16 , 0 for nothing pressed.
       // NOTE: pressing  S16 will move to test 9 
       buttons = tm.ReadKey16();
-      tm.DisplayDecNum(buttons, 0 ,false); 
+      tm.DisplayDecNum(buttons, 0 ,false, TMAlignTextRight); 
       Serial.println(buttons);
       delay( myTestDelay2);
       if (buttons == 16)
@@ -250,6 +278,7 @@ void Test9(void)
       buttons = tm.ReadKey16Two();
       Serial.println(buttons, HEX);
       tm.DisplayStr("buttons2", 0);
-      delay( myTestDelay2);
+      //tm.DisplayHexNum(0x0, buttons, 0 ,true, TMAlignTextRight); 
+      delay(myTestDelay2);
       }
 }

@@ -1,3 +1,6 @@
+[![Website](https://img.shields.io/badge/Website-Link-blue.svg)](https://gavinlyonsrepo.github.io/)  [![Rss](https://img.shields.io/badge/Subscribe-RSS-yellow.svg)](https://gavinlyonsrepo.github.io//feed.xml)  [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/paypalme/whitelight976)
+
+
 ![ module pics ](https://github.com/gavinlyonsrepo/TM1638plus/blob/master/extra/images/tm16383.jpg)
 
 Table of contents
@@ -10,7 +13,6 @@ Table of contents
   * [Model Two](#model-two)
   * [Model Three](#model-three)
   * [Notes](#notes)
-  * [Memory](#memory)
   * [Ports](#ports)
 
 Overview
@@ -24,7 +26,6 @@ This library supports 3 different models, pictured above from left to right.
 2. Model 2, The (QYF 16 KEY) variant which has 16 pushbuttons.
 3. Model 3, The (LKM1638) variant which has 8 bi-colour LED's and 8 Push buttons.
 
-
 * Main Author: Gavin Lyons.
 
 * Tested on Development platforms: 
@@ -37,10 +38,6 @@ This library supports 3 different models, pictured above from left to right.
 6. Teensy 4.0. (may not work at highest frequency see  notes section)
 
 * History: see CHANGELOG.md in extra folder
-* Contributors: [gabormay](https://github.com/gabormay)  [centic9](https://github.com/centic9) [wunderbaum](https://github.com/wunderbaum)
-
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/paypalme/whitelight976)
-
 
 Installation
 ------------------------------
@@ -106,8 +103,9 @@ For more information see the commented headers in header file.
 1. Print an ASCII character.
 2. Print an ASCII character with a dot/decimal point.
 3. Print a Hexadecimal digit(0-15).
-4. Print a long integer number with or without leading zeros.
-5. Print two integer numbers (0-9999) to each nibble with or without leading zeros.
+4. Print a long integer number with or without leading zeros, and right and left aligned text.
+5. Print two integer numbers (0-9999) to each nibble with or without leading zeros,
+and right and left aligned text.
 6. Print a text string(dots are replaced and dot is turned on preceding digit), 
 "abc.def" becomes "abcdef" with c decimal point segment switched on.
 7. Read buttons status. User may have to debounce buttons depending on application.
@@ -142,10 +140,11 @@ The commented functions can be found in library header file TM1638plus_Model2.h.
 The library support Strings,decimal ,Hex ,raw ASCII data, setting individual segments,
 and the decimal point. For more detailed information on functions see commented headers in header file(.h).
 
-1. Print a Hexadecimal number with or without leading zeros
-2. Print a decimal number with or without leading zeros
+1. Print a Hexadecimal number with or without leading zeros, and right and left aligned text.
+2. Print a decimal number with or without leading zeros, and right and left aligned text.
 3. Manually set segments to create custom patterns.
-4. Print two 4 digit decimal number(0-9999) to each nibble with or without leading zeros.
+4. Print two 4 digit decimal number(0-9999) to each nibble with or without leading zeros,
+and right and left aligned text.
 5. Print a text string, dot function supported. 
 6. Read buttons status. User may want to debounce buttons depending on application.
 See TM1638plus_ADC_TEST_Model2.ino for debounce button example. 
@@ -199,7 +198,7 @@ Notes
 3. Driving multiple displays.
 4. Detecting multiple buttons pressed together.
 
-*Note A* : Swapped display Issue: Model 2 only
+*Note 1* : Swapped display Issue: Model 2 only
 
 For Some users using this library the nibbles in information display byte 
 where swapped around. This is because there are different versions of modules on market with different wiring.  See issue #3 on github called Swapped display :: "12345678" becomes "56781234". 
@@ -211,7 +210,7 @@ Object, set the fourth parameter "swap_nibbles" to True, The default is false.
 | QYF-TM1638 | default operation | false | 
 | QYF-TM1638 -Ver 1.0 | Swapped display Fix |  true  | 
 
-*Note B* :  High frequency micro-controllers.
+*Note 2* :  High frequency micro-controllers.
 
 This library uses a software SPI-like protocol and may not work fully on 
 micro-controllers running at a very high frequency, without some adjustments to timing.
@@ -236,12 +235,12 @@ The  Teensy results have been sent in by email, I don't have these MCU's them at
 | Teensy 4.0| 150Mhz | Working model 1,  no Data rest of models |
 | Teensy 4.0| 396Mhz | Not working on  m1 pre v1.6, no data after,  no Data rest of models |
 
-*Note C* : Driving multiple displays.
+*Note 3* : Driving multiple displays.
 
 It is possible to drive multiple modules. Share the DIO and CLK lines and use a unique
 STB line for each device. see issue number 10 at github for example code.
 
-*Note D* : Detecting multiple buttons pressed together.
+*Note 4* : Detecting multiple buttons pressed together.
 
 Model 1 and Model 3 CAN detect multiple buttons pressed.
 
@@ -255,21 +254,6 @@ However due to the wiring  of the module, see SG-X lines  on schematic,
 Pressing Certain combinations of buttons will cause the  data on Seven Segments to 
 change. So the simultaneous use of multiple key presses and the seven segments display 
 is problematic. See issue 12 on github for more details.
-
-Memory
--------------------------------
-
-Version 1.4.
-
-1. Model 1 memory usage NANO, basic hello world sketch.
-
-Sketch uses 1488 bytes (4%) of program storage space. 
-Global variables use 22 bytes (1%) of dynamic memory.
-
-2. Model 2 memory usage NANO, basic hello world sketch.
-
-Sketch uses 1536 bytes (5%) of program storage space. 
-Global variables use 23 bytes (1%) of dynamic memory.
 
 
 Ports
