@@ -91,7 +91,7 @@ void TM1638plus::displayIntNum(unsigned long number, boolean leadingZeros, Align
   if (TextAlignment == TMAlignTextLeft)
     {
         strcat(TextDisplay ,TextLeft);  // %ld
-    }else if ( TextAlignment = TMAlignTextRight)
+    }else if ( TextAlignment == TMAlignTextRight)
     {
         strcat(TextDisplay ,TextRight); // %8ld
     }
@@ -112,7 +112,7 @@ void TM1638plus::DisplayDecNumNibble(uint16_t  numberUpper, uint16_t numberLower
      if (TextAlignment == TMAlignTextLeft)
     {
         strcat(TextDisplay ,TextLeft);  // %-4d
-    }else if ( TextAlignment = TMAlignTextRight)
+    }else if ( TextAlignment == TMAlignTextRight)
     {
         strcat(TextDisplay ,TextRight); // %4d
     }
