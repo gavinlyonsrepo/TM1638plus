@@ -217,7 +217,7 @@ void Test9() {
   digit4 =  temp % 10;
 
   sprintf(workStr, "ADC=.%d%d.%d%d", digit1, digit2, digit3, digit4);
-  tm.displayText(workStr); //12.45.VOLT
+  tm.displayText(workStr); //ADC=.12.45
   delay(myTestDelay3);
   tm.reset();
 }
