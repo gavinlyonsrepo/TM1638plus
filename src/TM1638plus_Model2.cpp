@@ -89,7 +89,7 @@ void TM1638plus_Model2::DisplayHexNum(uint16_t  numberUpper, uint16_t numberLowe
      if (TextAlignment == TMAlignTextLeft)
     {
         strcat(TextDisplay ,TextLeft);  // %-4X
-    }else if ( TextAlignment = TMAlignTextRight)
+    }else if ( TextAlignment == TMAlignTextRight)
     {
         strcat(TextDisplay ,TextRight); // %4X
     }  
