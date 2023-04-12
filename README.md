@@ -8,7 +8,9 @@ Table of contents
 
   * [Overview](#overview)
   * [Installation](#installation)
-  * [Features](#features)
+  * [Connections](#connections)
+  * [Model Types](#model-types)
+  * [Files](#files)
   * [Model One](#model-one)
   * [Model Two](#model-two)
   * [Model Three](#model-three)
@@ -51,7 +53,7 @@ See link below for instruction for this and for the other methods too.
 [Installing Additional Arduino Libraries guide](https://www.arduino.cc/en/Guide/Libraries)
 
 
-Features
+Connections
 ----------------------
 
 Connections to MCU: 
@@ -62,8 +64,11 @@ Connections to MCU:
 4. GND
 5. VCC 
 
+Model Types
+-------------------------------
+
 This library supports three variants of the TM1638, which for purposes of this documentation, 
-will be named Model 1 ,Model 2 and Model 3.  
+will be named Model 1 ,Model 2 and Model 3.  Pictured at top of this Readme, left to right. 
 
 | Model No | Module Name | LEDS | Push buttons | 
 | ------ | ------ |  ------ | ------ |
@@ -71,6 +76,8 @@ will be named Model 1 ,Model 2 and Model 3.
 | 2 | TM1638 KEYS, QYF  | 0 | 16 |
 | 3 | TM1638 V1.3 or LKM1638  | 8 bi color,  red and green  | 8 |
 
+Files
+-----------------------------
 There are two sets of files to support model 1 & 2 . I kept them separate as the models are wired quite different, Model 1 address by digit, while Model 2 address by segment. So the code is quite different  for most functions. Model 3 uses same code as Model 1, just different example file and different use of LED functions. Common settings, data and functions are in the TM1638plus_common.x files.
 
 | Model | Header | Code file | TEST files | 
