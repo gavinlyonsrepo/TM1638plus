@@ -1,29 +1,28 @@
-/*
-  Project Name: TM1638
-  File: TM1638plus_TEST_Model1.ino
-  Description: demo file library for  TM1638 module(LED & KEY). Model 1
-  Carries out series of tests to demo arduino library TM1638plus.
+/*!
+	@file     TM1638plus_TEST_Model1.ino
+	@author   Gavin Lyons
+	@brief
+		 demo file library for  TM1638 module(LED & KEY). Model 1
+	@note
+		  Carries out series of tests to demo arduino library TM1638plus.
 
-  TESTS:
-  TEST 0 Reset
-  TEST 1 Brightness
-  TEST 2 ASCII display
-  TEST 3 Set a single segment
-  TEST 4 Hex digits
-  TEST 5 Text String with Decimal point
-  TEST 6 TEXT + ASCII combo
-  TEST 7 Integer Decimal number
-  TEST 8 Text String + Float
-  TEST 9 Text String + decimal number
-  TEST 10 Multiple dots
-  TEST 11 Display Overflow
-  TEST 12 Scrolling text
-  TEST 13 setLED and setLEDs method
-  TEST 14 Buttons + LEDS
+		TESTS:
 
-  Author: Gavin Lyons.
-  Created May 2019
-  URL: https://github.com/gavinlyonsrepo/TM1638plus
+	0.   TEST 0 Reset
+	1.   TEST 1 Brightness
+	2.   TEST 2 ASCII display
+	3.   TEST 3 Set a single segment
+	4.   TEST 4 Hex digits
+	5.   TEST 5 Text String with Decimal point
+	6.   TEST 6 TEXT + ASCII combo
+	7.   TEST 7 Integer Decimal number
+	8.   TEST 8 Text String + Float
+	9.   TEST 9 Text String + decimal number
+	10. TEST 10 Multiple dots
+	11. TEST 11 Display Overflow
+	12. TEST 12 Scrolling text
+	13. TEST 13 setLED and setLEDs method
+	14. TEST 14 Buttons + LEDS
 */
 
 #include <TM1638plus.h>
@@ -33,7 +32,7 @@
 #define  STROBE_TM 4 // strobe = GPIO connected to strobe line of module
 #define  CLOCK_TM 6  // clock = GPIO connected to clock line of module
 #define  DIO_TM 7 // data = GPIO connected to data line of module
-bool high_freq = false; //default false,, If using a high freq CPU > ~100 MHZ set to true. 
+bool high_freq = false; //default false,, If using a high freq CPU > ~100 MHZ set to true.
 
 //Constructor object (GPIO STB , GPIO CLOCK , GPIO DIO, use high freq MCU)
 TM1638plus tm(STROBE_TM, CLOCK_TM , DIO_TM, high_freq);
@@ -49,7 +48,7 @@ void setup()
   Serialinit();
   tm.displayBegin();
   delay(myTestDelay1);
-  
+
   //Test 0 reset
   Test0();
 }
@@ -124,7 +123,7 @@ void Test4() {
   tm.displayHex(4, 4);
   tm.displayHex(5, 5);
   tm.displayHex(6, 6);
-  tm.displayHex(7, 7);  
+  tm.displayHex(7, 7);
   delay(myTestDelay3); // display 01234567
 
   tm.displayHex(0, 8);
@@ -141,7 +140,7 @@ void Test4() {
   tm.displayHex(1, 0xFFFE);
   tm.displayHex(7, 0x10);
   delay(myTestDelay3); // display " E      0"
-  
+
 }
 
 void Test5() {
@@ -165,17 +164,17 @@ void Test6() {
 }
 
 void Test7() {
-  // TEST 7a Integer left aligned , NO leading zeros 
+  // TEST 7a Integer left aligned , NO leading zeros
   tm.displayIntNum(45, false, TMAlignTextLeft); // "45      "
   delay(myTestDelay);
-  // TEST 7b Integer left aligned , leading zeros 
+  // TEST 7b Integer left aligned , leading zeros
   tm.displayIntNum(99991, true, TMAlignTextLeft); // "00099991"
   delay(myTestDelay);
   tm.reset();
-  // TEST 7c Integer right aligned , NO leading zeros 
+  // TEST 7c Integer right aligned , NO leading zeros
   tm.displayIntNum(35, false, TMAlignTextRight); // "      35"
   delay(myTestDelay);
-  // TEST 7d Integer right aligned , leading zeros 
+  // TEST 7d Integer right aligned , leading zeros
   tm.displayIntNum(9983551, true, TMAlignTextRight); // "09983551"
   delay(myTestDelay);
 
@@ -250,7 +249,7 @@ void Test12() {
   {
   tm.displayText(textScroll);
   unsigned long currentMillis = millis();
-  
+
   if (currentMillis - previousMillis_display >= interval_display)
   {
     previousMillis_display = currentMillis;
@@ -281,7 +280,7 @@ void Test13()
   // TEST 13b test setLEDs function (0xLEDXX) ( L8-L1 , XX )
   // NOTE passed L8-L1 and on display L8 is on right hand side. i.e. 0x01 turns on L1. LXXX XXXX
   // For model 1 just use upper byte , lower byte is is used by model3 for bi-color leds leave at 0x00 for model 1.
-  tm.setLEDs(0xFF00); //  all LEDs on 
+  tm.setLEDs(0xFF00); //  all LEDs on
   delay(myTestDelay3);
    tm.setLEDs(0x0100); // Displays as LXXX XXXX (L1-L8) , NOTE on display L8 is on right hand side.
   delay(myTestDelay3);
@@ -302,18 +301,18 @@ void Test14() {
     uint8_t buttons = tm.readButtons();
       /* buttons contains a byte with values of button s8s7s6s5s4s3s2s1
        HEX  :  Switch no : Binary
-       0x01 : S1 Pressed  0000 0001 
-       0x02 : S2 Pressed  0000 0010 
-       0x04 : S3 Pressed  0000 0100 
-       0x08 : S4 Pressed  0000 1000 
-       0x10 : S5 Pressed  0001 0000 
-       0x20 : S6 Pressed  0010 0000 
-       0x40 : S7 Pressed  0100 0000 
-       0x80 : S8 Pressed  1000 0000  
+       0x01 : S1 Pressed  0000 0001
+       0x02 : S2 Pressed  0000 0010
+       0x04 : S3 Pressed  0000 0100
+       0x08 : S4 Pressed  0000 1000
+       0x10 : S5 Pressed  0001 0000
+       0x20 : S6 Pressed  0010 0000
+       0x40 : S7 Pressed  0100 0000
+       0x80 : S8 Pressed  1000 0000
       */
     Serial.println(buttons, HEX);
     doLEDs(buttons);
-     tm.displayIntNum(buttons, true, TMAlignTextLeft); 
+    tm.displayIntNum(buttons, true, TMAlignTextLeft);
     delay(250);
   }
 }

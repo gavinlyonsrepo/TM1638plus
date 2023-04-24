@@ -60,3 +60,9 @@
 		* Model  2 , methods DisplayDecNum, DisplayDecNumNibble & DisplayHexNum
 		* Previously it was just Left aligned text and added leading zeros.
 	
+* Version 2.0.0 April 2023
+	* Removed Bug (that had no effect on program output ) github issue 22
+	* Refactored class structure. 
+	* Added Example file TM1638plus_BUTTON_Model1.
+	* Added "Doxyen" style comments in order to use "Doxygen" software to automatically 
+		generate a html based software API. 

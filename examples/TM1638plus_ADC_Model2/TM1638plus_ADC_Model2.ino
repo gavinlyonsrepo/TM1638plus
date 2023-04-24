@@ -1,22 +1,19 @@
-/*
-  Project Name: TM1638
-  File: TM1638plus_ADC_Model2.ino
-  Description: demo file library for model 2 TM1638 module(16 KEY 16 pushbuttons).
-  
-  Carries out tests demonstrating arduino library TM1638plus displaying ADC data.
-  
-  Three functions / testmodes where "->" represenst delay between display modes 
-  1. ADC1.ADC0 -> DATA.DATA , Demo:  DisplayDecNumNibble function
-  2. ADC1.DATA -> DATA.ADC0 , Demo: mixing text label and integer number data
-  3. ADC1.DA.TA -> DA.TA.VOLT, Demo: how to use floats
-   
-  Also demo buttons as button presses is used to switch between 
-  testmodes 
-  
-  Board tested: UNO NANO
-  Author: Gavin Lyons.
-  Created Jan 2020
-  URL: https://github.com/gavinlyonsrepo/TM1638plus
+/*!
+	@file     TM1638plus_ADC_Model2.ino
+	@author   Gavin Lyons
+	@brief 
+		 demo file library for model 2 TM1638 module(16 KEY 16 pushbuttons).
+	@note 
+		Carries out tests demonstrating arduino library TM1638plus displaying ADC data.
+
+		  Three functions / testmodes where "->" represenst delay between display modes .
+		  1. ADC1.ADC0 -> DATA.DATA , Demo:  DisplayDecNumNibble function.
+		  2. ADC1.DATA -> DATA.ADC0 , Demo: mixing text label and integer number data.
+		  3. ADC1.DA.TA -> DA.TA.VOLT, Demo: how to use floats.
+ 
+		Also demo buttons as button presses is used to switch between testmodes.
+		
+		Tested on UNO and NANO rev 3 ONLY
 */
 
 #include <TM1638plus_Model2.h>
@@ -48,7 +45,7 @@ uint8_t testMode = 1;
 unsigned long previousMillis_display = 0;        // will store last time ADCs was updated
 unsigned long previousMillis_button = 0;
 const long interval_display = 3000;      // interval at which to read ADCs (milliseconds)
-const long interval_button = 225;      // interval to read button
+const long interval_button = 225;      // interval to read button (milliseconds)
 
 void setup() {
   Serialinit();
@@ -84,7 +81,7 @@ void loop() {
     DisplayMode = !DisplayMode;  // toggle displaymode
   }
 
-  // Read the button everyinterval_button delay
+  // Read the button every interval_button delay
   if (currentMillis - previousMillis_button >= interval_button)
   {
     previousMillis_button = currentMillis;

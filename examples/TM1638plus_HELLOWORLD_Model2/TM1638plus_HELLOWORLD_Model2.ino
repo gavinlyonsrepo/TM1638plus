@@ -1,10 +1,9 @@
-/*
-  Project Name: TM1638plus (arduino library)
-  File: TM1638plus_HELLOWORLD_Model2.ino
-  Description: A Basic test file for model 2, TM1638 module(16 KEY 16 pushbuttons).
-  Author: Gavin Lyons.
-  Created Feb 2020
-  URL: https://github.com/gavinlyonsrepo/TM1638plus
+/*!
+	@file     TM1638plus_HELLOWORLD_Model2.ino
+	@author   Gavin Lyons
+	@brief 
+		A Basic test file for model 2, TM1638 module(16 KEY 16 pushbuttons).
+		Carries out series most basic test , "hello world" helo wrld
 */
 
 #include <TM1638plus_Model2.h>
