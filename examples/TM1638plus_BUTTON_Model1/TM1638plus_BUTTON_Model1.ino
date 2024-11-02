@@ -10,9 +10,10 @@
 
 // GPIO I/O pins on the Arduino connected to strobe, clock, data,
 // pick on any I/O you want.
-#define  STROBE_TM 4
-#define  CLOCK_TM 6
-#define  DIO_TM 7
+#define  STROBE_TM 4 // strobe = GPIO connected to strobe line of module
+#define  CLOCK_TM 6  // clock = GPIO connected to clock line of module
+#define  DIO_TM 7 // data = GPIO connected to data line of module
+
 
 bool high_freq = false; // default false, If using a high freq CPU > ~100 MHZ set to true. 
 

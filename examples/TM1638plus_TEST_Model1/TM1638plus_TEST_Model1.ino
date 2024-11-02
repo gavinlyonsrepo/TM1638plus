@@ -109,7 +109,7 @@ void Test3() {
   uint8_t pos = 0;
   for (pos = 0 ; pos<8 ; pos++)
   {
-    tm.display7Seg(pos, 1<<7-pos); // Displays a single seg in (dp)gfedcba) in each  pos 0-7
+    tm.display7Seg(pos, 1<<(7-pos)); // Displays a single seg in (dp)gfedcba) in each  pos 0-7
     delay(myTestDelay1);
   }
 }
@@ -137,7 +137,7 @@ void Test4() {
   delay(myTestDelay3); // display 89ABCDEF
   tm.reset();
 
-  tm.displayHex(1, 0xFFFE);
+  tm.displayHex(1, 0xFE);
   tm.displayHex(7, 0x10);
   delay(myTestDelay3); // display " E      0"
 
@@ -249,7 +249,7 @@ void Test12() {
   {
   tm.displayText(textScroll);
   unsigned long currentMillis = millis();
-
+  yield(); // Added to prevent ESP8266 crash.
   if (currentMillis - previousMillis_display >= interval_display)
   {
     previousMillis_display = currentMillis;

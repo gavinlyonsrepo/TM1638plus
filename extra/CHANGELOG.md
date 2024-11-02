@@ -66,3 +66,7 @@
 	* Added Example file TM1638plus_BUTTON_Model1.
 	* Added "Doxyen" style comments in order to use "Doxygen" software to automatically 
 		generate a html based software API. 
+
+* Version 2.0.1 November 2024 
+	* Minor update, change to examples files only. Removed some new compiler warnings
+	and added a 'yield()' statement to scroll tests as the  watch dog timer was crashing ESP8266 during scroll loop, noticed during debugging of [github issue 24](https://github.com/gavinlyonsrepo/TM1638plus/issues/24)

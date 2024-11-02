@@ -9,7 +9,7 @@
 #include <TM1638plus_Model2.h>
 
 // GPIO I/O pins on the Arduino connected to strobe, clock, data, pick on any I/O pin you want.
-#define  STROBE_TM 4  // strobe = GPIO connected to strobe line of module
+#define  STROBE_TM 4 // strobe = GPIO connected to strobe line of module
 #define  CLOCK_TM 6  // clock = GPIO connected to clock line of module
 #define  DIO_TM 7 // data = GPIO connected to data line of module
 bool swap_nibbles = false; //Default is false if left out, see issues section in readme at URL

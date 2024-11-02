@@ -15,7 +15,11 @@
      * [Model Three](#model-three)
   * [Tested](#tested)
   * [Notes](#notes)
-
+     * [Swapped data nibbles](#swapped-data-nibbles)
+     * [Read buttons anomaly](#read-buttons-anomaly)
+     * [Multiple displays](#multiple-displays)
+     * [Multiple buttons pressed together](#multiple-buttons-pressed-together)
+ 
 ## Overview
 
 * Name: TM1638plus
@@ -153,13 +157,9 @@ SetLEDs: When you pass call the setLEDs function you can pass a word pattern whe
 
 ## Notes
 
-1. Swapped data on Display issue on some Model 2 modules
-2. Anomaly's  on High frequency micro-controllers.
-3. Driving multiple displays.
-4. Detecting multiple buttons pressed together.
-
-**Note 1 : Swapped display Issue: Model 2 only**
-
+### Swapped data nibbles
+ 
+Model 2 only.
 For Some users using this library the nibbles in information display byte 
 where swapped around. This is because there are different versions of modules on market with different wiring.  See issue #3 on github called Swapped display :: "12345678" becomes "56781234". 
 If you test library and you see this issue, in order to fix this when you declare the 
@@ -170,8 +170,9 @@ Object, set the fourth parameter "swap_nibbles" to True, The default is false.
 | QYF-TM1638 | default operation | false | 
 | QYF-TM1638 -Ver 1.0 | Swapped display Fix |  true  | 
 
-**Note 2 :  High frequency micro-controllers.**
+### Read buttons anomaly
 
+Read buttons anomaly on High frequency micro-controllers.
 This library uses a software SPI-like protocol and may not work fully on 
 micro-controllers running at a very high frequency, without some adjustments to timing.
 It is a SPI-like interface with a single bidirectional data wire DIO.
@@ -195,12 +196,16 @@ The  Teensy results have been sent in by email, I don't have these MCU's them at
 | Teensy 4.0| 150Mhz | Working model 1,  no Data rest of models |
 | Teensy 4.0| 396Mhz | Not working on  m1 pre v1.6, no data after,  no Data rest of models |
 
-**Note 3 : Driving multiple displays.**
+### Multiple displays
 
+Driving multiple displays.
 It is possible to drive multiple modules. Share the DIO and CLK lines and use a unique
 STB line for each device. see issue number 10 at github for example code.
 
-**Note 4 : Detecting multiple buttons pressed together.**
+
+### Multiple buttons pressed together
+
+Detecting multiple buttons pressed together.
 
 Model 1 and Model 3 CAN detect multiple buttons pressed.
 

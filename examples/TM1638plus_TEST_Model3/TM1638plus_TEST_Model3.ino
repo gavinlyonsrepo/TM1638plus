@@ -30,9 +30,9 @@
 
 // GPIO I/O pins on the Arduino connected to strobe, clock, data,
 //pick on any I/O you want.
-#define  STROBE_TM 4
-#define  CLOCK_TM 6
-#define  DIO_TM 7
+#define  STROBE_TM 4 // strobe = GPIO connected to strobe line of module
+#define  CLOCK_TM 6  // clock = GPIO connected to clock line of module
+#define  DIO_TM 7 // data = GPIO connected to data line of module
 
 bool high_freq = false; //default false,, If using a high freq CPU > ~100 MHZ set to true. 
 
@@ -117,7 +117,7 @@ void Test3() {
   uint8_t pos = 0;
   for (pos = 0 ; pos<8 ; pos++)
   {
-    tm.display7Seg(pos, 1<<7-pos); // Displays a single seg in (dp)gfedcba) in each  pos 0-7
+    tm.display7Seg(pos, 1<<(7-pos)); // Displays a single seg in (dp)gfedcba) in each  pos 0-7
     delay(myTestDelay1);
   }
 }
@@ -146,7 +146,7 @@ void Test4() {
 
   tm.reset();
 
-  tm.displayHex(1, 0xFFFE);
+  tm.displayHex(1, 0xFE);
   tm.displayHex(7, 0x10);
   delay(myTestDelay3); // display " E      0"
 }
@@ -252,11 +252,11 @@ void Test12() {
     char textScroll[17] = " Hello world 123";
   unsigned long previousMillis_display = 0;  // will store last time display was updated
   const long interval_display = 1000;            //   interval at which to update display (milliseconds)
-
   while(1)
   {
   tm.displayText(textScroll);
   unsigned long currentMillis = millis();
+   yield(); // Added to prevent ESP8266 crash.
   if (currentMillis - previousMillis_display >= interval_display)
   {
     previousMillis_display = currentMillis;

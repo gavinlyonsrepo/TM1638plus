@@ -224,6 +224,7 @@ void Test7(void)
   {
   tm.DisplayStr(textScroll, 0);
   unsigned long currentMillis = millis();
+  yield(); // Added to prevent ESP8266 crash.
   //  update data every interval_display delay
   if (currentMillis - previousMillis_display >= interval_display)
   {
