@@ -28,8 +28,9 @@
 * Description: 
 
 An Arduino library to display data on a 8-digit TM1638 seven segment module's.
-This library supports all 3 of the known models on market. see Model type section below
+This library supports all 3 of the known models on market. see Model type section below.
 As of version 2.1.0 the library also supports TM1637 seven segment module's.
+
 * Main Author: Gavin Lyons.
 
 ## Installation

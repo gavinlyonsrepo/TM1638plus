@@ -1,5 +1,5 @@
 /*!
-	@file   seven_segment_font_data.hpp
+	@file   seven_segment_font_data.h
 	@brief  Seven-segment font data class for LED segment modules.
 */
 
