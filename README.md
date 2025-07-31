@@ -48,6 +48,9 @@ The API (application programming interface)  html documentation is at link. Host
 
 [Software API Url Link](https://gavinlyonsrepo.github.io/misc/software_docs/TM1638plus/index.html)
 
+### Class system
+
+![ pics ](https://github.com/gavinlyonsrepo/TM1638plus/blob/master/extra/images/class.png)
 
 ## Connections
 
@@ -155,11 +158,11 @@ SetLEDs: When you pass call the setLEDs function you can pass a word pattern whe
 1. Model 3 setLEDs(word) = 0xGGRR
 3. Model 1 setLEDs(word) = 0xRR00
 
-### Model 4
+### Model Four
 
 4 digits, there is a centered semi-colon.
  
-### Model 5
+### Model Five
 
 4 digits, each with a decimal point on each digit. 
 
