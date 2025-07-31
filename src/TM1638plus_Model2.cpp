@@ -15,7 +15,7 @@
 	@param high_freq Changes the value of parameter _HIGH_FREQ which is default false.
 	@note _HIGH_FREQ is used when running high freq MCU CPU (~>100Mhz) because of issues with button function. Pass true to turn on.
 */
-TM1638plus_Model2::TM1638plus_Model2(uint8_t strobe, uint8_t clock, uint8_t data,  bool swap_nibbles, bool high_freq) {
+TM1638plus_Model2::TM1638plus_Model2(uint8_t strobe, uint8_t clock, uint8_t data,  bool swap_nibbles, bool high_freq)  {
 	_STROBE_IO = strobe;
 	_DATA_IO = data;
 	_CLOCK_IO = clock;
@@ -157,16 +157,16 @@ void TM1638plus_Model2::DisplayStr(const char* string, const uint16_t  dots)
 	boolean done = false;
 	uint8_t Result  = 0; 
 	memset(values, 0, TM_DISPLAY_SIZE * sizeof(byte));
-
+	const uint8_t *font = SevenSegmentFont::pFontSevenSegptr();
 	for (uint8_t  i = 0; i < TM_DISPLAY_SIZE; i++) 
 	{
 		 if (!done && string[i] != '\0') {
 			 if (dots >> (7-i) & 1){  //if dots bit is set for that position apply the mask to turn on dot(0x80).
-					Result = pgm_read_byte(pFontSevenSegptr + (string[i] - TM_ASCII_OFFSET));
-					values[i] = (Result | TM_DOT_MASK_DEC); //apply the Dot bitmask to value extracted from ASCII table
+					Result = font[string[i] - _ASCII_FONT_OFFSET];
+					values[i] = (Result | DEC_POINT_7_MASK); // apply the Dot bitmask to value extracted from ASCII table
 					}
 				else 
-					values[i] = pgm_read_byte(pFontSevenSegptr + (string[i] - TM_ASCII_OFFSET)) ;
+					values[i] = font[string[i] - _ASCII_FONT_OFFSET];
 			}
 		else {
 			done = true;

@@ -6,27 +6,25 @@
 	@note
 		 Called Model 3 in this library.  This model is labelled LKM1638 or tm1638 v1.3
 		Carries out series of tests demonstrating arduino library TM1638plus.
-
-		TESTS:
-
-	0.   TEST 0 Reset
-	1.   TEST 1 Brightness
-	2.   TEST 2 ASCII display
-	3.   TEST 3 Set a single segment
-	4.   TEST 4 Hex digits
-	5.   TEST 5 Text String with Decimal point
-	6.   TEST 6 TEXT + ASCII combo
-	7.   TEST 7 Integer Decimal number
-	8.   TEST 8 Text String + Float
-	9.   TEST 9 Text String + decimal number
-	10. TEST 10 Multiple dots
-	11. TEST 11 Display Overflow
-	12. TEST 12 Scrolling text
-	13. TEST 13 Green + red LEDS, setLED and setLEDs functions.
-	14. TEST 14 Buttons to serial monitor
+	@test
+		-# Test 0 Reset
+		-# Test 1 Brightness
+		-# Test 2 ASCII display
+		-# Test 3 Set a single segment
+		-# Test 4 Hex digits
+		-# Test 5 Text String with Decimal point
+		-# Test 6 TEXT + ASCII combo
+		-# Test 7 Integer Decimal number
+		-# Test 8 Text String + Float
+		-# Test 9 Text String + decimal number
+		-# Test 10 Multiple dots
+		-# Test 11 Display Overflow
+		-# Test 12 Scrolling text
+		-# Test 13 Green + red LEDS, setLED and setLEDs functions.
+		-# Test 14 Buttons + LEDS
 */
 
-#include <TM1638plus.h>
+#include <TM1638plus_Model3.h>
 
 // GPIO I/O pins on the Arduino connected to strobe, clock, data,
 //pick on any I/O you want.
@@ -37,7 +35,7 @@
 bool high_freq = false; //default false,, If using a high freq CPU > ~100 MHZ set to true. 
 
 //Constructor object (GPIO STB , GPIO CLOCK , GPIO DIO, use high freq MCU default false)
-TM1638plus tm(STROBE_TM, CLOCK_TM , DIO_TM, high_freq);
+TM1638plus_model3 tm(STROBE_TM, CLOCK_TM , DIO_TM, high_freq);
 
 
 // Some vars and defines for the tests.
@@ -103,10 +101,10 @@ void Test1() {
 void Test2() {
   //Test 2 ASCII display 2.342
 
-  tm.displayASCIIwDot(0, '2');
-  tm.displayASCII(1, '3');
-  tm.displayASCII(2, '4');
-  tm.displayASCII(3, '2');
+  tm.displayASCII(0, '2', tm.DecPointOn);
+  tm.displayASCII(1, '3', tm.DecPointOff);
+  tm.displayASCII(2, '4', tm.DecPointOff);
+  tm.displayASCII(3, '2', tm.DecPointOff);
   delay(myTestDelay3);
   tm.reset();
 }
@@ -163,10 +161,10 @@ void Test6() {
   // ADC=.2.541
   char text1[] = "ADC=.";
   tm.displayText(text1);
-  tm.displayASCIIwDot(4, '2');
-  tm.displayASCII(5, '5');
-  tm.displayASCII(6, '4');
-  tm.displayASCII(7, '1');
+  tm.displayASCII(4, '2', tm.DecPointOn);
+  tm.displayASCII(5, '5', tm.DecPointOff);
+  tm.displayASCII(6, '4', tm.DecPointOff);
+  tm.displayASCII(7, '1', tm.DecPointOff);
   delay(myTestDelay3);
   tm.reset();
 }
@@ -281,16 +279,16 @@ void Test13()
 
   // Test 13A Turn on green leds with setLED
   for (LEDposition = 0; LEDposition < 8; LEDposition++) {
-    tm.setLED(LEDposition, TM_GREEN_LED);
+    tm.setLED(LEDposition, tm.TM_GREEN_LED);
     delay(500);
-    tm.setLED(LEDposition, TM_OFF_LED);
+    tm.setLED(LEDposition, tm.TM_OFF_LED);
   }
 
   // Test 13b turn on red LEDs with setLED
   for (LEDposition = 0; LEDposition < 8; LEDposition++) {
-    tm.setLED(LEDposition, TM_RED_LED);
+    tm.setLED(LEDposition, tm.TM_RED_LED);
     delay(500);
-    tm.setLED(LEDposition, TM_OFF_LED);
+    tm.setLED(LEDposition, tm.TM_OFF_LED);
   }
 
   // TEST 13c 

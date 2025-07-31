@@ -5,6 +5,8 @@
 # Datatypes (such as objects)
 TM1638plus	KEYWORD1
 TM1638plus_Model2	KEYWORD1
+TM1638plus_Model3	KEYWORD1
+TM1637plus_ModelX	KEYWORD1
 
 # Methods / functions
 displayBegin	KEYWORD2
@@ -16,7 +18,6 @@ readButtons	KEYWORD2
 setLED	KEYWORD2
 setLEDs KEYWORD2
 displayText	KEYWORD2
-displayASCIIwDot	KEYWORD2
 displayASCII	KEYWORD2
 display7Seg	KEYWORD2
 displayHex	KEYWORD2
@@ -30,7 +31,19 @@ ASCIItoSegment	KEYWORD2
 ReadKey16	KEYWORD2
 ReadKey16Two	KEYWORD2
 
+displayBegin	KEYWORD2
+displayClose	KEYWORD2
+displayClear	KEYWORD2
+setBrightness	KEYWORD2
+setSegments	KEYWORD2
+DisplayDecimal	KEYWORD2
+DisplayDecimalwDot	KEYWORD2
+DisplayString	KEYWORD2
+encodeCharacter	KEYWORD2
+
 # Constants
 TMAlignTextRight	LITERAL1
 TMAlignTextLeft	LITERAL1
+DecPointOn	LITERAL1
+DecPointOff	LITERAL1
 

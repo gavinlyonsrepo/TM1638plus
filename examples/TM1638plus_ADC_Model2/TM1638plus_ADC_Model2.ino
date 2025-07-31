@@ -12,8 +12,7 @@
 		  3. ADC1.DA.TA -> DA.TA.VOLT, Demo: how to use floats.
  
 		Also demo buttons as button presses is used to switch between testmodes.
-		
-		Tested on UNO and NANO rev 3 ONLY
+
 */
 
 #include <TM1638plus_Model2.h>

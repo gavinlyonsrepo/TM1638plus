@@ -13,6 +13,8 @@
      * [Model One](#model-one)
      * [Model Two](#model-two)
      * [Model Three](#model-three)
+     * [Model Four](#model-four)
+     * [Model Five](#model-five)
   * [Tested](#tested)
   * [Notes](#notes)
      * [Swapped data nibbles](#swapped-data-nibbles)
@@ -27,7 +29,7 @@
 
 An Arduino library to display data on a 8-digit TM1638 seven segment module's.
 This library supports all 3 of the known models on market. see Model type section below
-
+As of version 2.1.0 the library also supports TM1637 seven segment module's.
 * Main Author: Gavin Lyons.
 
 ## Installation
@@ -49,27 +51,40 @@ The API (application programming interface)  html documentation is at link. Host
 
 ## Connections
 
-Connections to MCU: 
+TM1638 Connections to MCU: 
 
 	* GPIO = STB = Strobe
-	* GPIO  = CLK  = Clock
+	* GPIO = CLK = Clock
 	* GPIO = DIO = Data input / output
 	* GND
 	* VCC 
 
+TM1637 Connections to MCU: 
+
+	* GPIO = CLK = Clock
+	* GPIO = DIO = Data input / output
+	* VCC 
+	* GND
+
 ## Model Types
 
 This library supports three variants of the TM1638, which for purposes of this documentation, 
-will be named Model 1 ,Model 2 and Model 3.  Pictured left to right. 
+will be named Model 1 ,Model 2 and Model 3.   
+The library also supports two variants of TM1637(model 4 & 5), 
 
-![ module pics ](https://github.com/gavinlyonsrepo/TM1638plus/blob/master/extra/images/tm16383.jpg)
+Models 1-3 Pictured left to right.
+![ model pics ](https://github.com/gavinlyonsrepo/TM1638plus/blob/master/extra/images/tm16383.jpg)
+
+Model 4-5 
+![ model 45 pic](https://github.com/gavinlyonsrepo/TM1638plus/blob/master/extra/images/model45.jpg)
 
 | Model Name | PCB Labels | LEDs | Push buttons | 
 | ------ | ------ |  ------ | ------ |
 | Model 1 | TM1638 LED & KEY | 8 red only | 8 |
 | Model 2 | TM1638 KEYS, QYF  | 0 | 16 |
-| Model 3 | TM1638 V1.3 or LKM1638  | 8 bi color,  red or green  | 8 |
-
+| Model 3 | TM1638 V1.3 or LKM1638 | 8 bi color, red or green| 8 |
+| Model 4 | TM1637 | centered semi:colon | 0 |
+| Model 5 | TM1637 | 0 | 0 |
 
 ### Model One
 
@@ -108,7 +123,6 @@ Raw ASCII data can be printed without reference to font file.
 
 ### Model Three
 
-
 There are different PCB's of these modules on market, 
 This library was tested on no 3 below. I think this software will work for all of them 
 and the differences in PCB are related to connectors, layout and component placement. 
@@ -141,19 +155,28 @@ SetLEDs: When you pass call the setLEDs function you can pass a word pattern whe
 1. Model 3 setLEDs(word) = 0xGGRR
 3. Model 1 setLEDs(word) = 0xRR00
 
+### Model 4
+
+4 digits, there is a centered semi-colon.
+ 
+### Model 5
+
+4 digits, each with a decimal point on each digit. 
+
 ## Tested
 
 
 * Tested on following MCU  & Development platforms.
 * Examples files are set up for Arduino UNO & NANO v3.
-* File GPIO_OTHER_MCUs.txt in extra folder gives pins  tested  for other MCU.
+* File GPIO_OTHER_MCUs.txt in extra folder gives pins tested  for other MCU(tm1638)
 
-1. Arduino UNO & NANO v3 .
-2. ATtiny85 .
+1. Arduino UNO & NANO v3.
+2. ATtiny85.
 3. ESP32.
 4. STM32 STM32F103C8T6 "the blue pill".
 5. ESP8266.
 6. Teensy 4.0. (may not work at highest frequency see  note #2 in notes section)
+7. Arduino R4 minima 
 
 ## Notes
 
@@ -198,7 +221,7 @@ The  Teensy results have been sent in by email, I don't have these MCU's them at
 
 ### Multiple displays
 
-Driving multiple displays.
+Driving multiple displays, TM1638.
 It is possible to drive multiple modules. Share the DIO and CLK lines and use a unique
 STB line for each device. see issue number 10 at github for example code.
 

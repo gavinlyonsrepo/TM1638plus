@@ -5,24 +5,22 @@
 		 demo file library for  TM1638 module(LED & KEY). Model 1
 	@note
 		  Carries out series of tests to demo arduino library TM1638plus.
-
-		TESTS:
-
-	0.   TEST 0 Reset
-	1.   TEST 1 Brightness
-	2.   TEST 2 ASCII display
-	3.   TEST 3 Set a single segment
-	4.   TEST 4 Hex digits
-	5.   TEST 5 Text String with Decimal point
-	6.   TEST 6 TEXT + ASCII combo
-	7.   TEST 7 Integer Decimal number
-	8.   TEST 8 Text String + Float
-	9.   TEST 9 Text String + decimal number
-	10. TEST 10 Multiple dots
-	11. TEST 11 Display Overflow
-	12. TEST 12 Scrolling text
-	13. TEST 13 setLED and setLEDs method
-	14. TEST 14 Buttons + LEDS
+	@test
+		-# Test 0 Reset
+		-# Test 1 Brightness
+		-# Test 2 ASCII display
+		-# Test 3 Set a single segment
+		-# Test 4 Hex digits
+		-# Test 5 Text String with Decimal point
+		-# Test 6 TEXT + ASCII combo
+		-# Test 7 Integer Decimal number
+		-# Test 8 Text String + Float
+		-# Test 9 Text String + decimal number
+		-# Test 10 Multiple dots
+		-# Test 11 Display Overflow
+		-# Test 12 Scrolling text
+		-# Test 13 setLED and setLEDs method
+		-# Test 14 Buttons + LEDS
 */
 
 #include <TM1638plus.h>
@@ -95,10 +93,10 @@ void Test1() {
 void Test2() {
   //Test 2 ASCII , display 2.341
 
-  tm.displayASCIIwDot(0, '2');
-  tm.displayASCII(1, '3');
-  tm.displayASCII(2, '4');
-  tm.displayASCII(3, '1');
+  tm.displayASCII(0, '2', tm.DecPointOn);
+  tm.displayASCII(1, '3', tm.DecPointOff);
+  tm.displayASCII(2, '4', tm.DecPointOff);
+  tm.displayASCII(3, '1', tm.DecPointOff);
   delay(myTestDelay3);
   tm.reset();
 }
@@ -155,10 +153,10 @@ void Test6() {
   // ADC=.2.948
   char text1[] = "ADC=.";
   tm.displayText(text1);
-  tm.displayASCIIwDot(4, '2');
-  tm.displayASCII(5, '9');
-  tm.displayASCII(6, '4');
-  tm.displayASCII(7, '8');
+  tm.displayASCII(4, '2', tm.DecPointOn);
+  tm.displayASCII(5, '9', tm.DecPointOff);
+  tm.displayASCII(6, '4', tm.DecPointOff);
+  tm.displayASCII(7, '8', tm.DecPointOff);
   delay(myTestDelay);
   tm.reset();
 }
@@ -277,17 +275,21 @@ void Test13()
     tm.setLED(LEDposition, 0);
   }
 
-  // TEST 13b test setLEDs function (0xLEDXX) ( L8-L1 , XX )
-  // NOTE passed L8-L1 and on display L8 is on right hand side. i.e. 0x01 turns on L1. LXXX XXXX
-  // For model 1 just use upper byte , lower byte is is used by model3 for bi-color leds leave at 0x00 for model 1.
-  tm.setLEDs(0xFF00); //  all LEDs on
-  delay(myTestDelay3);
-   tm.setLEDs(0x0100); // Displays as LXXX XXXX (L1-L8) , NOTE on display L8 is on right hand side.
-  delay(myTestDelay3);
-  tm.setLEDs(0xF000); //  Displays as XXXX LLLL (L1-L8) , NOTE on display L8 is on right hand side.
-  delay(myTestDelay3);
-  tm.setLEDs(0x0000); // all off
-  delay(myTestDelay3);
+	// TEST 13b test setLEDs function (0xLXX) ( L8-L1 , XX )
+	// NOTE passed L8-L1 and on display L8 is on right hand side. i.e. 0x01 turns on L1. LXXX XXXX
+
+	tm.setLEDs(0xFF); //  all LEDs on 
+	delay(2500);
+	tm.setLEDs(0x01); // Displays as LXXX XXXX (L1-L8) , NOTE on display L8 is on right hand side.
+	delay(2500);
+	tm.setLEDs(0xF0); //  Displays as XXXX LLLL (L1-L8) , NOTE on display L8 is on right hand side.
+	delay(2500);
+	tm.setLEDs(0x07); //  Displays as LLLX XXXX (L1-L8) , NOTE on display L8 is on right hand side.
+	delay(2500);
+	tm.setLEDs(0x41); //  Displays as LXXX XXLX (L1-L8) , NOTE on display L8 is on right hand side.
+	delay(2500);
+	tm.setLEDs(0x00); // all off
+	delay(2500);
 
 }
 

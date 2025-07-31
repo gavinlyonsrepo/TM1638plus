@@ -18,7 +18,7 @@ TM1638plus::TM1638plus(uint8_t strobe, uint8_t clock, uint8_t data, bool highfre
 	_STROBE_IO = strobe;
 	_DATA_IO = data;
 	_CLOCK_IO = clock;
-	 _HIGH_FREQ = highfreq;
+	_HIGH_FREQ = highfreq;
 }
 
 
@@ -37,31 +37,25 @@ void TM1638plus::setLED(uint8_t position, uint8_t value)
 	digitalWrite(_STROBE_IO, HIGH);
 }
 
+
 /*!
-	@brief Set all  LED's  on or off  Model 1 & 3
-	@param  ledvalues see note behaviour differs depending on Model.
-	@note
-	1. Model 3
-		-# Upper byte for the green LEDs, Lower byte for the red LEDs (0xgreenred) (0xGGRR)
-		-# ie. 0xE007   1110 0000 0000 0111   results in L8-L0  GGGX XRRR,  L8 is RHS on display
-	2. MODEL 1:
-		-# Upper byte 1 for  LED data , Lower byte n/a set to 0x00 (0xleds, 0x00)
-		-# i.e 0xF100  1111 0000 L8-L0 RRRR XXXX , L8 is RHS on display
+	@brief Set all LED's  on or off  Model 1 & 3
+	@param ledvalues 1 on , 0 off , 0xXXLL where LL = L8-L1
+	@note MODEL 1:
+		-# Upper byte ignored this byte/method is used by sub-class Model 3 
+		-# Lower byte LED data model 1
+		-# setLEDs(0xF0) Displays as XXXX LLLL (L1-L8),NOTE on display L8 is on right hand side.
 */
 void TM1638plus::setLEDs(uint16_t ledvalues)
 {
+	uint8_t colour = 0;
+	ledvalues = ledvalues & 0x00FF;
 	for (uint8_t LEDposition = 0;  LEDposition < 8; LEDposition++) {
-		uint8_t colour = 0;
-
 		if ((ledvalues & (1 << LEDposition)) != 0) {
-			colour |= TM_RED_LED; // scan lower byte, set Red if one
-		}
-
-		if ((ledvalues & (1 << (LEDposition + 8))) != 0) {
-			colour |= TM_GREEN_LED; // scan upper byte, set green if one
-		}
-
+			colour |= 0x01; 
+		} 
 		setLED(LEDposition, colour);
+		colour = 0;
 	}
 }
 
@@ -135,32 +129,37 @@ void TM1638plus::displayText(const char *text) {
 	pos = 0;
 		while ((c = (*text++)) && pos < TM_DISPLAY_SIZE)  {
 		if (*text == '.' && c != '.') {
-			displayASCIIwDot(pos++, c);
-
+			displayASCII(pos++, c, DecPointOn);
 			text++;
 		}  else {
-			displayASCII(pos++, c);
+			displayASCII(pos++, c, DecPointOff);
 		}
 		}
-}
-
-/*!
-	@brief Display an ASCII character with decimal point turned on
-	@param position The position on display 0-7 
-	@param ascii The ASCII value from font table  to display 
-*/
-void TM1638plus::displayASCIIwDot(uint8_t position, uint8_t ascii) {
-		// add 128 or 0x080 0b1000000 to turn on decimal point/dot in seven seg
-	display7Seg(position, pgm_read_byte(pFontSevenSegptr +(ascii- TM_ASCII_OFFSET)) + TM_DOT_MASK_DEC);
 }
 
 /*!
 	@brief Display an ASCII character on display
 	@param position The position on display 0-7  
 	@param ascii The ASCII value from font table  to display 
+	@param decimalPoint decimal point or off on the digit.
 */
-void TM1638plus::displayASCII(uint8_t position, uint8_t ascii) {
-	display7Seg(position, pgm_read_byte(pFontSevenSegptr + (ascii - TM_ASCII_OFFSET)));
+void TM1638plus::displayASCII(uint8_t position, uint8_t ascii, DecimalPoint_e decimalPoint) {
+	if (ascii < _ASCII_FONT_OFFSET || ascii >= _ASCII_FONT_END )
+	{
+		if (displaylib_LED_debug) 
+			Serial.println("Warning : displayASCII : ASCII character is outside font range");
+		ascii = '0';
+	} // check ASCII font bounds
+	const uint8_t *font = SevenSegmentFont::pFontSevenSegptr();
+	switch (decimalPoint)
+	{
+		case DecPointOff: 
+			display7Seg(position, font[ascii - _ASCII_FONT_OFFSET]); 
+			break;
+		case DecPointOn: // add 128 or 0x080 0b1000000 to turn on decimal point/dot in seven seg
+			display7Seg(position, font[ascii- _ASCII_FONT_OFFSET] + DEC_POINT_7_MASK); 
+			break;
+	}
 }
 
 /*!
@@ -185,10 +184,11 @@ void TM1638plus::display7Seg(uint8_t position, uint8_t value) {
 void TM1638plus::displayHex(uint8_t position, uint8_t hex)
 {
 	uint8_t offset = 0;
+	const uint8_t *font = SevenSegmentFont::pFontSevenSegptr();
 	hex = hex % 16;
 	if (hex <= 9)
 	{
-		display7Seg(position, pgm_read_byte(pFontSevenSegptr + (hex + TM_HEX_OFFSET)));
+		display7Seg(position, font[hex + _ASCII_FONT_HEX_OFFSET]);
 		// 16 is offset in reduced ASCII table for number 0
 	}else if ((hex >= 10) && (hex <=15))
 	{
@@ -202,7 +202,7 @@ void TM1638plus::displayHex(uint8_t position, uint8_t hex)
 		 case 14: offset = 'E'; break;
 		 case 15: offset = 'F'; break;
 		}
-		display7Seg(position, pgm_read_byte(pFontSevenSegptr + (offset-TM_ASCII_OFFSET)));
+		display7Seg(position, font[offset-_ASCII_FONT_OFFSET]);
 	}
 }
 

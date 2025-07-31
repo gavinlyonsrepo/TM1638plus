@@ -1,69 +1,109 @@
 /*!
 	@file     TM1638plus_BUTTON_Model1.ino
 	@author   Gavin Lyons
-	@brief    tm1638_plus ,Model 1 , Simple example of one possible method to "debounce" buttonsRead() method
-  @note     Debouncing may or may not be necessary depending on application and the best way to achieve it will vary
-
+	@brief    TM1638plus Model 1 button debouncing.
 */
 
-#include <TM1638plus.h> // include the library
+#include <TM1638plus.h>
 
-// GPIO I/O pins on the Arduino connected to strobe, clock, data,
-// pick on any I/O you want.
-#define  STROBE_TM 4 // strobe = GPIO connected to strobe line of module
-#define  CLOCK_TM 6  // clock = GPIO connected to clock line of module
-#define  DIO_TM 7 // data = GPIO connected to data line of module
+// GPIO pins
+#define STROBE_TM 4
+#define CLOCK_TM  6
+#define DIO_TM    7
 
+TM1638plus tm(STROBE_TM, CLOCK_TM, DIO_TM, false);
 
-bool high_freq = false; // default false, If using a high freq CPU > ~100 MHZ set to true. 
+// Config
+constexpr uint8_t NUM_BUTTONS = 8;
+constexpr unsigned long DEBOUNCE_MS = 50; // time taken to debounce a button in mS
+constexpr unsigned long LONG_PRESS_MS = 800; // time taken to deinfe a long press on a button held done in mS
 
-const long intervalButton = 200; // interval to read button (milliseconds)
-const long intervalDisplay = 1000; // interval at which to change display (milliseconds)
+struct ButtonState {
+	bool stableState = false;
+	bool lastRaw = false;
+	bool wasPressed = false;
+	bool longPressReported = false;
+	unsigned long lastChange = 0;
+	unsigned long pressStart = 0;
+};
 
-// Constructor object (GPIO STB , GPIO CLOCK , GPIO DIO, use high freq MCU)
-TM1638plus tm(STROBE_TM, CLOCK_TM , DIO_TM, high_freq);
+ButtonState buttons[NUM_BUTTONS];
 
-void setup()
-{
-  tm.displayBegin(); 
-  tm.displayText("00000000");
-  Serial.begin(38400);
-  delay(100);
-  Serial.println("--Comms UP--TM1638plus_BUTTON_Model1.ino--");
-  delay(5000);
+void setup() {
+	tm.displayBegin();
+	tm.displayText("--------");
+	Serial.begin(38400);
+	delay(1000);
 }
 
-void loop()
-{
-  uint8_t buttonsValue = buttonsRead();
-  if (buttonsValue != 0){
-    updateDisplay(buttonsValue);
-  }
-
-} // end of loop()
-
-// Read and debounce the buttons from TM1638  every interval 
-uint8_t buttonsRead(void)
-{
-  uint8_t buttons = 0;
-  static unsigned long previousMillisButton = 0;  // executed once 
-  unsigned long currentMillis = millis();
-  if (currentMillis - previousMillisButton >= intervalButton) {
-    previousMillisButton = currentMillis;
-    buttons = tm.readButtons();
-  }
-  return buttons;
+void loop() {
+	updateButtons();
 }
 
-// Change display every interval 
-void updateDisplay(uint8_t buttonsValue)
-{
-  unsigned long currentMillis = millis();
-  static unsigned long previousMillisDisplay = 0;  // executed once 
-  if (currentMillis - previousMillisDisplay >= intervalDisplay)
-  {
-    previousMillisDisplay = currentMillis;
-    tm.displayIntNum(buttonsValue, true, TMAlignTextLeft);
-    Serial.println(buttonsValue, HEX);
-  }
+void updateButtons() {
+	uint8_t rawStates = tm.readButtons();
+	unsigned long now = millis();
+	for (uint8_t i = 0; i < NUM_BUTTONS; ++i) {
+		bool raw = rawStates & (1 << i);
+		if (raw != buttons[i].lastRaw) {
+			buttons[i].lastChange = now;
+			buttons[i].lastRaw = raw;
+		}
+		if ((now - buttons[i].lastChange) > DEBOUNCE_MS) {
+			if (raw != buttons[i].stableState) {
+				buttons[i].stableState = raw;
+				// Button just pressed
+				if (raw) {
+					buttons[i].pressStart = now;
+					buttons[i].longPressReported = false;
+					buttonPressed(i);
+				} else {
+					if (!buttons[i].longPressReported)
+						buttonReleased(i);
+					buttons[i].wasPressed = false;
+				}
+			}
+			// Long press detection
+			if (raw && !buttons[i].longPressReported && (now - buttons[i].pressStart >= LONG_PRESS_MS)) {
+				buttonLongPress(i);
+				buttons[i].longPressReported = true;
+			}
+		}
+	}
+}
+
+// Single button press
+void buttonPressed(uint8_t id) {
+	Serial.print("Short press on button ");
+	Serial.println(id);
+	tm.displayIntNum(1 << id, true, TMAlignTextLeft);
+	buttons[id].wasPressed = true;
+	// Check for combos
+	checkCombos();
+}
+
+// Long press
+void buttonLongPress(uint8_t id) {
+	Serial.print("Long press on button ");
+	Serial.println(id);
+}
+
+// Button released (only if not long pressed)
+void buttonReleased(uint8_t id) {
+	Serial.print("Released button ");
+	Serial.println(id);
+}
+
+// Combo detection (example: buttons 0 + 1)
+void checkCombos() {
+	uint8_t state = 0;
+  uint8_t buttons_0_1 = 0b00000011;
+	for (uint8_t i = 0; i < NUM_BUTTONS; ++i) {
+		if (buttons[i].stableState)
+			state |= (1 << i);
+	}
+	if ((state & buttons_0_1) == buttons_0_1) {
+		Serial.println("Combo: Buttons 0 + 1 pressed");
+    tm.displayIntNum(buttons_0_1, true, TMAlignTextLeft);
+	}
 }
