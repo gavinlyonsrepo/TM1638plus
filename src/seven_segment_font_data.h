@@ -1,10 +1,12 @@
 /*!
-	@file   seven_segment_font_data.h
+	@file   seven_segment_font_data.hpp
 	@brief  Seven-segment font data class for LED segment modules.
 */
 
 #ifndef SEVENSEG_COMMON_H
 #define SEVENSEG_COMMON_H
+
+#include <cstdint>
 
 /*!
 	@class SevenSegmentFont
