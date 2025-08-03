@@ -7,8 +7,6 @@
 #ifndef TM1638PLUS_MODEL3_H
 #define TM1638PLUS_MODEL3_H
 
-#include <cstdio>
-#include <cstring>
 #include "TM1638plus.h"
 
 /*!

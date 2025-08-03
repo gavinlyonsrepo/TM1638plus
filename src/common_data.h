@@ -21,7 +21,7 @@ public:
 		DecPointOn  = 1  /**< Decimal point segment on */
 	};
 	
-	static constexpr uint16_t displaylib_LED_VersionNum = 210; /**< library version number */
+	static constexpr uint16_t displaylib_LED_VersionNum = 212; /**< library version number */
 	bool displaylib_LED_debug = false; /**< debug flag, true = debug mode on, extra infomation written to console */
 
 protected:

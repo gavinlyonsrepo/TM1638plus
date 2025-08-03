@@ -27,7 +27,9 @@ TM1637plus_modelX::TM1637plus_modelX(uint8_t clock, uint8_t data, int delay, int
 */
 void  TM1637plus_modelX::displayClear()
 {
-	uint8_t data[_DisplaySize] = {0};
+	uint8_t data[_DisplaySize];
+	for (uint8_t i = 0; i < _DisplaySize; ++i){
+		data[i] = 0;}
 	setSegments(data, _DisplaySize, 0);
 }
 /*!
@@ -124,7 +126,7 @@ void TM1637plus_modelX::DisplayDecimalwDot(int number, uint8_t dots,  bool leadi
 	// Array to store the encoded digits for the display
 	uint8_t digits[_DisplaySize];
 	// Array of divisors used to extract each digit from the number
-	const static int divisors[] = { 1, 10, 100, 1000, 10000, 100000 };
+	const static int divisors[] = { 1, 10, 100, 1000};
 	bool leading = true;
 
 	// Loop through each digit position
@@ -186,8 +188,9 @@ int TM1637plus_modelX::DisplayString(const char* numStr, uint8_t dots, uint8_t l
 			Serial.println("Error: DisplayString 2: Text array length is not equal to specifed length parameter");
 		return -3;
 	}
-	
-	uint8_t digits[_DisplaySize] = {0};
+	uint8_t digits[_DisplaySize];
+	for (uint8_t i = 0; i < _DisplaySize; ++i){
+		digits[i] = 0;}
 	uint8_t digit = 0;
 	
 	for (int8_t i = 0; i < length; i++) 

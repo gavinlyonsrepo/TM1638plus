@@ -6,7 +6,7 @@
 #ifndef SEVENSEG_COMMON_H
 #define SEVENSEG_COMMON_H
 
-#include <cstdint>
+#include <stdint.h>
 
 /*!
 	@class SevenSegmentFont
