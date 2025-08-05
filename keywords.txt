@@ -7,6 +7,7 @@ TM1638plus	KEYWORD1
 TM1638plus_Model2	KEYWORD1
 TM1638plus_Model3	KEYWORD1
 TM1637plus_ModelX	KEYWORD1
+MAX7219plus_Model6	KEYWORD1
 
 # Methods / functions
 displayBegin	KEYWORD2
@@ -40,6 +41,24 @@ DisplayDecimal	KEYWORD2
 DisplayDecimalwDot	KEYWORD2
 DisplayString	KEYWORD2
 encodeCharacter	KEYWORD2
+
+InitDisplay	KEYWORD2
+ClearDisplay	KEYWORD2
+SetBrightness	KEYWORD2
+DisplayTestMode	KEYWORD2
+ShutdownMode	KEYWORD2
+GetCommDelay	KEYWORD2
+SetCommDelay	KEYWORD2
+GetHardwareSPI	KEYWORD2
+GetCurrentDisplayNumber	KEYWORD2
+SetCurrentDisplayNumber	KEYWORD2
+DisplayChar	KEYWORD2
+DisplayText	KEYWORD2
+DisplayIntNum	KEYWORD2
+DisplayDecNumNibble	KEYWORD2
+DisplayBCDChar	KEYWORD2
+DisplayBCDText	KEYWORD2
+SetSegment	KEYWORD2
 
 # Constants
 TMAlignTextRight	LITERAL1
