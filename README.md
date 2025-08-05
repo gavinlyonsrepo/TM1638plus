@@ -64,7 +64,7 @@ and the MAX7219 seven segment modules(model 6)
 
 | Component name | Type | Interface | Readme URL link |
 | -------- | ---------- | --------- | ---------- |
-| TM1638 |seven segment module LCD|GPIO| [Readme](extra/doc/tm1638/README.md)|
+| TM1638 |seven segment module|GPIO| [Readme](extra/doc/tm1638/README.md)|
 | TM1637|seven segment module|GPIO| [Readme](extra/doc/tm1637/README.md)|
 | MAX7219|seven segment module|SPI HW & SW| [Readme](extra/doc/max7219/README.md)|
 
