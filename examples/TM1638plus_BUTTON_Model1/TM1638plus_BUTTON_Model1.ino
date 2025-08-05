@@ -2,6 +2,7 @@
 	@file     TM1638plus_BUTTON_Model1.ino
 	@author   Gavin Lyons
 	@brief    TM1638plus Model 1 button debouncing.
+	@details  Short, long and release detection. Combo detection on buttons 0 + 1 only(more can be added)
 */
 
 #include <TM1638plus.h>

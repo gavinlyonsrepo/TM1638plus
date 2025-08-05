@@ -9,13 +9,6 @@
 #ifndef TM1638PLUS_COMMON_H
 #define TM1638PLUS_COMMON_H
 
-#if (ARDUINO >=100)
-	#include "Arduino.h"
-#else
-	#include "WProgram.h"
-#endif
-
-#include "common_data.h"
 #include "seven_segment_font_data.h"
 
 /*! Alignment of text on display */

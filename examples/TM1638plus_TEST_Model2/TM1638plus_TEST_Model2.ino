@@ -1,22 +1,24 @@
 /*!
-	@file      TM1638plus_TEST_Model2.ino
-	@author   Gavin Lyons
-	@brief 
-		 demo file library for "model 2" TM1638 module(16 KEY 16 pushbuutons).
-	@note 
-		Carries out series of tests demonstrating arduino library TM1638plus.
-		The tests will increment automatically with exception of test9, to enter press S16 during test8
-	@test
-		-# Test 0  reset function test  
-		-# Test 1  decimal numbers
-		-# Test 2  Hexadecimal number
-		-# Test 3  manually set segments 
-		-# Test 4  Display  strings
-		-# Test 5  ASCII to segments ( no reference to font table)
-		-# Test 6  Brightness control 
-		-# Test 7  Scroll text example
-		-# Test 8  Push buttons ReadKey16() buttons function , press 16 to goto test9
-		-# Test 9  Push buttons ReadKeys16Two() alternate  buttons function
+    @file      TM1638plus_TEST_Model2.ino
+    @author   Gavin Lyons
+    @brief 
+         demo file library for "model 2" TM1638 module(16 KEY 16 pushbuutons).
+    @details 
+        Carries out series of tests demonstrating arduino library TM1638plus.
+        The tests will increment automatically with exception of test9, to enter press S16 during test8
+        Button Class included for Test8, Output to Serial monitor at 9600 baud
+
+    @test
+        -# Test 0  reset function test  
+        -# Test 1  decimal numbers
+        -# Test 2  Hexadecimal number
+        -# Test 3  manually set segments 
+        -# Test 4  Display  strings
+        -# Test 5  ASCII to segments ( no reference to font table)
+        -# Test 6  Brightness control 
+        -# Test 7  Scroll text example
+        -# Test 8  Push buttons ReadKey16() buttons function , press 16 to goto test9
+        -# Test 9  Push buttons ReadKeys16Two() alternate  buttons function
 */
 
 #include <TM1638plus_Model2.h>
@@ -35,7 +37,6 @@ TM1638plus_Model2 tm(STROBE_TM, CLOCK_TM , DIO_TM, swap_nibbles, high_freq);
 #define  myTestDelay 5000
 #define  myTestDelay1 1000
 #define  myTestDelay2 250
-uint8_t  testcount = 0;
 
 void setup() {
   Serialinit(); //optional used for buttons test
@@ -47,20 +48,15 @@ void setup() {
 }
 
 void loop() {
-  testcount++;
-  
-    switch (testcount)
-  {
-    case 1: Test1(); break; // Test 1 decimal numbers
-    case 2: Test2(); break; // Test 2 Hexadecimal number
-    case 3: Test3(); break; // Test 3a 3b & 3C using DisplaySegments method
-    case 4: Test4(); break; // Test 4 strings
-    case 5: Test5(); break; // Test 5 ASCIItoSegment method 
-    case 6: Test6(); break; // Test 6  Brightness and reset
-    case 7: Test7(); break; // Test 7 scroll text
-    case 8: Test8(); break; // Test 8 Buttons , ReadKey16() returns byte 1-16 decimal, press S16 to goto test9
-    case 9: Test9(); break; // Test 9 Buttons , Readkey16Two() alternate buttons function. 
-  }
+    Test1(); // Test 1 decimal numbers
+    Test2(); // Test 2 Hexadecimal number
+    Test3(); // Test 3a 3b & 3C using DisplaySegments method
+    Test4(); // Test 4 strings
+    Test5(); // Test 5 ASCIItoSegment method 
+    Test6(); // Test 6  Brightness and reset
+    Test7(); // Test 7 scroll text
+    Test8(); // Test 8 Buttons , ReadKey16() returns byte 1-16 decimal, press S16 to goto test9
+    Test9(); // Test 9 Buttons , Readkey16Two() alternate buttons function. 
 }
 
 //Function to setup serial called from setup
@@ -70,6 +66,80 @@ void Serialinit()
   delay( myTestDelay);
   Serial.println("-- TM1638 Model2 test : Comms UP --");
 }
+
+// Class used in test 8 to debounce buttons , optional.
+class Button16Handler {
+public:
+    Button16Handler(unsigned long debounceDelayMs = 50, unsigned long longPressMs = 800)
+        : _debounceDelay(debounceDelayMs), _longPressThreshold(longPressMs) {}
+    // Call this every loop
+    void update(uint8_t raw) {
+    unsigned long now = millis();
+
+    if (raw != _lastRaw) {
+        _lastRaw = raw;
+        _lastDebounceTime = now;
+    }
+
+    if ((now - _lastDebounceTime) > _debounceDelay) {
+        if (raw != _stableValue) {
+            // Button just released
+            if (raw == 0 && _stableValue != 0) {
+                uint8_t releasedButton = _stableValue;
+                _stableValue = 0;
+                onButtonReleased(releasedButton);
+            }
+            // Button just pressed
+            else if (raw != 0) {
+                _stableValue = raw;
+                pressStartTime = now;
+                wasLongPress = false;
+                onButtonPressed(_stableValue);
+            }
+        }
+
+        // Long press detection
+        if (_stableValue != 0 && !wasLongPress &&
+            (now - pressStartTime) > _longPressThreshold) {
+            wasLongPress = true;
+            onButtonLongPress(_stableValue);
+        }
+    }
+}
+
+
+    virtual void onButtonPressed(uint8_t button) {
+        Serial.print("Short press: ");
+        Serial.println(button);
+        tm.DisplayDecNum(button, 0, false, TMAlignTextRight);
+    }
+
+    virtual void onButtonReleased(uint8_t button) {
+        // Optional: do something on release
+    Serial.print("Release: ");
+    Serial.println(button);
+    }
+
+    virtual void onButtonLongPress(uint8_t button) {
+        Serial.print("Long press: ");
+        Serial.println(button);
+    tm.DisplayDecNum(button, 0, false, TMAlignTextRight);
+    }
+
+    uint8_t getStableValue() const {
+        return _stableValue;
+    }
+
+private:
+    unsigned long _debounceDelay;
+    unsigned long _longPressThreshold;
+
+    uint8_t _lastRaw = 0;
+    uint8_t _stableValue = 0;
+    unsigned long _lastDebounceTime = 0;
+    unsigned long pressStartTime = 0;
+    bool wasLongPress = false;
+};
 
 void Test1(void)
 {
@@ -239,22 +309,18 @@ void Test7(void)
 
 void Test8(void)
 {
-  unsigned char buttons;
-  while(1)
-  {
-      // Test 8 , buttons readkey16() function, no debounce see notes at URL for example to debounce.
-      // returns 0-16 , 0 for nothing pressed.
-      // NOTE: pressing  S16 will move to test 9 
-      buttons = tm.ReadKey16();
-      tm.DisplayDecNum(buttons, 0 ,false, TMAlignTextRight); 
-      Serial.println(buttons);
-      delay( myTestDelay2);
-      if (buttons == 16)
-      {
-           //pressing 16 moves  to test 9
-          delay( myTestDelay2);
-          return;
-      }
+    tm.DisplayStr("buttons1", 0);
+    delay(2000);
+    tm.reset();
+    Button16Handler handler; // default de-bounce = 50ms, long press = 800ms
+    while (true) {
+        uint8_t raw = tm.ReadKey16();
+        handler.update(raw);
+        if (handler.getStableValue() == 16) {
+            delay(myTestDelay2);
+            return;
+        }
+        delay(myTestDelay2);
     }
 }
 
@@ -279,3 +345,6 @@ void Test9(void)
       delay(myTestDelay2);
       }
 }
+
+
+

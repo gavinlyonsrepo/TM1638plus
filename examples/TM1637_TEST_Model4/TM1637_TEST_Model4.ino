@@ -16,6 +16,7 @@
 		-# Test 2 decimal number testing
 		-# Test 3 string display
 		-# Test 4 Brightness & on/off
+		-# Test 5 Error Check
 */
 
 // === Libraries ===

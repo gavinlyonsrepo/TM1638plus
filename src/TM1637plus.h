@@ -7,13 +7,7 @@
 #ifndef TM1637PLUS_MODELX_H
 #define TM1637PLUS_MODELX_H
 
-#if (ARDUINO >=100)
-  #include "Arduino.h"
-#else
-  #include "WProgram.h"
-#endif
-
-#include "common_data.h"
+// Libraries
 #include "seven_segment_font_data.h"
 
 /*!

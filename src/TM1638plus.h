@@ -7,12 +7,6 @@
 #ifndef TM1638PLUS_MODEL1_H
 #define TM1638PLUS_MODEL1_H
 
-#if (ARDUINO >=100)
-  #include "Arduino.h"
-#else
-  #include "WProgram.h"
-#endif
-
 #include "TM1638plus_common.h"
 
 
