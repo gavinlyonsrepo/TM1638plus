@@ -21,7 +21,7 @@ Switch between software SPI or hardware SPI control by choosing relevant constru
 ### Software SPI
 
 For Software SPI pick any GPIO you want.
-User may need to change thebCommDelay variable (uS Communication delay) 
+User may need to change the CommDelay variable (uS Communication delay) 
 depending on speed of CPU on system by default its 0 uS.
 
 ### Hardware SPI
@@ -35,7 +35,7 @@ for chip select pin. SPI settings(baudrate etc) can be changed in the header fil
 | --- | --- | --- | --- |
 | 1 | any GPIO output | SCLK |  CLK = Clock |
 | 2 | any GPIO output | any GPIO Output | CS = Chip select |
-| 3 | any GPIO output | SDATA |  DIN = Data in |
+| 3 | any GPIO output | MOSI|  DIN = Data in |
 
 ## Notes and Issues
 
